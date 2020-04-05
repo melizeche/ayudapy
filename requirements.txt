@@ -1,6 +1,6 @@
 django~=2.2
 Pillow==7.0.0
-psycopg2==2.8.4 
+psycopg2-binary==2.8.4 
 django-leaflet==0.26.0
 black
 django-widget-tweaks==1.4.8
