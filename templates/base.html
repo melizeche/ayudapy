@@ -1,9 +1,12 @@
+{% load leaflet_tags %}
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AyudaPy</title>
+    <link  rel="icon"   href="{% static "favicon.ico" %}" type="image/ico" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <style>
@@ -13,34 +16,49 @@
             align-items: center;
             text-align: center;
         }
+        .Site {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        .Site-content {
+            flex: 1;
+        }
+        footer{
+            padding: 1rem 1rem 1rem !important;
+        }
+        .hero{
+            padding-bottom: 1rem;
+        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@vizuaalog/bulmajs@0.10.3/dist/file.js" integrity="sha256-9BDCQ1iKLp8eEXxQD6U8StZ4V2On9KFEHDeHeXLZ/aE=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@vizuaalog/bulmajs@0.10.3/dist/modal.js" integrity="sha256-HDcVnTQ5+DdyigrR4Xge4rxqguBi19XI7vNDhTDr+hs=" crossorigin="anonymous"></script>
+    {% leaflet_js plugins="ALL" %}
+    {% leaflet_css plugins="ALL" %}
 </head>
 
-<body>
-    <section class="hero">
+<body class="Site">
+    <section class="hero is-primary">
         <div class="container">
-            <h1 class="title center">
-       AyudaPy<span class="icon is-large has-text-grey-dark"><i class="fas fa-hand-holding-heart"></i></span>
-      </h1>
-            <p class="subtitle center">
+          <a href="/">
+            <h1 class="title center">AyudaPy<span class="icon is-large has-text-grey-dark"><i class="fas fa-hand-holding-heart"></i></span></h1>
+          </a>
+            <p class="subtitle center is-6">
                 Experimento para unir a gente que necesita con gente que quiere ayudar
             </p>
         </div>
     </section>
+<main class="Site-content">
     <section class="section">
         <div class="container">
+          {% block bread %}
+          {% endblock bread %}
           {% block content %}
           {% endblock content %}
         </div>
     </section>
-    <footer class="footer">
-        <div class="content has-text-centered">
-            <p>
-                Desarrollado por <a href="https://melizeche.com">Marcelo Elizeche Landó</a>.
-                <br> El código bajo la licencia GPLv3. <a href="https://github.com/melizeche/listahu" target="_blank"><span class="icon"><i class="fab fa-github" title="logo Github"></i></span>Revisa el código en GitHub</a>.
-            </p>
-        </div>
-    </footer>
+</main>
+{% include 'footer.html' %}
 </body>
 
 </html>
