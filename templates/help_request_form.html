@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load leaflet_tags %}
+{% load static %}
+{% block bread %}
+<nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
+    <ul>
+        <li>
+            <span class="icon is-small">
+                <i class="fas fa-home" aria-hidden="true"></i>
+                </span>
+            <a href="/">Inicio</a></li>
+        <li><a href="/recibir">Info</a></li>
+        <li class="is-active"><a href="#" aria-current="page">Recibir ayuda</a></li>
+    </ul>
+</nav>
+{% endblock bread %} 
+{% block content%}
+<div class="columns is-centered">
+    <div class="column is-half">
+        <form enctype="multipart/form-data" method="post" action="/solicitar">
+            {% csrf_token %} 
+            {% include 'includes/bulma_form.html' with form=form %}
+            <div class="control">
+                <button class="button is-success is-fullwidth">Enviar</button>
+            </div>
+        </form>
+    <a href="#" class="is-link modal-button" data-target="#myModal" aria-haspopup="true">Launch example modal</a>
+
+<div class="modal" id="myModal">
+  <<div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Ayuda con el mapa</p>
+            <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+                <p class="image"><img src="{% static "img/ayudamapa.gif" %}" alt=""></p>
+        </section>
+        <footer class="modal-card-foot">
+             <button class="button is-success close">Ok</button>
+        </footer>
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('.modal-button').forEach(function(el) {
+  el.addEventListener('click', function() {
+    var target = document.querySelector(el.getAttribute('data-target'));
+    
+    target.classList.add('is-active');
+    
+    target.querySelector('.close').addEventListener('click',   function() {
+        target.classList.remove('is-active');
+     });
+     target.querySelector('.delete').addEventListener('click',   function() {
+        target.classList.remove('is-active');
+     });
+     target.querySelector('.modal-background').addEventListener('click',   function() {
+        target.classList.remove('is-active');
+     });
+     target.querySelector('.aaa').addEventListener('click',   function() {
+        target.classList.remove('is-active');
+     });
+  });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends 'base.html' %} 
+{% load leaflet_tags %} 
+{% load static %}
+{% load l10n %}
+{% block bread %}
+  <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
+    <ul>
+        <li>
+            <span class="icon is-small">
+                <i class="fas fa-home" aria-hidden="true"></i>
+                </span>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/dar">Info ayudar</a></li>
+            <li><a href="/pedidos">Pedidos de ayuda</a></li>
+            <li class="is-active"><a href="#" aria-current="page">Pedido #{{help_request.id}}</a></li>
+        </ul>
+    </nav>
+{% endblock bread %}
+{% block content%}
+<div class="columns is-centered">
+<div class="column is-half">
+  {% if messages %}
+    {% for message in messages %} 
+        <div class="notification is-success is-half" id='msg{{ forloop.counter }}'>
+            <button class="delete" onclick="document.getElementById('msg{{ forloop.counter }}').style.display = 'none';"></button>
+                <span class="is-5">{{ message }}Se creó tu pedido exitosamente!</span>
+                <p><span class="icon is-medium"><i class="far fa-hand-point-down"></i></span>
+                Podés compartir tu pedido haciendo click en los botones</p>
+        {% include 'includes/buttons.html'%}
+        </div>
+    {% endfor %}
+  {% endif %} 
+    <div class="subtitle center is-3">
+    <a class="has-text-primary" href="/pedidos/{{help_request.id}}">Pedido #{{help_request.id}}</a>
+    </div>
+</div></div>
+<div class="tile is-ancestor center has-text-justified">
+    <div class="tile is-vertical is-6">
+        <div class="tile">
+            <div class="tile is-parent is-vertical">
+                <article class="tile is-child is-box">
+                    <p class="title is-4">{{ help_request.title}}</p>
+                    <p class="subtitle">{{help_request.message|linebreaks}}</p>
+                    <hr>
+                    <p class="subtitle">Nombre:</p>
+                    <p class="title is-4">{{ help_request.name}}</p>
+                    <p class="subtitle">Contacto:</p>
+                    <p class="title is-4"><a href="tel:{{help_request.phone}}">{{help_request.phone}}</p></a>
+                    {% if help_request.address %}
+                      <p class="subtitle">direccion:</p>
+                      <p class="title is-4">{{help_request.address}}</p>
+                    {% endif %}
+                    {% if help_request.picture %}
+                      <figure class="image is-small"> 
+                        <a href="/media/{{help_request.picture}}">
+                          <img class="has-ratio" src="{{thumbnail}}"/>
+                        </a>
+                      </figure>
+                    {% endif %}
+                     <p class="subtitle">Ubicación:
+                     {% leaflet_map "main" callback="main_map_init" %}
+                     </p>
+                     <a href="https://www.google.com/maps/search/?api=1&query={{help_request.location.y|unlocalize}},{{help_request.location.x|unlocalize}}" target="_blank">
+                       <button class="button is-medium is-fullwidth is-link is-light">
+                            <span class="icon is-medium">
+                            <i class="fas fa-map-marker-alt"></i>
+                            </span>
+                            <span>Abrir en Google Maps</span>
+                        </button>
+                     </a>
+                </article>
+                <hr>
+                <label class="label has-text-success">
+                    <span class="icon is-medium"><i class="far fa-hand-point-down"></i></span>
+                        Podés compartir este pedido haciendo click en los botones
+                    </label>
+                <div class="is-fullwidth">
+                {% include 'includes/buttons.html'%}
+                </div>
+            </div>
+        </div>
+
+
+        
+
+        <script type="text/javascript">
+            function main_map_init(map, options) {
+                // Use Leaflet API here
+                {% autoescape off %}
+                var lon = {{ help_request.location.x|unlocalize }};
+                var lat = {{ help_request.location.y|unlocalize }};
+                data = {{ help_request.location.geojson }}
+                {% endautoescape %}
+                    // zoom to point & add it to map
+                map.setView([lat, lon], 14);
+                //L.marker([lat, lon]).addTo(map);
+                L.geoJson(data).addTo(map)
+            }
+        </script>
+    </div>
+</div>
+{% endblock %}

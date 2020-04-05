@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load leaflet_tags %}
+{% load humanize %} 
+
+{% block bread %}
+  <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
+    <ul>
+        <li>
+            <span class="icon is-small">
+            <i class="fas fa-home" aria-hidden="true"></i>
+            </span>
+            <a href="/">Inicio</a>
+        </li>
+        <li><a href="/dar">Info ayudar</a></li>
+        <li class="is-active"><a href="#" aria-current="page">Pedidos de ayuda</a></li>
+      </ul>
+  </nav>
+{% endblock bread %}
+
+{% block content%}
+<div class="title center">
+  Pedidos cercanos {{help_request.id}}
+</div>
+{% if not list_help %}
+<div class="notification is-warning center is-size-5">
+  Todavía no hay pedidos de ayuda, volvé en un rato
+</div>
+{% endif %}
+    <div class="columns is-centered">
+      <div class="column is-6">
+        {% leaflet_map "main" callback="main_map_init" %}
+        <button class="button is-success  is-outlined is-fullwidth" onclick="locateUser()" disabled>Mi ubicacion</button>
+      </div>
+      <div class="column is-6">
+          <article class="panel is-info">
+            <p class="panel-heading">
+              Últimos pedidos de ayuda
+            </p>
+        {% for pedido in list_help %}
+            <a href="/pedidos/{{pedido.id}}" class="panel-block is-success" title="{{pedido.added}}">
+              <span class="panel-icon">
+                <i class="fas fa-people-carry" aria-hidden="true"></i>
+              </span>
+              {{pedido.title}} | {{pedido.added|naturaltime}}
+            </a>
+        {% endfor %}
+          </article>
+      </div>
+    </div>
+    
+    <script type="text/javascript">
+        function main_map_init (map, options) {
+            // Use Leaflet API here
+            this.map = map
+            {% autoescape off %}
+            var lon = "{{ help_request.location.x|escapejs }}";
+            var lat = "{{ help_request.location.y|escapejs }}";
+            data = {{ geo }}
+            {% endautoescape %}
+            // zoom to point & add it to map
+            //map.setView([lat, lon], 14);
+            //L.marker([lat, lon]).addTo(map);
+            map.locate({setView : true});
+            L.geoJson(data).addTo(map)
+        }
+        function locateUser() {
+            this.map.locate({setView : true});
+        }
+        var map = null
+
+    </script>
+
+</div>
+{% endblock %}

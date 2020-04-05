@@ -1,0 +1,13 @@
+- [x] Crear el modelo de solicitud de ayuda
+- [x] https
+- [ ] ~~montar el server~~ falta gunicorn y eso
+- [x] formulario de solicitud de ayuda
+- [ ] ~~escribir la parte legal~~ falta validar
+- [ ] escribir texto de las paginas
+- [ ] modelo de pagina(quizas)
+- [ ] modelo de perfil de usuarios email como usuario para medicos
+- [ ] django silk
+- [ ] template de paginas
+- [ ] preview en redes sociales, open graph cards
+- [ ] API REST
+- [ ] politica de privacidad mejorada

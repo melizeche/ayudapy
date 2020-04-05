@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block bread %}
+  <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
+    <ul>
+        <li>
+            <span class="icon is-small">
+                <i class="fas fa-home" aria-hidden="true"></i>
+                </span>
+            <a href="/">Inicio</a></li>
+            <li class="is-active"><a href="#" aria-current="page">Ayudar</a></li>
+        </ul>
+    </nav>
+{% endblock bread %}
+{% block content%}
+
+<div class="columns is-centered center">
+  <div class="column">
+    <div class="tile is-ancestor center">
+        <div class="tile is-4 is-vertical is-parent">
+            <div class="tile is-child notification is-danger">
+                <p class="title">Importante</p>
+                <p class="has-text-justified">Esta es una plataforma ciudadaba depende totalmente de la buena voluntad de la gente, no hay garantias de recibir ayuda si o si, si necesitas algo urgente bla bla bla.</p>
+            </div>
+            <div class="tile is-child is-warning box">
+                <p class="title">Como funciona</p>
+                <p class="has-text-justified">Tenes que cargar tu datos: nombre, telefono de contacto, ciudad, barrio/zona y que necesitas.</p>
+            </div>
+            <div class="tile is-child">
+                <a href="/pedidos">
+                    <button class="button is-success is-large is-fullwidth is-size-5 has-text-weight-bold">
+                    OK entiendo, quiero continuar 
+                    <span class="icon is-medium"><i class="far fa-thumbs-up is-le"></i></span>
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% with url=request.build_absolute_uri text=""|add:help_request.name|add:" necesita de tu ayuda" %}
+    <div class="field is-grouped">
+        <p class="control">
+            <a href="whatsapp://send?text={{text}} {{url}}" data-action="share/whatsapp/share"  target="_blank">
+            <button class="button is-medium">
+                <span class="icon is-medium">
+                <i class="fab fa-whatsapp"></i>
+                </span>
+            </button>
+            </a>
+        </p>
+        <p class="control">
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_uri}}" target="_blank">
+            <button class="button is-medium">
+                <span class="icon is-small">
+                <i class="fab fa-facebook"></i>
+                </span>
+            </button>
+            </a>
+        </p>
+        <p class="control">
+            <a href="https://twitter.com/share?text={{text}}&url={{url}}&hashtags=AyudaPy"  target="_blank">
+            <button class="button is-medium">
+                <span class="icon">
+                <i class="fab fa-twitter"></i>
+                </span>
+            </button>
+            </a>
+        </p>
+    </div>
+{% endwith %}
