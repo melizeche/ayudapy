@@ -24,7 +24,6 @@
                 <button class="button is-success is-fullwidth">Enviar</button>
             </div>
         </form>
-    <a href="#" class="is-link modal-button" data-target="#myModal" aria-haspopup="true">Launch example modal</a>
 
 <div class="modal" id="myModal">
   <<div class="modal-background"></div>
@@ -34,6 +33,8 @@
             <button class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
+            <li class="is-size-7"> Mové el mapa hasta donde veas tu ubicación y luego apretá en el icono <i class="fas fa-map-marker-alt"></i> y luego marcá en el mapa el punto exacto</li>
+            <li class="is-size-7"> Si te equivocaste podés apretar en el icono <i class="far fa-edit"></i> así podés mover el marcador, una vez corregido apretar 'Grabar' </li>
                 <p class="image"><img src="{% static "img/ayudamapa.gif" %}" alt=""></p>
         </section>
         <footer class="modal-card-foot">
@@ -46,9 +47,9 @@
 document.querySelectorAll('.modal-button').forEach(function(el) {
   el.addEventListener('click', function() {
     var target = document.querySelector(el.getAttribute('data-target'));
-    
+    //map.invalidateSize();
     target.classList.add('is-active');
-    
+
     target.querySelector('.close').addEventListener('click',   function() {
         target.classList.remove('is-active');
      });
@@ -56,9 +57,6 @@ document.querySelectorAll('.modal-button').forEach(function(el) {
         target.classList.remove('is-active');
      });
      target.querySelector('.modal-background').addEventListener('click',   function() {
-        target.classList.remove('is-active');
-     });
-     target.querySelector('.aaa').addEventListener('click',   function() {
         target.classList.remove('is-active');
      });
   });

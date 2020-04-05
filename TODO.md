@@ -1,5 +1,6 @@
 - [x] Crear el modelo de solicitud de ayuda
 - [x] https
+- [ ] Refactorear el template de vista de detalle de pedidos porque es horrible 
 - [ ] ~~montar el server~~ falta gunicorn y eso
 - [x] formulario de solicitud de ayuda
 - [ ] ~~escribir la parte legal~~ falta validar
@@ -11,3 +12,4 @@
 - [ ] preview en redes sociales, open graph cards
 - [ ] API REST
 - [ ] politica de privacidad mejorada
+- [ ] Paginación

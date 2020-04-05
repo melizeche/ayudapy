@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.gis.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils.safestring import mark_safe
 
 from core.utils import create_thumbnail, rename_img
 
@@ -14,7 +15,9 @@ THUMBNAIL_BASEWIDTH = 500
 
 class HelpRequest(models.Model):
     title = models.CharField(
-        "Título del pedido", max_length=200, help_text="Descripción corta de que estás necesitando"
+        "Título del pedido",
+        max_length=200,
+        help_text="Descripción corta de que estás necesitando",
     )
     message = models.TextField(
         "Descripción del pedido",
@@ -34,7 +37,8 @@ class HelpRequest(models.Model):
     )
     location = models.PointField(
         "Ubicación",
-        help_text="Seleccioná tu ubicación para que la gente pueda encontrarte, si no querés marcar tu casa una buena opción puede ser la comisaria más cercana o algún otro sitio público cercano",
+        help_text=mark_safe('Seleccioná tu ubicación para que la gente pueda encontrarte, si no querés marcar tu casa una buena opción puede ser la comisaría más cercana o algún otro sitio público cercano.\
+            <br>Si tenés problemas con este paso <a href="#" class="is-link modal-button" data-target="#myModal" aria-haspopup="true">mirá esta ayuda</a>'),
         srid=4326,
     )
     picture = models.ImageField(

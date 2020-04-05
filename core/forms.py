@@ -28,7 +28,8 @@ class HelpRequestForm(forms.ModelForm):
                 attrs={
                     "class": "textarea",
                     "rows": 4,
-                    "placeholder": "Acá si podes detallar mejor lo que necesitas",
+                    "placeholder": "Ejemplo: Por la situación actual estoy necesitando tapabocas y productos e limpieza, \
+                        cualquier ayuda aunque sea mínima ya me va a ayudar.\nMuchas Gracias!",
                 }
             ),
             "name": forms.TextInput(attrs={"class": "input"}),
