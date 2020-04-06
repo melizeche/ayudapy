@@ -62,7 +62,14 @@
             //L.marker([lat, lon]).addTo(map);
             map.locate({setView : true});
             map.setZoom(12)
-            L.geoJson(data).addTo(map)
+            //L.geoJson(data).addTo(map)
+            var layerGroup = L.geoJSON(data, {
+  onEachFeature: function (feature, layer) {
+    layer.bindPopup('<a class="subtitle" href="/pedidos/'+feature.properties.pk+'"><h1>Pedido #'+feature.properties.pk+
+      '</h1></a><p class="has-text-weight-bold">Nombre: '+feature.properties.name+'</p><p>'+feature.properties.title+'</p>'+
+      '<a class="is-size-6" href="/pedidos/'+feature.properties.pk+'">Ver Pedido</a>');
+  }
+}).addTo(map);
         }
         function locateUser() {
             this.map.locate({setView : true});
