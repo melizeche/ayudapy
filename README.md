@@ -1,9 +1,8 @@
 # ayudaPy
-Description
-
+Platform to help people help people
 #### URL
 
-....
+https://ayudapy.org
 
 ## Requirements
 
@@ -39,10 +38,10 @@ cp conf/settings.py.example conf/settings.py # you should edit this file with yo
 
 ## TODO
 
-* ~Proper~ Documentation
+* Documentation
 * Support geolocation
 * Captcha
-* Create models
+* ~~Create models~~
 * Users(?)
 
 More in [TODO.md](TODO.md)
