@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'leaflet',
     'django.contrib.gis',
     'core',
-    'django_seed',
     'widget_tweaks',
 ]
 
