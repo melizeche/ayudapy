@@ -38,7 +38,7 @@ def view_request(request, id):
 
 
 def list_requests(request):
-    query = HelpRequest.objects.all().order_by("-added")[:20]
+    query = HelpRequest.objects.all().order_by("-added")[:100]
     geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
     list_help_requests = HelpRequest.objects.all().order_by("-added")  # TODO limit this
     context = {"list_help": list_help_requests, "geo": geo}
