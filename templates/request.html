@@ -34,11 +34,49 @@
     <a class="has-text-primary" href="/pedidos/{{help_request.id}}">Pedido #{{help_request.id}}</a>
     </div>
 </div></div>
-<div class="tile is-ancestor center has-text-justified">
-    <div class="tile is-vertical is-6">
-        <div class="tile">
-            <div class="tile is-parent is-vertical">
-                <article class="tile is-child is-box">
+<div class="columns is-centered">
+    <div class="column is-four-fifths">
+
+        <div class="card">
+        <header class="card-header has-background-light is-light">
+            <p class="card-header-title is-size-4">{{ help_request.title}}</p>
+        </header>
+        <section class="card-content">
+                    <p class="is-size-5">{{help_request.message|linebreaksbr}}</p>
+                    {% if help_request.picture %}
+                    <hr>
+                      <figure class="image is-small"> 
+                        <a href="/media/{{help_request.picture}}">
+                          <img class="has-ratio" src="{{thumbnail}}"/>
+                        </a>
+                      </figure>
+                    {% endif %}
+                    <hr>
+                    <p class="subtitle">Nombre:</p>
+                    <p class="title is-4">{{ help_request.name}}</p>
+                    <p class="subtitle">Contacto:</p>
+                    <p class="title is-4"><a href="tel:{{help_request.phone}}">{{help_request.phone}}</p></a>
+                    {% if help_request.address %}
+                      <p class="subtitle">direccion:</p>
+                      <p class="title is-4">{{help_request.address}}</p>
+                    {% endif %}
+                    
+                     <p class="subtitle">Ubicación:
+                     {% leaflet_map "main" callback="main_map_init" %}
+                     </p>
+                     <a href="https://www.google.com/maps/search/?api=1&query={{help_request.location.y|unlocalize}},{{help_request.location.x|unlocalize}}" target="_blank">
+                       <button class="button is-medium is-fullwidth is-link is-light">
+                            <span class="icon is-medium">
+                            <i class="fas fa-map-marker-alt"></i>
+                            </span>
+                            <span>Abrir en Google Maps</span>
+                        </button>
+                     </a>
+
+        </section>
+
+    </div>
+                {% comment %} <article class="tile is-child is-box">
                     <p class="title is-4">{{ help_request.title}}</p>
                     <p class="subtitle">{{help_request.message|linebreaks}}</p>
                     <hr>
@@ -68,7 +106,7 @@
                             <span>Abrir en Google Maps</span>
                         </button>
                      </a>
-                </article>
+                </article> {% endcomment %}
                 <hr>
                 <label class="label has-text-success">
                     <span class="icon is-medium"><i class="far fa-hand-point-down"></i></span>
@@ -77,9 +115,7 @@
                 <div class="is-fullwidth">
                 {% include 'includes/buttons.html'%}
                 </div>
-            </div>
-        </div>
-
+          
 
         
 
