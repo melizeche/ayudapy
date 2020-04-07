@@ -6,6 +6,7 @@ from django.shortcuts import (
     get_object_or_404,
     get_list_or_404,
 )
+from django.contrib.admin import SimpleListFilter
 from .forms import HelpRequestForm
 from .models import HelpRequest
 
@@ -43,3 +44,11 @@ def list_requests(request):
     geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
     context = {"list_help": list_help_requests, "geo": geo}
     return render(request, "list.html", context)
+
+
+def list_by_city(request, city):
+    list_help_requests = HelpRequest.objects.filter(city_code=city).order_by("-added")  # TODO limit this
+    query = list_help_requests[:200]
+    geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
+    context = {"list_help": list_help_requests, "geo": geo}
+    return render(request, "list_by_city.html", context)
