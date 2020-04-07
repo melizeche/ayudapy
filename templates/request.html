@@ -57,11 +57,15 @@
                     <p class="subtitle">Nombre:</p>
                     <p class="title is-4">{{ help_request.name}}</p>
                     <p class="subtitle">Contacto:</p>
-                    <p class="title is-4"><a href="tel:{{help_request.phone}}">{{help_request.phone}}</p></a>
+                    <p class="title is-4"><a href="tel:{{help_request.phone}}">{{help_request.phone}}</a></p>
                     {% if help_request.address %}
                       <p class="subtitle">direccion:</p>
                       <p class="title is-4">{{help_request.address}}</p>
                     {% endif %}
+                    <p class="subtitle">Ciudad: </p>
+                    <p class="title is-4">
+                        <a href="/pedidos_ciudad/{{help_request.city_code}}">{{help_request.city}}</a>
+                    </p>
                      <p class="subtitle">Ubicación:
                      {% leaflet_map "main" callback="main_map_init" %}
                      </p>
@@ -76,7 +80,6 @@
 
         </section>
                     {% include 'vote_button.html' %}
-
     </div>
 
                 {% comment %} <article class="tile is-child is-box">
