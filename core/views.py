@@ -37,10 +37,8 @@ def view_request(request, id):
     if request.POST:
         if request.POST['vote']:
             if request.POST['vote'] == 'up':
-                print('upvoted')
                 help_request.upvotes += 1
             elif request.POST['vote'] == 'down':
-                print('downvoted')
                 help_request.downvotes += 1
             help_request.save()
     return render(request, "request.html", context)
