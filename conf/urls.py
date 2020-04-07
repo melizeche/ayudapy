@@ -5,11 +5,14 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 """
 from django.conf import settings
 from django.conf.urls.static import static
+from django.conf.urls import include, url
 from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
 
+
 from core import views as core_views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -19,7 +22,8 @@ urlpatterns = [
     path('dar', TemplateView.as_view(template_name="info_give.html")),
     path('legal', TemplateView.as_view(template_name="legal.html")),
     path('pedidos/<int:id>', core_views.view_request, name='pedidos-detail'),
-    path('pedidos', core_views.list_requests)
+    path('pedidos', core_views.list_requests),
+    path('api/', include(('core.api.urls', 'pedidos'), namespace='pedidos')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
