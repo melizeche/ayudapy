@@ -2,6 +2,7 @@
 {% load leaflet_tags %} 
 {% load static %}
 {% load l10n %}
+{% load humanize %}
 {% block bread %}
   <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
     <ul>
@@ -42,6 +43,7 @@
             <p class="card-header-title is-size-4">{{ help_request.title}}</p>
         </header>
         <section class="card-content">
+                    <p class="has-text-right is-size-7" title="{{help_request.added|naturaltime}}">{{help_request.added}}</p>
                     <p class="is-size-5">{{help_request.message|linebreaksbr}}</p>
                     {% if help_request.picture %}
                     <hr>
