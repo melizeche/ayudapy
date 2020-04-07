@@ -21,7 +21,7 @@ class HelpRequest(models.Model):
     )
     message = models.TextField(
         "Descripción del pedido",
-        help_text="Acá podes contar detalladamente lo que necesitas",
+        help_text=mark_safe("Acá podes contar detalladamente lo que necesitas, <b>cuanto mejor cuentes tu situación es más probable que te quieran ayudar</b>"),
         max_length=2000,
         null=True,
         blank=True,
