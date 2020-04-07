@@ -1,7 +1,8 @@
-<form name="thumbs">
-<div class="field is-grouped">
+<section class="card-content">
+<form name="thumbs" class="">
+<div class="field is-flex" style="justify-content: center;">
         <p class="control">
-            <button name= 'vote' class="button is-medium" type="submit" formmethod="post" value="up"> {% csrf_token %}
+            <button name= 'vote' class="button is-medium is-centered" type="submit" formmethod="post" value="up"> {% csrf_token %}
                 <span class="icon is-small">
                 <i class="fa fa-thumbs-up"></i>
                     {{help_request.upvotes}}
@@ -9,7 +10,7 @@
             </button>
         </p>
         <p class="control">
-        <button name='vote' class="button is-medium" type="submit" formmethod="post" value="down"> {% csrf_token %}
+        <button name='vote' class="button is-medium is-centered" type="submit" formmethod="post" value="down"> {% csrf_token %}
             <span class="icon is-small">
             <i class="fa fa-thumbs-down"></i>
             {{help_request.downvotes}}
@@ -18,3 +19,4 @@
         </p>
 </div>
 </form>
+</section>
