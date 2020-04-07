@@ -1,0 +1,20 @@
+<form name="thumbs">
+<div class="field is-grouped">
+        <p class="control">
+            <button name= 'vote' class="button is-medium" type="submit" formmethod="post" value="up"> {% csrf_token %}
+                <span class="icon is-small">
+                <i class="fa fa-thumbs-up"></i>
+                    {{help_request.upvotes}}
+                </span>
+            </button>
+        </p>
+        <p class="control">
+        <button name='vote' class="button is-medium" type="submit" formmethod="post" value="down"> {% csrf_token %}
+            <span class="icon is-small">
+            <i class="fa fa-thumbs-down"></i>
+            {{help_request.downvotes}}
+            </span>
+        </button>
+        </p>
+</div>
+</form>

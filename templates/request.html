@@ -62,7 +62,6 @@
                       <p class="subtitle">direccion:</p>
                       <p class="title is-4">{{help_request.address}}</p>
                     {% endif %}
-                    
                      <p class="subtitle">Ubicación:
                      {% leaflet_map "main" callback="main_map_init" %}
                      </p>
@@ -78,6 +77,8 @@
         </section>
 
     </div>
+
+                    {% include 'vote_button.html' %}
                 {% comment %} <article class="tile is-child is-box">
                     <p class="title is-4">{{ help_request.title}}</p>
                     <p class="subtitle">{{help_request.message|linebreaks}}</p>
