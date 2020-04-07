@@ -18,13 +18,14 @@ class HelpRequest(models.Model):
         "Título del pedido",
         max_length=200,
         help_text="Descripción corta de que estás necesitando",
+        db_index=True,
     )
     message = models.TextField(
         "Descripción del pedido",
         help_text=mark_safe("Acá podes contar detalladamente lo que necesitas, <b>cuanto mejor cuentes tu situación es más probable que te quieran ayudar</b>"),
         max_length=2000,
         null=True,
-        blank=True,
+        db_index=True,
     )
     name = models.CharField("Nombre y Apellido", max_length=200)
     phone = models.CharField("Teléfono de contacto", max_length=30)
@@ -48,8 +49,8 @@ class HelpRequest(models.Model):
         null=True,
         blank=True,
     )
-    active = models.BooleanField(default=True)
-    added = models.DateTimeField("Agregado", auto_now_add=True, null=True, blank=True)
+    active = models.BooleanField(default=True, db_index=True)
+    added = models.DateTimeField("Agregado", auto_now_add=True, null=True, blank=True, db_index=True)
     votsi = models.IntegerField(default=0, blank=True)
     votno = models.IntegerField(default=0, blank=True)
 
