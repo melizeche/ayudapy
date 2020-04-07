@@ -19,7 +19,10 @@
 
 {% block content%}
 <div class="title center">
-  Pedidos cercanos {{help_request.id}}
+  Pedidos en {{city}}
+</div>
+<div class="subtitle center">
+    <a href="/pedidos"> (ver todos)</a>
 </div>
 {% if not list_help %}
 <div class="notification is-warning center is-size-5">
@@ -34,7 +37,7 @@
       <div class="column is-6">
           <article class="panel is-info">
             <p class="panel-heading">
-              Últimos pedidos de ayuda
+              Últimos pedidos de ayuda en {{city}}
             </p>
         {% for pedido in list_help %}
             <a href="/pedidos/{{pedido.id}}" class="panel-block is-success" title="{{pedido.added}}">
