@@ -4,3 +4,4 @@ psycopg2-binary==2.8.4
 django-leaflet==0.26.0
 black
 django-widget-tweaks==1.4.8
+djangorestframework==3.11.0
