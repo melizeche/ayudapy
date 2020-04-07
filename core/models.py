@@ -30,7 +30,7 @@ class HelpRequest(models.Model):
     phone = models.CharField("Teléfono de contacto", max_length=30)
     address = models.CharField(
         "Dirección",
-        help_text="Es opcional pero puede ayudar a quien quiera ayudarte saber la direccion, ciudad, barrio, referencias, o como llegar",
+        help_text="Es opcional pero puede ayudar a quien quiera ayudarte saber la dirección, ciudad, barrio, referencias, o como llegar",
         max_length=400,
         null=True,
         blank=True,
