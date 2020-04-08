@@ -68,14 +68,8 @@ function loc(){
 </script>
 <script>
 
-function disableButton{
+function disableButton(){
     console.log('AAA')
-}
-
-mySubmitButton.onclick = function() {
-  if(this.form && isFormHtml5Valid(this.form))
-    this.disabled=true;
-  this.form.submit();
 }
 
 document.querySelectorAll('.modal-button').forEach(function(el) {
