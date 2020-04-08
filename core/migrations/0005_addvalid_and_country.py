@@ -15,7 +15,7 @@ def revert_save(auth, schema):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0003_addcity'),
+        ('core', '0004_redefine_requestvotes'),
     ]
 
     operations = [
