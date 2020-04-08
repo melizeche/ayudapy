@@ -45,21 +45,35 @@
 
 <script>
 
-        function success(position) {
-            const latitude  = position.coords.latitude;
-            const longitude = position.coords.longitude;
+function geoFindMe() {
 
-            //console.log('${latitude} '+longitude);
-            //you = L.marker([latitude, longitude], {opacity: 0.3, title:'Tu ubicación'}).addTo(maps[0]);
-            //you.bindPopup('Tu ubicación').openPopup();
-            maps[0].panTo(new L.LatLng(latitude, longitude), 16);
-        }
+            const status = document.querySelector('#status');
 
-        function error() {
-            console.log('No puedo encontrarte, usá los botones del mapa');
-        }
 
-        navigator.geolocation.getCurrentPosition(success, error);
+            function success(position) {
+              const latitude  = position.coords.latitude;
+              const longitude = position.coords.longitude;
+
+              console.log('${latitude} '+longitude);
+              //you = L.marker([latitude, longitude], {opacity: 0.3, title:'Tu ubicación'}).addTo(maps[0]);
+              //you.bindPopup('Tu ubicación').openPopup();
+              maps[0].panTo(new L.LatLng(latitude, longitude), 16);
+            }
+
+            function error() {
+              status.textContent = 'No puedo encontrarte, usá los botones del mapa';
+            }
+
+            if (!navigator.geolocation) {
+              status.textContent = 'Tu navegador no soporta la geolocalización';
+            } else {
+              status.textContent = 'Buscando tu ubicación…';
+              navigator.geolocation.getCurrentPosition(success, error);
+            }
+
+          }
+
+          document.querySelector('#find-me').addEventListener('click', geoFindMe);
 
 </script>
 <script>

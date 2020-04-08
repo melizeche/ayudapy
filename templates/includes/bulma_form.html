@@ -53,6 +53,10 @@
             {% else %}
                 <div class="control">
                     {{ field }}
+                    {% if field.name == "location" %}
+                      <buttonid="find-me" class="button is-success  is-outlined is-fullwidth">Buscar mi ubicación</button>
+                      <p id="status"></p>
+                    {% endif %}
                 </div>
             {% endif %}
         {% endif %}
