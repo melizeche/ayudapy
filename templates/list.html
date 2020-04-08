@@ -118,7 +118,8 @@
 
               status.textContent = 'SI!';
               console.log('${latitude} '+longitude);
-              maps[0].flyTo(new L.LatLng(latitude, longitude));
+              L.marker([latitude, longitude]).addTo(maps[0]);
+              maps[0].panTo(new L.LatLng(latitude, longitude), 14);
             }
 
             function error() {
@@ -128,7 +129,7 @@
             if (!navigator.geolocation) {
               status.textContent = 'Tu navegador no soporta la geolocalización';
             } else {
-              status.textContent = 'Locating…';
+              status.textContent = 'Buscando tu ubicación…';
               navigator.geolocation.getCurrentPosition(success, error);
             }
 
