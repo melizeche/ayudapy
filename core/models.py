@@ -35,8 +35,7 @@ class HelpRequest(models.Model):
         "Dirección",
         help_text="Es opcional pero puede ayudar a quien quiera ayudarte saber la direccion, ciudad, barrio, referencias, o como llegar",
         max_length=400,
-        null=True,
-        blank=True,
+        null=True
     )
     location = models.PointField(
         "Ubicación",
