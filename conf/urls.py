@@ -24,6 +24,8 @@ urlpatterns = [
     path('pedidos/<int:id>', core_views.view_request, name='pedidos-detail'),
     path('pedidos', core_views.list_requests),
     path('api/', include(('core.api.urls', 'pedidos'), namespace='pedidos')),
+    path('pedidos_ciudad/<slug:city>', core_views.list_by_city, name='pedidos-by-city'),
+    path('pedidos', core_views.list_requests)
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
