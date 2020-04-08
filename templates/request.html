@@ -19,22 +19,23 @@
 {% endblock bread %}
 {% block content%}
 <div class="columns is-centered">
-<div class="column is-half">
-  {% if messages %}
-    {% for message in messages %} 
-        <div class="notification is-success is-half" id='msg{{ forloop.counter }}'>
-            <button class="delete" onclick="document.getElementById('msg{{ forloop.counter }}').style.display = 'none';"></button>
-                <span class="is-5">{{ message }}Se creó tu pedido exitosamente!</span>
-                <p><span class="icon is-medium"><i class="far fa-hand-point-down"></i></span>
-                Podés compartir tu pedido haciendo click en los botones</p>
-        {% include 'includes/buttons.html'%}
+    <div class="column is-half">
+      {% if messages %}
+        {% for message in messages %}
+            <div class="notification is-success is-half" id='msg{{ forloop.counter }}'>
+                <button class="delete" onclick="document.getElementById('msg{{ forloop.counter }}').style.display = 'none';"></button>
+                    <span class="is-5">{{ message }}Se creó tu pedido exitosamente!</span>
+                    <p><span class="icon is-medium"><i class="far fa-hand-point-down"></i></span>
+                    Podés compartir tu pedido haciendo click en los botones</p>
+            {% include 'includes/buttons.html'%}
+            </div>
+        {% endfor %}
+      {% endif %}
+        <div class="subtitle center is-3">
+        <a class="has-text-primary" href="/pedidos/{{help_request.id}}">Pedido #{{help_request.id}}</a>
         </div>
-    {% endfor %}
-  {% endif %} 
-    <div class="subtitle center is-3">
-    <a class="has-text-primary" href="/pedidos/{{help_request.id}}">Pedido #{{help_request.id}}</a>
     </div>
-</div></div>
+</div>
 <div class="columns is-centered">
     <div class="column is-four-fifths">
 
@@ -57,11 +58,15 @@
                     <p class="subtitle">Nombre:</p>
                     <p class="title is-4">{{ help_request.name}}</p>
                     <p class="subtitle">Contacto:</p>
-                    <p class="title is-4"><a href="tel:{{help_request.phone}}">{{help_request.phone}}</p></a>
+                    <p class="title is-4"><a href="tel:{{help_request.phone}}">{{help_request.phone}}</a></p>
                     {% if help_request.address %}
                       <p class="subtitle">direccion:</p>
                       <p class="title is-4">{{help_request.address}}</p>
                     {% endif %}
+                    <p class="subtitle">Ciudad: </p>
+                    <p class="title is-4">
+                        <a href="/pedidos_ciudad/{{help_request.city_code}}">{{help_request.city}}</a>
+                    </p>
                      <p class="subtitle">Ubicación:
                      {% leaflet_map "main" callback="main_map_init" %}
                      </p>
