@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load leaflet_tags %}
+{% leaflet_js  plugins="markercluster" %}
+{% leaflet_css plugins="markercluster" %}
 {% load humanize %} 
 
 {% block bread %}
@@ -63,13 +65,18 @@
             map.locate({setView : true});
             map.setZoom(12)
             //L.geoJson(data).addTo(map)
+            var markerClusters = L.markerClusterGroup();
             var layerGroup = L.geoJSON(data, {
-  onEachFeature: function (feature, layer) {
-    layer.bindPopup('<a class="subtitle" href="/pedidos/'+feature.properties.pk+'"><h1>Pedido #'+feature.properties.pk+
-      '</h1></a><p class="has-text-weight-bold">Nombre: '+feature.properties.name+'</p><p>'+feature.properties.title+'</p>'+
-      '<a class="is-size-6" href="/pedidos/'+feature.properties.pk+'">Ver Pedido</a>');
-  }
-}).addTo(map);
+              onEachFeature: function (feature, layer) {
+                var popup = '<a class="subtitle" href="/pedidos/'+feature.properties.pk+'"><h1>Pedido #'+feature.properties.pk+
+                  '</h1></a><p class="has-text-weight-bold">Nombre: '+feature.properties.name+'</p><p>'+feature.properties.title+'</p>'+
+                  '<a class="is-size-6" href="/pedidos/'+feature.properties.pk+'">Ver Pedido</a>';
+                layer.bindPopup(popup);
+                
+                markerClusters.addLayer(layer);
+              }
+            });
+            map.addLayer( markerClusters );
         }
         function locateUser() {
             this.map.locate({setView : true});
