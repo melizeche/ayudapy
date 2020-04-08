@@ -94,18 +94,21 @@ class HelpRequest(models.Model):
             location.raw['address']
             return location
         except KeyError:
-            raise ValueError("Invalid Location")
+            return None
 
     def save(self):
         from unidecode import unidecode
         loc = self._validate_loc()
-        city = self._get_city(loc)
-        self.city = city
-        self.city_code = unidecode(city).replace(" ", "_")
-        country = self._get_country(loc)
-        self.country = country
-        self.country_code = unidecode(country).replace(" ", "_")
-        self.loc_validated = True
+        if loc:
+            city = self._get_city(loc)
+            self.city = city
+            self.city_code = unidecode(city).replace(" ", "_")
+            country = self._get_country(loc)
+            self.country = country
+            self.country_code = unidecode(country).replace(" ", "_")
+            self.loc_validated = True
+        else:
+            self.loc_validated = False
         return super(HelpRequest, self).save()
 
     def __str__(self):
