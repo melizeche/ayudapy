@@ -34,7 +34,7 @@ def view_request(request, id):
     help_request = get_object_or_404(HelpRequest, pk=id)
     context = {
         "help_request": help_request,
-        "thumbnail": help_request.thumb if help_request.picture else None,
+        "thumbnail": help_request.thumb if help_request.picture else "/static/favicon.ico",
     }
     if request.POST:
         if request.POST['vote']:
