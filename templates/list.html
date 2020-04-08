@@ -116,7 +116,6 @@
               const latitude  = position.coords.latitude;
               const longitude = position.coords.longitude;
 
-              status.textContent = 'SI!';
               console.log('${latitude} '+longitude);
               you = L.marker([latitude, longitude], {opacity: 0.3, title:'Tu ubicación'}).addTo(maps[0]);
               you.bindPopup('Tu ubicación').openPopup();
