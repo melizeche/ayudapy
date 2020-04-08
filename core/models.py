@@ -51,8 +51,6 @@ class HelpRequest(models.Model):
     )
     active = models.BooleanField(default=True, db_index=True)
     added = models.DateTimeField("Agregado", auto_now_add=True, null=True, blank=True, db_index=True)
-    votsi = models.IntegerField(default=0, blank=True)
-    votno = models.IntegerField(default=0, blank=True)
     upvotes = models.IntegerField(default=0, blank=True)
     downvotes = models.IntegerField(default=0, blank=True)
 
