@@ -65,7 +65,7 @@
                     {% endif %}
                     <p class="subtitle">Ciudad: </p>
                     <p class="title is-4">
-                        <a href="/pedidos_ciudad/{{help_request.city_code}}">{{help_request.city}}</a>
+                        <a href="/pedidos_ciudad/{{help_request.city_code}}">{{help_request.city}}</a> ({{help_request.country}})
                     </p>
                      <p class="subtitle">Ubicación:
                      {% leaflet_map "main" callback="main_map_init" %}

@@ -7,6 +7,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.safestring import mark_safe
 from geopy.geocoders import Nominatim
+from django.http import HttpResponseRedirect
 
 from core.utils import create_thumbnail, rename_img
 
@@ -89,10 +90,11 @@ class HelpRequest(models.Model):
         geolocator = Nominatim(user_agent="ayudapy")
         cordstr = "%s, %s" % self.location.coords[::-1]
         location = geolocator.reverse(cordstr, language='es')
-        if location.raw['address'].get('city'):
+        try:
+            location.raw['address']
             return location
-        else:
-            raise ValueError('Location invalid')
+        except KeyError:
+            raise ValueError("Invalid Location")
 
     def save(self):
         from unidecode import unidecode
