@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load leaflet_tags %}
-{% load humanize %} 
+{% load humanize %}
 
 {% block bread %}
   <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
@@ -35,14 +35,23 @@
       <div class="column is-6">
           <div class="row is-centered">
             <div class="dropdown">
-              <div class="dropdown-trigger">
-                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                  <span>Ciudades</span>
-                  <span class="icon is-small">
-                    <i class="fas fa-angle-down" aria-hidden="true"></i>
-                  </span>
-                </button>
-              </div>
+                <div class="columns is-mobile is-vcentered">
+                    <div class="column">
+                      <div class="dropdown-trigger">
+                        <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                          <span>Ciudades</span>
+                          <span class="icon is-small">
+                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="column is-four-fifths">
+                        <h5 class="has-text-danger has-text-weight-light has-text-centered">
+                            Si no ves tu ciudad es porque no hay pedidos, volvé más tarde para ayudar!
+                        </h5>
+                    </div>
+                </div>
               <div class="dropdown-menu" id="dropdown-menu" role="menu">
                 <div class="dropdown-content">
                     {% for city, code in list_cities %}
@@ -100,7 +109,7 @@
                   '</h1></a><p class="has-text-weight-bold">Nombre: '+feature.properties.name+'</p><p>'+feature.properties.title+'</p>'+
                   '<a class="is-size-6" href="/pedidos/'+feature.properties.pk+'">Ver Pedido</a>';
                 layer.bindPopup(popup);
-                
+
                 markerClusters.addLayer(layer);
               }
             });
