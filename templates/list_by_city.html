@@ -56,25 +56,25 @@
             // Use Leaflet API here
             this.map = map
             {% autoescape off %}
-            var lon = "{{ help_request.location.x|escapejs }}";
-            var lat = "{{ help_request.location.y|escapejs }}";
             data = {{ geo }}
             {% endautoescape %}
-            // zoom to point & add it to map
-            //map.setView([lat, lon], 14);
-            //L.marker([lat, lon]).addTo(map);
+            
+            map.setMaxZoom(17)
             map.locate({setView : true});
-            map.setZoom(12)
             map.addControl(new L.Control.Fullscreen());
-            //L.geoJson(data).addTo(map)
+
             var layerGroup = L.geoJSON(data, {
-  onEachFeature: function (feature, layer) {
-    layer.bindPopup('<a class="subtitle" href="/pedidos/'+feature.properties.pk+'"><h1>Pedido #'+feature.properties.pk+
-      '</h1></a><p class="has-text-weight-bold">Nombre: '+feature.properties.name+'</p><p>'+feature.properties.title+'</p>'+
-      '<a class="is-size-6" href="/pedidos/'+feature.properties.pk+'">Ver Pedido</a>');
-  }
-}).addTo(map);
+              onEachFeature: function (feature, layer) {
+                layer.bindPopup('<a class="subtitle" href="/pedidos/'+feature.properties.pk+'"><h1>Pedido #'+feature.properties.pk+
+                  '</h1></a><p class="has-text-weight-bold">Nombre: '+feature.properties.name+'</p><p>'+feature.properties.title+'</p>'+
+                  '<a class="is-size-6" href="/pedidos/'+feature.properties.pk+'">Ver Pedido</a>');
+                  
+              }
+            }).addTo(map);
+
+            map.fitBounds(layerGroup.getBounds(), {padding: [50, 50]});
         }
+
         function locateUser() {
             this.map.locate({setView : true});
         }
