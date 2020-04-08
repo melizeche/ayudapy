@@ -118,7 +118,7 @@
 
               status.textContent = 'SI!';
               console.log('${latitude} '+longitude);
-              L.marker([latitude, longitude]).addTo(maps[0]);
+              L.marker([latitude, longitude], {opacity: 0.5, title:'Tu ubicación'}).addTo(maps[0]);
               maps[0].panTo(new L.LatLng(latitude, longitude), 14);
             }
 
