@@ -32,6 +32,28 @@
         <button class="button is-success  is-outlined is-fullwidth" onclick="locateUser()" disabled>Mi ubicacion</button>
       </div>
       <div class="column is-6">
+          <div class="row is-centered">
+            <div class="dropdown">
+              <div class="dropdown-trigger">
+                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                  <span>Ciudades</span>
+                  <span class="icon is-small">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                </button>
+              </div>
+              <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                <div class="dropdown-content">
+                    {% for city, code in list_cities %}
+                      <a href="/pedidos_ciudad/{{code}}" class="dropdown-item">
+                        {{city}}
+                      </a>
+                    {% endfor %}
+
+                </div>
+              </div>
+            </div>
+          </div>
           <article class="panel is-info">
             <p class="panel-heading">
               Últimos pedidos de ayuda
@@ -47,7 +69,6 @@
           </article>
       </div>
     </div>
-    
     <script type="text/javascript">
         function main_map_init (map, options) {
             // Use Leaflet API here
@@ -87,7 +108,11 @@
         }
         var map = null
 
+    var dropdown = document.querySelector('.dropdown');
+    dropdown.addEventListener('click', function(event) {
+      event.stopPropagation();
+      dropdown.classList.toggle('is-active');
+    });
     </script>
 
-</div>
 {% endblock %}
