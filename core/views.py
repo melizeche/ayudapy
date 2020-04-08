@@ -7,6 +7,7 @@ from django.shortcuts import (
     get_list_or_404,
 )
 from django.contrib.admin import SimpleListFilter
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import HelpRequestForm
 from .models import HelpRequest
 
@@ -50,7 +51,21 @@ def list_requests(request):
     cities = [(i['city'], i['city_code']) for i in HelpRequest.objects.all().values('city', 'city_code').distinct().order_by('city_code')]
     query = list_help_requests
     geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
-    context = {"list_cities": cities, "list_help": list_help_requests, "geo": geo}
+
+    # Start Pagination
+    page = request.GET.get('page', 1)
+    paginate_by = 20
+    paginator = Paginator(list_help_requests, paginate_by)
+
+    try:
+        list_help_requests_paginated = paginator.page(page)
+    except PageNotAnInteger:
+        list_help_requests_paginated = paginator.page(1)
+    except EmptyPage:
+        list_help_requests_paginated = paginator.page(paginator.num_pages)
+    # End Pagination
+
+    context = {"list_cities": cities, "list_help": list_help_requests, "geo": geo, "list_help_paginated": list_help_requests_paginated}
     return render(request, "list.html", context)
 
 
