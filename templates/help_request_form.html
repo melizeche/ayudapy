@@ -17,6 +17,8 @@
 {% block content%}
 <div class="columns is-centered">
     <div class="column is-half">
+     <button href="#" id="find-me" class="button is-success  is-outlined is-fullwidth">Apreta acá voy a tratar de encontrarte</button>
+                      <p id="status"></p>
         <form enctype="multipart/form-data" method="post" action="/solicitar">
             {% csrf_token %} 
             {% include 'includes/bulma_form.html' with form=form %}
@@ -61,7 +63,7 @@ function geoFindMe() {
             }
 
             function error() {
-              status.textContent = 'No puedo encontrarte, usá los botones del mapa';
+              status.textContent = 'No puedo encontrarte, usá los botones del mapa más abajo';
             }
 
             if (!navigator.geolocation) {
