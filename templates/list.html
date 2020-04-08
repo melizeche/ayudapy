@@ -60,6 +60,8 @@
             // zoom to point & add it to map
             //map.setView([lat, lon], 14);
             //L.marker([lat, lon]).addTo(map);
+            // Agregar boton de FullScreen al mapa
+            map.addControl(new L.Control.Fullscreen());
             map.locate({setView : true});
             map.setZoom(12)
             //L.geoJson(data).addTo(map)
