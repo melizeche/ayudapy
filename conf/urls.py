@@ -19,6 +19,7 @@ urlpatterns = [
     path('dar', TemplateView.as_view(template_name="info_give.html")),
     path('legal', TemplateView.as_view(template_name="legal.html")),
     path('pedidos/<int:id>', core_views.view_request, name='pedidos-detail'),
+    path('pedidos_ciudad/<slug:city>', core_views.list_by_city, name='pedidos-by-city'),
     path('pedidos', core_views.list_requests)
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

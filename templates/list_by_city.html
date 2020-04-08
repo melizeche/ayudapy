@@ -19,7 +19,10 @@
 
 {% block content%}
 <div class="title center">
-  Pedidos cercanos {{help_request.id}}
+  Pedidos en {{city}}
+</div>
+<div class="subtitle center">
+    <a href="/pedidos"> (ver todos)</a>
 </div>
 {% if not list_help %}
 <div class="notification is-warning center is-size-5">
@@ -32,31 +35,9 @@
         <button class="button is-success  is-outlined is-fullwidth" onclick="locateUser()" disabled>Mi ubicacion</button>
       </div>
       <div class="column is-6">
-          <div class="row is-centered">
-            <div class="dropdown">
-              <div class="dropdown-trigger">
-                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                  <span>Ciudades</span>
-                  <span class="icon is-small">
-                    <i class="fas fa-angle-down" aria-hidden="true"></i>
-                  </span>
-                </button>
-              </div>
-              <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                <div class="dropdown-content">
-                    {% for city, code in list_cities %}
-                      <a href="/pedidos_ciudad/{{code}}" class="dropdown-item">
-                        {{city}}
-                      </a>
-                    {% endfor %}
-
-                </div>
-              </div>
-            </div>
-          </div>
           <article class="panel is-info">
             <p class="panel-heading">
-              Últimos pedidos de ayuda
+              Últimos pedidos de ayuda en {{city}}
             </p>
         {% for pedido in list_help %}
             <a href="/pedidos/{{pedido.id}}" class="panel-block is-success" title="{{pedido.added}}">
@@ -69,6 +50,7 @@
           </article>
       </div>
     </div>
+    
     <script type="text/javascript">
         function main_map_init (map, options) {
             // Use Leaflet API here
@@ -81,40 +63,24 @@
             // zoom to point & add it to map
             //map.setView([lat, lon], 14);
             //L.marker([lat, lon]).addTo(map);
-            // Agregar boton de FullScreen al mapa
-            //map.addControl(new L.Control.Fullscreen());
             map.locate({setView : true});
-            map.setZoom(12);
+            map.setZoom(12)
+            map.addControl(new L.Control.Fullscreen());
             //L.geoJson(data).addTo(map)
-            map.addControl(new L.Control.Fullscreen({
-                title: {
-                    'false': 'Ver en Pantalla Completa',
-                    'true': 'Salir de Pantalla Completa'
-                }
-            }));
-            var markerClusters = L.markerClusterGroup();
             var layerGroup = L.geoJSON(data, {
-              onEachFeature: function (feature, layer) {
-                var popup = '<a class="subtitle" href="/pedidos/'+feature.properties.pk+'"><h1>Pedido #'+feature.properties.pk+
-                  '</h1></a><p class="has-text-weight-bold">Nombre: '+feature.properties.name+'</p><p>'+feature.properties.title+'</p>'+
-                  '<a class="is-size-6" href="/pedidos/'+feature.properties.pk+'">Ver Pedido</a>';
-                layer.bindPopup(popup);
-                
-                markerClusters.addLayer(layer);
-              }
-            });
-            map.addLayer( markerClusters );
+  onEachFeature: function (feature, layer) {
+    layer.bindPopup('<a class="subtitle" href="/pedidos/'+feature.properties.pk+'"><h1>Pedido #'+feature.properties.pk+
+      '</h1></a><p class="has-text-weight-bold">Nombre: '+feature.properties.name+'</p><p>'+feature.properties.title+'</p>'+
+      '<a class="is-size-6" href="/pedidos/'+feature.properties.pk+'">Ver Pedido</a>');
+  }
+}).addTo(map);
         }
         function locateUser() {
             this.map.locate({setView : true});
         }
         var map = null
 
-    var dropdown = document.querySelector('.dropdown');
-    dropdown.addEventListener('click', function(event) {
-      event.stopPropagation();
-      dropdown.classList.toggle('is-active');
-    });
     </script>
 
+</div>
 {% endblock %}

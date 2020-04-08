@@ -35,6 +35,12 @@ cp conf/settings.py.example conf/settings.py # you should edit this file with yo
 
 * Marcelo Elizeche Landó https://github.com/melizeche
 
+## Contributors / Thanks
+
+* Agustin Gómez https://github.com/gomezag
+* Carlos Vallejos  https://github.com/cabupy
+* Diosnel Velázquez https://github.com/diosnelv
+* Juan Hüttemann https://github.com/juanhuttemann
 
 ## TODO
 
