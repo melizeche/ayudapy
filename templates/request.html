@@ -1,4 +1,11 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
+
+{% block title %} Pedido #{{help_request.id}} {% endblock %} 
+
+{% block fb-title %} Pedido #{{help_request.id}} - {{ help_request.title}} {% endblock %} 
+{% block fb-description %} {{help_request.message}} {% endblock %} 
+{% block fb-image %} {{thumbnail}} {% endblock %} 
+
 {% load leaflet_tags %} 
 {% load static %}
 {% load l10n %}
