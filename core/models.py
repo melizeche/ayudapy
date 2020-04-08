@@ -66,14 +66,14 @@ class HelpRequest(models.Model):
         geolocator = Nominatim(user_agent="ayudapy")
         cordstr = "%s, %s" % self.location.coords[::-1]
         location = geolocator.reverse(cordstr, language='es')
-        if location.raw['address'].get('city'):
-            city = location.raw['address']['city']
-        elif location.raw['address'].get('town'):
-            city = location.raw['address']['town']
-        elif location.raw['address'].get('locality'):
-            city = city = location.raw['address']['locality']
-        else:
-            city = ''
+        city = ''
+        if location.raw.get('address'):
+            if location.raw['address'].get('city'):
+                city = location.raw['address']['city']
+            elif location.raw['address'].get('town'):
+                city = location.raw['address']['town']
+            elif location.raw['address'].get('locality'):
+                city = city = location.raw['address']['locality']
         return city
 
     def save(self):
