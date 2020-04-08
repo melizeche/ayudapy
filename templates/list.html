@@ -35,7 +35,7 @@
       <div class="column is-6">
           <div class="row is-centered">
             <div class="dropdown">
-              <div class="dropdown-trigger">
+              <div class="dropdown-trigger" style="margin-bottom: 3px;">
                 <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
                   <span>Ciudades</span>
                   <span class="icon is-small">
@@ -60,12 +60,52 @@
               Últimos pedidos de ayuda
             </p>
         {% for pedido in list_help %}
-            <a href="/pedidos/{{pedido.id}}" class="panel-block is-success" title="{{pedido.added}}">
-              <span class="panel-icon">
-                <i class="fas fa-people-carry" aria-hidden="true"></i>
-              </span>
-              #{{pedido.id}} | {{pedido.title}} | {{pedido.added|naturaltime}}
-            </a>
+          
+            <div class="card">
+              {% if pedido.picture %}
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img src="/media/{{pedido.picture}}" alt="Pedido #{{pedido.id}}">
+                </figure>
+              </div>
+              {% endif %}
+              <header class="card-header">             
+                  <p class="card-header-title columns">  
+                    <span class="column">
+                      <a href="/pedidos/{{pedido.id}}">
+                        Pedido N°: {{pedido.id}}
+                      </a>
+                    </span>
+                    <span class="column" style="font-size: 10px;color: grey;text-align: right;">    {{ pedido.added | naturaltime }}</span>  
+                  </p>     
+              </header>
+              <div class="card-content">
+                <div class="media">
+                  <!-- <div class="media-left">
+                    <figure class="image is-48x48">
+                      {% if pedido.picture %}
+                      <img src="/media/{{pedido.picture}}" alt="Placeholder image">
+                      {% else %}
+                      <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+                      {% endif %}
+                    </figure>
+                  </div> -->
+                  <div class="media-content">
+                    <p class="title is-5">{{pedido.name}}</p>
+                    <p class="subtitle is-7">
+                      <i class="fab fa-whatsapp" style="color: green;"></i>
+                      <a href="tel:{{pedido.phone}}">{{pedido.phone}}</a>
+                    </p>
+                  </div>
+              </div>
+              <div class="content">
+                <h6>{{pedido.title}}</h6>
+                <p style="font-size: 12px;">{{ pedido.message}}</p>
+              </div>
+              <footer class="card-footer" style="height:10px;">
+                <a href="/pedidos/{{pedido.id}}" class="card-footer-item">Ver detalle del pedido #{{pedido.id}}</a>
+              </footer>
+            </div>
         {% endfor %}
           </article>
       </div>
