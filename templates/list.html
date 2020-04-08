@@ -61,8 +61,9 @@
             //map.setView([lat, lon], 14);
             //L.marker([lat, lon]).addTo(map);
             map.locate({setView : true});
-            map.setZoom(12)
+            map.setZoom(12);
             //L.geoJson(data).addTo(map)
+            map.addControl(new L.Control.Fullscreen());
             var layerGroup = L.geoJSON(data, {
   onEachFeature: function (feature, layer) {
     layer.bindPopup('<a class="subtitle" href="/pedidos/'+feature.properties.pk+'"><h1>Pedido #'+feature.properties.pk+
