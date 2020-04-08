@@ -1,7 +1,15 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
+
+{% block title %} Pedido #{{help_request.id}} {% endblock %} 
+
+{% block fb-title %} Pedido #{{help_request.id}} - {{ help_request.title}} {% endblock %} 
+{% block fb-description %} {{help_request.message}} {% endblock %} 
+{% block fb-image %} {{thumbnail}} {% endblock %} 
+
 {% load leaflet_tags %} 
 {% load static %}
 {% load l10n %}
+{% load humanize %}
 {% block bread %}
   <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
     <ul>
@@ -18,22 +26,23 @@
 {% endblock bread %}
 {% block content%}
 <div class="columns is-centered">
-<div class="column is-half">
-  {% if messages %}
-    {% for message in messages %} 
-        <div class="notification is-success is-half" id='msg{{ forloop.counter }}'>
-            <button class="delete" onclick="document.getElementById('msg{{ forloop.counter }}').style.display = 'none';"></button>
-                <span class="is-5">{{ message }}Se creó tu pedido exitosamente!</span>
-                <p><span class="icon is-medium"><i class="far fa-hand-point-down"></i></span>
-                Podés compartir tu pedido haciendo click en los botones</p>
-        {% include 'includes/buttons.html'%}
+    <div class="column is-half">
+      {% if messages %}
+        {% for message in messages %}
+            <div class="notification is-success is-half" id='msg{{ forloop.counter }}'>
+                <button class="delete" onclick="document.getElementById('msg{{ forloop.counter }}').style.display = 'none';"></button>
+                    <span class="is-5">{{ message }}Se creó tu pedido exitosamente!</span>
+                    <p><span class="icon is-medium"><i class="far fa-hand-point-down"></i></span>
+                    Podés compartir tu pedido haciendo click en los botones</p>
+            {% include 'includes/buttons.html'%}
+            </div>
+        {% endfor %}
+      {% endif %}
+        <div class="subtitle center is-3">
+        <a class="has-text-primary" href="/pedidos/{{help_request.id}}">Pedido #{{help_request.id}}</a>
         </div>
-    {% endfor %}
-  {% endif %} 
-    <div class="subtitle center is-3">
-    <a class="has-text-primary" href="/pedidos/{{help_request.id}}">Pedido #{{help_request.id}}</a>
     </div>
-</div></div>
+</div>
 <div class="columns is-centered">
     <div class="column is-four-fifths">
 
@@ -42,6 +51,7 @@
             <p class="card-header-title is-size-4">{{ help_request.title}}</p>
         </header>
         <section class="card-content">
+                    <p class="has-text-right is-size-7" title="{{help_request.added|naturaltime}}">{{help_request.added}}</p>
                     <p class="is-size-5">{{help_request.message|linebreaksbr}}</p>
                     {% if help_request.picture %}
                     <hr>
@@ -55,12 +65,15 @@
                     <p class="subtitle">Nombre:</p>
                     <p class="title is-4">{{ help_request.name}}</p>
                     <p class="subtitle">Contacto:</p>
-                    <p class="title is-4"><a href="tel:{{help_request.phone}}">{{help_request.phone}}</p></a>
+                    <p class="title is-4"><a href="tel:{{help_request.phone}}">{{help_request.phone}}</a></p>
                     {% if help_request.address %}
                       <p class="subtitle">direccion:</p>
                       <p class="title is-4">{{help_request.address}}</p>
                     {% endif %}
-                    
+                    <p class="subtitle">Ciudad: </p>
+                    <p class="title is-4">
+                        <a href="/pedidos_ciudad/{{help_request.city_code}}">{{help_request.city}}</a>
+                    </p>
                      <p class="subtitle">Ubicación:
                      {% leaflet_map "main" callback="main_map_init" %}
                      </p>
@@ -74,8 +87,10 @@
                      </a>
 
         </section>
+                    {% include 'vote_button.html' %}
 
     </div>
+
                 {% comment %} <article class="tile is-child is-box">
                     <p class="title is-4">{{ help_request.title}}</p>
                     <p class="subtitle">{{help_request.message|linebreaks}}</p>

@@ -15,13 +15,15 @@
 </nav>
 {% endblock bread %} 
 {% block content%}
-<div class="columns is-centered">
+<div class="columns is-centered"> 
     <div class="column is-half">
+     <button href="#" id="find-me" class="button is-success  is-outlined is-fullwidth">Apreta acá voy a tratar de encontrarte</button>
+                      <p id="status"></p>
         <form enctype="multipart/form-data" method="post" action="/solicitar">
             {% csrf_token %} 
             {% include 'includes/bulma_form.html' with form=form %}
             <div class="control">
-                <button class="button is-success is-fullwidth">Enviar</button>
+                <button id="submit" class="button is-success is-fullwidth">Enviar</button>
             </div>
         </form>
 
@@ -44,6 +46,48 @@
 </div>
 
 <script>
+
+function geoFindMe() {
+
+            const status = document.querySelector('#status');
+            const boton = document.querySelector('#find-me');
+
+            function success(position) {
+              const latitude  = position.coords.latitude;
+              const longitude = position.coords.longitude;
+
+              boton.textContent = 'Encontré, seguí completando tus datos';
+              boton.disabled = true;
+              status.textContent = '';
+              
+              //you = L.marker([latitude, longitude], {opacity: 0.3, title:'Tu ubicación'}).addTo(maps[0]);
+              //you.bindPopup('Tu ubicación').openPopup();
+              L.circle(new L.LatLng(latitude, longitude), {radius: 10}).addTo(maps[0]);
+              maps[0].panTo(new L.LatLng(latitude, longitude), 16);
+            }
+
+            function error() {
+              status.textContent = 'No puedo encontrarte, usá los botones del mapa más abajo';
+            }
+
+            if (!navigator.geolocation) {
+              status.textContent = 'Tu navegador no soporta la geolocalización';
+            } else {
+              status.textContent = 'Buscando tu ubicación…';
+              navigator.geolocation.getCurrentPosition(success, error);
+            }
+
+          }
+
+          document.querySelector('#find-me').addEventListener('click', geoFindMe);
+
+</script>
+<script>
+
+function disableButton(){
+    console.log('AAA')
+}
+
 document.querySelectorAll('.modal-button').forEach(function(el) {
   el.addEventListener('click', function() {
     var target = document.querySelector(el.getAttribute('data-target'));

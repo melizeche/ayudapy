@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load leaflet_tags %}
+{% load humanize %} 
+
+{% block bread %}
+  <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
+    <ul>
+        <li>
+            <span class="icon is-small">
+            <i class="fas fa-home" aria-hidden="true"></i>
+            </span>
+            <a href="/">Inicio</a>
+        </li>
+        <li><a href="/dar">Info ayudar</a></li>
+        <li class="is-active"><a href="#" aria-current="page">Pedidos de ayuda</a></li>
+      </ul>
+  </nav>
+{% endblock bread %}
+
+{% block content%}
+<div class="title center">
+  Pedidos en {{city}}
+</div>
+<div class="subtitle center">
+    <a href="/pedidos"> (ver todos)</a>
+</div>
+{% if not list_help %}
+<div class="notification is-warning center is-size-5">
+  Todavía no hay pedidos de ayuda, volvé en un rato
+</div>
+{% endif %}
+    <div class="columns is-centered">
+      <div class="column is-6">
+        {% leaflet_map "main" callback="main_map_init" %}
+        <button class="button is-success  is-outlined is-fullwidth" onclick="locateUser()" disabled>Mi ubicacion</button>
+      </div>
+      <div class="column is-6">
+          <article class="panel is-info">
+            <p class="panel-heading">
+              Últimos pedidos de ayuda en {{city}}
+            </p>
+        {% for pedido in list_help %}
+            <a href="/pedidos/{{pedido.id}}" class="panel-block is-success" title="{{pedido.added}}">
+              <span class="panel-icon">
+                <i class="fas fa-people-carry" aria-hidden="true"></i>
+              </span>
+              #{{pedido.id}} | {{pedido.title}} | {{pedido.added|naturaltime}}
+            </a>
+        {% endfor %}
+          </article>
+      </div>
+    </div>
+    
+    <script type="text/javascript">
+        function main_map_init (map, options) {
+            // Use Leaflet API here
+            this.map = map
+            {% autoescape off %}
+            data = {{ geo }}
+            {% endautoescape %}
+            
+            map.setMaxZoom(17)
+            map.locate({setView : true});
+            map.addControl(new L.Control.Fullscreen());
+
+            var layerGroup = L.geoJSON(data, {
+              onEachFeature: function (feature, layer) {
+                layer.bindPopup('<a class="subtitle" href="/pedidos/'+feature.properties.pk+'"><h1>Pedido #'+feature.properties.pk+
+                  '</h1></a><p class="has-text-weight-bold">Nombre: '+feature.properties.name+'</p><p>'+feature.properties.title+'</p>'+
+                  '<a class="is-size-6" href="/pedidos/'+feature.properties.pk+'">Ver Pedido</a>');
+                  
+              }
+            }).addTo(map);
+
+            map.fitBounds(layerGroup.getBounds(), {padding: [50, 50]});
+        }
+
+        function locateUser() {
+            this.map.locate({setView : true});
+        }
+        var map = null
+
+    </script>
+
+</div>
+{% endblock %}
