@@ -57,13 +57,131 @@
 </head>
 
 <body class="Site">
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <!-- <a class="navbar-item" href="/">
+                <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+            </a> -->
+
+            <a class="navbar-item" href="/">
+                <h1 class="title center">
+                    <span style="color:red;">
+                        Ayuda
+                    </span>
+                    <span style="color:blue;">
+                        Py
+                    </span>
+                    <span class="icon is-large has-text-grey-dark">
+                        <i class="fas fa-hand-holding-heart" style="color:red;"></i>
+                    </span>
+                </h1>
+            </a>
+        
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            </a>
+        </div>
+        
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+            <a class="navbar-item" href="/">
+                <span class="icon is-small">
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                </span>
+                <span style="padding-left: 5px;">
+                    Inicio
+                </span> 
+            </a>
+        
+            <a class="navbar-item" href="/legal">
+                <span class="icon is-small">
+                    <i class="fas fa-file-contract" aria-hidden="true"></i>
+                </span>
+                <span style="padding-left: 5px;">
+                    Términos de uso
+                </span>  
+            </a>
+        
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    <span class="icon is-small">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
+                    </span>
+                    <span style="padding-left: 5px;">
+                        Más
+                    </span>
+                </a>
+        
+                <div class="navbar-dropdown">
+                <a class="navbar-item" href="/recibir">
+                    <span class="icon is-small">
+                        <i class="fas fa-hand-holding-heart" aria-hidden="true"></i>
+                    </span>
+                    <span style="padding-left: 5px;">
+                        !Necesito ayuda!
+                    </span>            
+                </a>
+                <a class="navbar-item" href="/dar">
+                    <span class="icon is-small">
+                        <i class="fas fa-hands-helping" aria-hidden="true"></i>
+                    </span>
+                    <span style="padding-left: 5px;">
+                        !Quiero Ayudar!
+                    </span>  
+                </a>
+                <hr class="navbar-divider">
+                <a class="navbar-item" style="pointer-events:none; opacity:.65;">
+                    <span class="icon is-small">
+                        <i class="far fa-question-circle" aria-hidden="true"></i>
+                    </span>
+                    <span style="padding-left: 5px;">
+                        Preguntas Frecuentes
+                    </span>
+                </a>
+                <a class="navbar-item" style="pointer-events:none; opacity:.65;">
+                    <span class="icon is-small">
+                        <i class="fas fa-mail-bulk" aria-hidden="true"></i>
+                    </span>
+                    <span style="padding-left: 5px;">
+                        Contacto
+                    </span>
+                </a>
+                <hr class="navbar-divider">
+                <a class="navbar-item" href="https://github.com/melizeche/ayudapy" target="_blank">
+                    <span class="icon is-small">
+                        <i class="fab fa-github" aria-hidden="true"></i>
+                    </span>
+                    <span style="padding-left: 5px;">
+                        Github - Código Fuente
+                    </span>  
+                </a>
+                </div>
+            </div>
+            </div>
+        
+            <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                <a class="button is-primary">
+                    <strong>Registrarse</strong>
+                </a>
+                <a class="button is-light">
+                    Ingresar
+                </a>
+                </div>
+            </div>
+            </div>
+        </div>
+    </nav>
     <section class="hero is-primary">
         <div class="container">
-          <a href="/">
+          <!-- <a href="/">
             <h1 class="title center">AyudaPy<span class="icon is-large has-text-grey-dark"><i class="fas fa-hand-holding-heart"></i></span></h1>
-          </a>
-            <p class="subtitle center is-6">
-                Experimento para unir a gente que necesita con gente que quiere ayudar
+          </a> -->
+            <p class="subtitle center is-6" style="padding-top: 10px; font-weight: bold;">
+                Herramienta que permite unir gente que necesita ayuda con gente que quiere ayudar.
             </p>
         </div>
     </section>
@@ -78,6 +196,21 @@
     </section>
 </main>
 {% include 'footer.html' %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+        if ($navbarBurgers.length > 0) {
+        $navbarBurgers.forEach( el => {
+            el.addEventListener('click', () => {
+                const target = el.dataset.target;
+                const $target = document.getElementById(target);
+                el.classList.toggle('is-active');
+                $target.classList.toggle('is-active');
+            });
+        });
+        }
+    });
+</script>
 </body>
 
 </html>
