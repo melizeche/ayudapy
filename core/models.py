@@ -56,7 +56,6 @@ class HelpRequest(models.Model):
 
     @property
     def thumb(self):
-        print("AAA!")
         filepath, extension = path.splitext(self.picture.url)
         return f"{filepath}_th{extension}"
 
