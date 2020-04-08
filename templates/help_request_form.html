@@ -62,6 +62,7 @@ function geoFindMe() {
               
               //you = L.marker([latitude, longitude], {opacity: 0.3, title:'Tu ubicación'}).addTo(maps[0]);
               //you.bindPopup('Tu ubicación').openPopup();
+              L.circle(new L.LatLng(latitude, longitude), {radius: 10}).addTo(maps[0]);
               maps[0].panTo(new L.LatLng(latitude, longitude), 16);
             }
 
