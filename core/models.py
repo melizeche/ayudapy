@@ -73,7 +73,7 @@ class HelpRequest(models.Model):
             elif location.raw['address'].get('town'):
                 city = location.raw['address']['town']
             elif location.raw['address'].get('locality'):
-                city = city = location.raw['address']['locality']
+                city = location.raw['address']['locality']
         return city
 
     def save(self):
