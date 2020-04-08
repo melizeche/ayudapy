@@ -57,7 +57,8 @@ function geoFindMe() {
               const longitude = position.coords.longitude;
 
               boton.textContent = 'Encontré, seguí completando tus datos';
-              boton.disabled=true;
+              boton.disabled = true;
+              status.textContent = '';
               
               //you = L.marker([latitude, longitude], {opacity: 0.3, title:'Tu ubicación'}).addTo(maps[0]);
               //you.bindPopup('Tu ubicación').openPopup();
