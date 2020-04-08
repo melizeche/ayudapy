@@ -29,7 +29,8 @@
     <div class="columns is-centered">
       <div class="column is-6">
         {% leaflet_map "main" callback="main_map_init" %}
-        <button class="button is-success  is-outlined is-fullwidth" onclick="locateUser()" disabled>Mi ubicacion</button>
+        <button id="find-me" class="button is-success  is-outlined is-fullwidth">Mi ubicacion</button>
+        <p id="status"></p>
       </div>
       <div class="column is-6">
           <div class="row is-centered">
@@ -105,10 +106,34 @@
             });
             map.addLayer( markerClusters );
         }
-        function locateUser() {
-            this.map.locate({setView : true});
-        }
-        var map = null
+        function geoFindMe() {
+
+            const status = document.querySelector('#status');
+
+            function success(position) {
+              const latitude  = position.coords.latitude;
+              const longitude = position.coords.longitude;
+
+              console.log('${latitude} '+longitude);
+              you = L.marker([latitude, longitude], {opacity: 0.3, title:'Tu ubicación'}).addTo(maps[0]);
+              you.bindPopup('Tu ubicación').openPopup();
+              maps[0].panTo(new L.LatLng(latitude, longitude), 14);
+            }
+
+            function error() {
+              status.textContent = 'No puedo encontrarte, usá los botones del mapa';
+            }
+
+            if (!navigator.geolocation) {
+              status.textContent = 'Tu navegador no soporta la geolocalización';
+            } else {
+              status.textContent = 'Buscando tu ubicación…';
+              navigator.geolocation.getCurrentPosition(success, error);
+            }
+
+          }
+
+          document.querySelector('#find-me').addEventListener('click', geoFindMe);
 
     var dropdown = document.querySelector('.dropdown');
     dropdown.addEventListener('click', function(event) {

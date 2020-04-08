@@ -17,6 +17,8 @@
 {% block content%}
 <div class="columns is-centered">
     <div class="column is-half">
+     <button href="#" id="find-me" class="button is-success  is-outlined is-fullwidth">Apreta acá voy a tratar de encontrarte</button>
+                      <p id="status"></p>
         <form enctype="multipart/form-data" method="post" action="/solicitar">
             {% csrf_token %} 
             {% include 'includes/bulma_form.html' with form=form %}
@@ -44,27 +46,37 @@
 </div>
 
 <script>
-function loc(){
-    map = window.maps[0]
-    console.log(map)
-    //map.locate({setView : true});
-    //map.setZoom(12);
-    map.locate({setView: true, watch: true}) /* This will return map so you can do chaining */
-        .on('locationfound', function(e){
-            var marker = L.marker([e.latitude, e.longitude]).bindPopup('Estás acá :)');
-            var circle = L.circle([e.latitude, e.longitude], e.accuracy/2, {
-                weight: 1,
-                color: 'blue',
-                fillColor: '#cacaca',
-                fillOpacity: 0.2
-            });
-            map.addLayer(marker);
-            map.addLayer(circle);
-        })
-       .on('locationerror', function(e){
-            console.log(e);
-        });
-}
+
+function geoFindMe() {
+
+            const status = document.querySelector('#status');
+
+
+            function success(position) {
+              const latitude  = position.coords.latitude;
+              const longitude = position.coords.longitude;
+
+              console.log('${latitude} '+longitude);
+              //you = L.marker([latitude, longitude], {opacity: 0.3, title:'Tu ubicación'}).addTo(maps[0]);
+              //you.bindPopup('Tu ubicación').openPopup();
+              maps[0].panTo(new L.LatLng(latitude, longitude), 16);
+            }
+
+            function error() {
+              status.textContent = 'No puedo encontrarte, usá los botones del mapa más abajo';
+            }
+
+            if (!navigator.geolocation) {
+              status.textContent = 'Tu navegador no soporta la geolocalización';
+            } else {
+              status.textContent = 'Buscando tu ubicación…';
+              navigator.geolocation.getCurrentPosition(success, error);
+            }
+
+          }
+
+          document.querySelector('#find-me').addEventListener('click', geoFindMe);
+
 </script>
 <script>
 
