@@ -52,8 +52,8 @@ class HelpRequest(models.Model):
     )
     active = models.BooleanField(default=True, db_index=True)
     added = models.DateTimeField("Agregado", auto_now_add=True, null=True, blank=True, db_index=True)
-    votsi = models.IntegerField(default=0, blank=True)
-    votno = models.IntegerField(default=0, blank=True)
+    upvotes = models.IntegerField(default=0, blank=True)
+    downvotes = models.IntegerField(default=0, blank=True)
     city = models.CharField(max_length=30, blank=True, default="", editable=False)
     city_code = models.CharField(max_length=30, blank=True, default="", editable=False)
 
@@ -73,7 +73,7 @@ class HelpRequest(models.Model):
             elif location.raw['address'].get('town'):
                 city = location.raw['address']['town']
             elif location.raw['address'].get('locality'):
-                city = city = location.raw['address']['locality']
+                city = location.raw['address']['locality']
         return city
 
     def save(self):
