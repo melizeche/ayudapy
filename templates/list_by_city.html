@@ -65,6 +65,7 @@
             //L.marker([lat, lon]).addTo(map);
             map.locate({setView : true});
             map.setZoom(12)
+            map.addControl(new L.Control.Fullscreen());
             //L.geoJson(data).addTo(map)
             var layerGroup = L.geoJSON(data, {
   onEachFeature: function (feature, layer) {
