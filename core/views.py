@@ -35,6 +35,13 @@ def view_request(request, id):
         "help_request": help_request,
         "thumbnail": help_request.thumb if help_request.picture else None,
     }
+    if request.POST:
+        if request.POST['vote']:
+            if request.POST['vote'] == 'up':
+                help_request.upvotes += 1
+            elif request.POST['vote'] == 'down':
+                help_request.downvotes += 1
+            help_request.save()
     return render(request, "request.html", context)
 
 
