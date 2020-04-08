@@ -40,7 +40,7 @@ def view_request(request, id):
 
 def list_requests(request):
     list_help_requests = HelpRequest.objects.filter(active=True).order_by("-added")  # TODO limit this
-    cities = [(i['city'], i['city_code']) for i in HelpRequest.objects.all().values('city', 'city_code').distinct()]
+    cities = [(i['city'], i['city_code']) for i in HelpRequest.objects.all().values('city', 'city_code').distinct().order_by('city_code')]
     query = list_help_requests[:200]
     geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
     context = {"list_cities": cities, "list_help": list_help_requests, "geo": geo}
