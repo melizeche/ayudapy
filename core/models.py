@@ -52,16 +52,13 @@ class HelpRequest(models.Model):
     )
     active = models.BooleanField(default=True, db_index=True)
     added = models.DateTimeField("Agregado", auto_now_add=True, null=True, blank=True, db_index=True)
-    votsi = models.IntegerField(default=0, blank=True)
-    votno = models.IntegerField(default=0, blank=True)
-    upvotes = models.IntegerField(default=0, blank=True)
-    downvotes = models.IntegerField(default=0, blank=True)
     city = models.CharField(max_length=30, blank=True, default="", editable=False)
     city_code = models.CharField(max_length=30, blank=True, default="", editable=False)
+    upvotes = models.IntegerField(default=0, blank=True)
+    downvotes = models.IntegerField(default=0, blank=True)
 
     @property
     def thumb(self):
-        print("AAA!")
         filepath, extension = path.splitext(self.picture.url)
         return f"{filepath}_th{extension}"
 
@@ -69,7 +66,14 @@ class HelpRequest(models.Model):
         geolocator = Nominatim(user_agent="ayudapy")
         cordstr = "%s, %s" % self.location.coords[::-1]
         location = geolocator.reverse(cordstr, language='es')
-        city = location.raw['address']['city']
+        city = ''
+        if location.raw.get('address'):
+            if location.raw['address'].get('city'):
+                city = location.raw['address']['city']
+            elif location.raw['address'].get('town'):
+                city = location.raw['address']['town']
+            elif location.raw['address'].get('locality'):
+                city = city = location.raw['address']['locality']
         return city
 
     def save(self):

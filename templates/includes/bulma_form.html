@@ -33,6 +33,7 @@
             {% endif %} 
         {% else %}
             {% if field.field.widget.input_type == "file" %}
+                <p id="status"></p>
                 <div class="file has-name is-boxed is-primary is-fullwidth ">
                 <label class="file-label">
                      {% render_field field class="file-input" %}
