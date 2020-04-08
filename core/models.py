@@ -73,7 +73,7 @@ class HelpRequest(models.Model):
         elif location.raw['address'].get('locality'):
             city = city = location.raw['address']['locality']
         else:
-            city = None
+            city = ''
         return city
 
     def save(self):
