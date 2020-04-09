@@ -33,41 +33,41 @@
         <p id="status"></p>
       </div>
       <div class="column is-6">
-        <div class="row is-centered">
-          <div class="dropdown cities-dropdown-wrapper">
-            <div class="columns is-mobile is-vcentered">
-              <div class="column">
-                <div class="cities-dropdown" role="menu">
-                  <div class="field is-horizontal">
-                    <div class="field-label is-normal">
-                      <label class="label">Ciudades</label>
-                    </div>
-                    <div class="field-body">
-                      <div class="field">
-                        <p class="control">
-                          <input name="cities" class="input" list="list_cities" placeholder="Seleccionar ciudad...">
-                        </p>
-                      </div>
+        <div class="row is-centered cities-dropdown-wrapper">
+          <div class="columns is-vcentered is-desktop">
+            <div class="column">
+              <div class="cities-dropdown" role="menu">
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                    <label class="label">Ciudades</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field">
+                      <p class="control">
+                        <input name="cities" class="input" list="list_cities" placeholder="Seleccionar ciudad...">
+                      </p>
                     </div>
                   </div>
-                  <datalist id="list_cities">
-                      <select size=10>
-                        {% for city, code in list_cities %}
-                          <option data-value="{{code}}">
-                           {{city}}
-                          </option>
-                        {% endfor %}
-                      </select>
-                    </datalist>
                 </div>
+                <datalist id="list_cities">
+                    <select size=10>
+                      {% for city, code in list_cities %}
+                        <option data-value="{{code}}">
+                          {{city}}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  </datalist>
               </div>
-              <div class="column is-half">
+            </div>
+            <div class="column is-half-desktop">
+              <div style="margin-bottom: .75em;">
                 <h5 class="has-text-danger has-text-weight-light has-text-centered">
                   Si no ves tu ciudad es porque no hay pedidos, volvé más tarde para ayudar!
                 </h5>
               </div>
-            </div> 
-          </div>
+            </div>
+          </div> 
         </div>
 
         <article class="panel is-info">
