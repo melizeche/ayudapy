@@ -33,51 +33,56 @@
         <p id="status"></p>
       </div>
       <div class="column is-6">
-        <div class="row is-centered">
-          <div class="dropdown">
-            <div class="columns is-mobile is-vcentered">
-              <div class="column">
-                <div class="dropdown-trigger">
-                  <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                    <span>Ciudades</span>
-                    <span class="icon is-small">
-                      <i class="fas fa-angle-down" aria-hidden="true"></i>
-                    </span>
-                  </button>
+        <!-- start search cities -->
+        <!-- <div class="row is-centered"> -->
+        <div class="row box">
+          <div class="columns">
+            <div class="column is-one-third">
+              <div class="field">
+                <div class="control">
+                  <input list="cities" class="input is-info" id="myCities" name="myCities" type="text"
+                    placeholder="ej. Asunción" />
+                  <datalist id="cities">
+                    {% for city, code in list_cities %}
+                    <option value="{{ city }}" data-value="{{ code }}">
+                      {% endfor %}
+                  </datalist>
                 </div>
               </div>
-              <div class="column is-four-fifths">
-                <h5 class="has-text-danger has-text-weight-light has-text-centered">
-                  Si no ves tu ciudad es porque no hay pedidos, volvé más tarde para ayudar!
-                </h5>
+              <div class="field">
+                <div class="control">
+                  <button class="button" onclick="searchHelpRequestByCity()" id="btn-search-datalist">Buscar ciudad</button>
+                </div>
               </div>
             </div>
-            <div class="dropdown-menu" id="dropdown-menu" role="menu">
-              <div class="dropdown-content">
-                {% for city, code in list_cities %}
-                <a href="/pedidos_ciudad/{{code}}" class="dropdown-item">
-                  {{city}}
-                </a>
-                {% endfor %}
-    
-              </div>
+            <div class="column">
+              <h5 class="has-text-danger has-text-weight-light has-text-centered">
+                Si no ves tu ciudad es porque no hay pedidos, volvé más tarde para ayudar!
+              </h5>
             </div>
           </div>
         </div>
+        <!-- </div> -->
+        <!-- end search cities -->
     
-        <article class="panel is-info">
-          <p class="panel-heading">
-            Últimos pedidos de ayuda
-          </p>
-          {% for pedido in list_help_paginated %}
-          <a href="/pedidos/{{pedido.id}}" class="panel-block is-success" title="{{pedido.added}}">
-            <span class="panel-icon">
-              <i class="fas fa-people-carry" aria-hidden="true"></i>
-            </span>
-            #{{pedido.id}} | {{pedido.title}} | {{pedido.added|naturaltime}}
-          </a>
-          {% endfor %}
-        </article>
+        <!-- start panel -->
+        <div class="row">
+          <article class="panel is-info">
+            <p class="panel-heading">
+              Últimos pedidos de ayuda
+            </p>
+            {% for pedido in list_help_paginated %}
+            <a href="/pedidos/{{pedido.id}}" class="panel-block is-success" title="{{pedido.added}}">
+              <span class="panel-icon">
+                <i class="fas fa-people-carry" aria-hidden="true"></i>
+              </span>
+              #{{pedido.id}} | {{pedido.title}} | {{pedido.added|naturaltime}}
+            </a>
+            {% endfor %}
+          </article>
+        </div>
+        <!-- end panel -->
+    
         <!-- start pagination nav buttons -->
         <div class="row">
           <div class="column is-5">
@@ -88,28 +93,31 @@
             <ul class="pagination">
               <!-- previous (<<) nav button -->
               {% if list_help_paginated.has_previous %}
-                <li><a href="?page={{ 1 }}" class="button is-link is-outlined">&laquo; Primero</a></li>
-         
-                <li><a href="?page={{ list_help_paginated.previous_page_number }}" class="button is-link is-outlined">&lt; Prev</a></li>
+              <li><a href="?page={{ 1 }}" class="button is-link is-outlined">&laquo; Primero</a></li>
+    
+              <li><a href="?page={{ list_help_paginated.previous_page_number }}" class="button is-link is-outlined">&lt;
+                  Prev</a></li>
               {% else %}
-                <li class="button is-link is-outlined" disabled>&lt; Prev</li>
+              <li class="button is-link is-outlined" disabled>&lt; Prev</li>
               {% endif %}
-          
+    
               <!-- current number page button -->
-                <li class=" button is-link">   {{ list_help_paginated.number }}   </li> <!-- active  -->
-          
+              <li class=" button is-link"> {{ list_help_paginated.number }} </li> <!-- active  -->
+    
               <!-- next (>>) nav button -->
               {% if list_help_paginated.has_next %}
               <span>
-                <li><a href="?page={{ list_help_paginated.next_page_number }}" class="button is-link is-outlined">Sig &gt;</a>
+                <li><a href="?page={{ list_help_paginated.next_page_number }}" class="button is-link is-outlined">Sig
+                    &gt;</a>
                 </li>
               </span> <!-- active  -->
               <span>
-                <li><a href="?page={{ list_help_paginated.paginator.num_pages }}" class="button is-link is-outlined">Último &raquo;</a>
+                <li><a href="?page={{ list_help_paginated.paginator.num_pages }}" class="button is-link is-outlined">Último
+                    &raquo;</a>
                 </li>
               </span> <!-- active  -->
               {% else %}
-                <li class="button is-link is-outlined" disabled>Sig &gt;</li>
+              <li class="button is-link is-outlined" disabled>Sig &gt;</li>
               {% endif %}
             </ul>
             {% endif %}
@@ -183,11 +191,20 @@
 
           document.querySelector('#find-me').addEventListener('click', geoFindMe);
 
-    var dropdown = document.querySelector('.dropdown');
-    dropdown.addEventListener('click', function(event) {
-      event.stopPropagation();
-      dropdown.classList.toggle('is-active');
-    });
+
+      function searchHelpRequestByCity() {
+          var val = document.getElementById("myCities").value;
+          var opts = document.getElementById('cities').childNodes;
+          for (var i = 0; i < opts.length; i++) {
+            if (opts[i].value === val) {
+              // An item was selected from the list!
+              // yourCallbackHere()
+              window.location.href = "/pedidos_ciudad/"+opts[i].getAttribute('data-value');
+              console.log(opts[i].getAttribute('data-value'));
+              break;
+            }
+          }
+        }
     </script>
 
 {% endblock %}
