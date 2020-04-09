@@ -1,17 +1,21 @@
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.serializers import serialize
 from django.shortcuts import (
     redirect,
     render,
     get_object_or_404,
-    get_list_or_404,
 )
-from django.contrib.admin import SimpleListFilter
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from rest_framework import viewsets
+
 from .forms import HelpRequestForm
 from .models import HelpRequest
+from .serializers import HelpRequestSerializer
 
-# Create your views here.
+
+class HelpRequestViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = HelpRequest.objects.all()
+    serializer_class = HelpRequestSerializer
 
 
 def home(request):
