@@ -54,7 +54,7 @@ def list_requests(request):
 
     # Start Pagination
     page = request.GET.get('page', 1)
-    paginate_by = 20
+    paginate_by = 25
     paginator = Paginator(list_help_requests, paginate_by)
 
     try:
