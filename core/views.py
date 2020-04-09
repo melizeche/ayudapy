@@ -27,7 +27,7 @@ def request_form(request):
         form = HelpRequestForm(request.POST, request.FILES)
         if form.is_valid():
             new_help_request = form.save()
-            messages.success(request, "Se creó tu pedido exitosamente!")
+            messages.success(request, "¡Se creó tu pedido exitosamente!")
             return redirect("pedidos-detail", id=new_help_request.id)
     else:
         form = HelpRequestForm()
