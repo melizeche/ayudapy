@@ -33,50 +33,88 @@
         <p id="status"></p>
       </div>
       <div class="column is-6">
-          <div class="row is-centered">
-            <div class="dropdown">
-                <div class="columns is-mobile is-vcentered">
-                    <div class="column">
-                      <div class="dropdown-trigger">
-                        <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                          <span>Ciudades</span>
-                          <span class="icon is-small">
-                            <i class="fas fa-angle-down" aria-hidden="true"></i>
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="column is-four-fifths">
-                        <h5 class="has-text-danger has-text-weight-light has-text-centered">
-                            Si no ves tu ciudad es porque no hay pedidos, volvé más tarde para ayudar!
-                        </h5>
-                    </div>
+        <div class="row is-centered">
+          <div class="dropdown">
+            <div class="columns is-mobile is-vcentered">
+              <div class="column">
+                <div class="dropdown-trigger">
+                  <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                    <span>Ciudades</span>
+                    <span class="icon is-small">
+                      <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                  </button>
                 </div>
-              <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                <div class="dropdown-content">
-                    {% for city, code in list_cities %}
-                      <a href="/pedidos_ciudad/{{code}}" class="dropdown-item">
-                        {{city}}
-                      </a>
-                    {% endfor %}
-
-                </div>
+              </div>
+              <div class="column is-four-fifths">
+                <h5 class="has-text-danger has-text-weight-light has-text-centered">
+                  Si no ves tu ciudad es porque no hay pedidos, volvé más tarde para ayudar!
+                </h5>
+              </div>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu" role="menu">
+              <div class="dropdown-content">
+                {% for city, code in list_cities %}
+                <a href="/pedidos_ciudad/{{code}}" class="dropdown-item">
+                  {{city}}
+                </a>
+                {% endfor %}
+    
               </div>
             </div>
           </div>
-          <article class="panel is-info">
-            <p class="panel-heading">
-              Últimos pedidos de ayuda
-            </p>
-        {% for pedido in list_help %}
-            <a href="/pedidos/{{pedido.id}}" class="panel-block is-success" title="{{pedido.added}}">
-              <span class="panel-icon">
-                <i class="fas fa-people-carry" aria-hidden="true"></i>
-              </span>
-              #{{pedido.id}} | {{pedido.title}} | {{pedido.added|naturaltime}}
-            </a>
-        {% endfor %}
-          </article>
+        </div>
+    
+        <article class="panel is-info">
+          <p class="panel-heading">
+            Últimos pedidos de ayuda
+          </p>
+          {% for pedido in list_help_paginated %}
+          <a href="/pedidos/{{pedido.id}}" class="panel-block is-success" title="{{pedido.added}}">
+            <span class="panel-icon">
+              <i class="fas fa-people-carry" aria-hidden="true"></i>
+            </span>
+            #{{pedido.id}} | {{pedido.title}} | {{pedido.added|naturaltime}}
+          </a>
+          {% endfor %}
+        </article>
+        <!-- start pagination nav buttons -->
+        <div class="row">
+          <div class="column is-5">
+            Showing {{ list_help_paginated }}
+          </div>
+          <div class="column is-5">
+            {% if list_help_paginated.has_other_pages %}
+            <ul class="pagination">
+              <!-- previous (<<) nav button -->
+              {% if list_help_paginated.has_previous %}
+              <li><a href="?page={{ list_help_paginated.previous_page_number }}"
+                  class="button is-link is-outlined">&laquo;</a></li>
+              {% else %}
+              <li class="button is-link is-light is-outlined" disabled><span>&laquo;</span></li>
+              {% endif %}
+    
+              <!-- current number page button -->
+              {% for i in list_help_paginated.paginator.page_range %}
+              {% if list_help_paginated.number == i %}
+              <li class=" button is-link"><span>{{ i }} <span class="sr-only">(current)</span></span></li> <!-- active  -->
+              {% else %}
+              <li><a href="?page={{ i }}" class="button is-link is-light is-outlined">{{ i }}</a></li>
+              {% endif %}
+              {% endfor %}
+    
+              <!-- next (>>) nav button -->
+              {% if list_help_paginated.has_next %}
+              <li><a href="?page={{ list_help_paginated.next_page_number }}" class="button is-link is-outlined">&raquo;</a>
+              </li> <!-- active  -->
+              {% else %}
+              <li class="button is-link is-light is-outlined" disabled><span>&raquo;</span></li>
+              {% endif %}
+            </ul>
+            {% endif %}
+          </div>
+        </div>
+        <!-- end pagination nav buttons -->
       </div>
     </div>
     <script type="text/javascript">
