@@ -29,10 +29,7 @@ class HelpRequest(models.Model):
         db_index=True,
     )
     name = models.CharField("Nombre y Apellido", max_length=200)
-    phone = models.IntegerField(
-        "Teléfono de contacto", 
-        max_length=30, 
-        help_text="Introduce solo números!",)
+    phone = models.CharField("Teléfono de contacto", max_length=30)
     address = models.CharField(
         "Dirección",
         help_text="Para ayudar a quien quiera ayudarte saber la dirección, ciudad, barrio, referencias, o como llegar",
