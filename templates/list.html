@@ -80,12 +80,14 @@
         </article>
         <!-- start pagination nav buttons -->
         <div class="row">
-          <div class="column is-5">
+          <div class="column is-12">
             Showing {{ list_help_paginated }}
           </div>
-          <div class="column is-5">
+        </div>
+        <div class="row">
+          <div class="column is-12">
             {% if list_help_paginated.has_other_pages %}
-            <ul class="pagination">
+            <ul class="pagination" style="flex-wrap: wrap;">
               <!-- previous (<<) nav button -->
               {% if list_help_paginated.has_previous %}
               <li><a href="?page={{ list_help_paginated.previous_page_number }}"
