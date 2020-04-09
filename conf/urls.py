@@ -6,13 +6,18 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 from django.views.generic import TemplateView
+from rest_framework import routers
 
 from core import views as core_views
 
+router = routers.DefaultRouter()
+router.register(r'helprequests', core_views.HelpRequestViewSet)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/v1/', include(router.urls)),
     path('', core_views.home, name='home'),
     path('recibir', TemplateView.as_view(template_name="info_request.html")),
     path('solicitar', core_views.request_form, name="request-form"),
