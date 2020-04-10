@@ -14,6 +14,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .forms import HelpRequestForm
 from .models import HelpRequest, FrequentAskedQuestion
 from .serializers import HelpRequestSerializer, HelpRequestGeoJSONSerializer
+from .utils import text_to_image, image_to_base64
 
 
 class HelpRequestViewSet(viewsets.ReadOnlyModelViewSet):
@@ -56,6 +57,7 @@ def view_request(request, id):
     context = {
         "help_request": help_request,
         "thumbnail": help_request.thumb if help_request.picture else "/static/favicon.ico",
+        "phone_number_img": image_to_base64(text_to_image(help_request.phone, 300, 50))
     }
     if request.POST:
         if request.POST['vote']:
