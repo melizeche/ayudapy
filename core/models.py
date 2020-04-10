@@ -3,7 +3,8 @@ from os import path
 
 from django.conf import settings
 from django.contrib.gis.db import models
-from django.contrib.postgres.search import SearchVectorField
+from django.contrib.postgres.search import SearchVectorField, SearchQuery, SearchRank
+from django.db.models import F
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.safestring import mark_safe
@@ -12,7 +13,14 @@ from geopy.geocoders import Nominatim
 from core.utils import create_thumbnail, rename_img
 
 logger = logging.getLogger(__name__)
-THUMBNAIL_BASEWIDTH = 500
+THUMBNAIL_BASEWIDTH = 50
+
+
+class HelpRequestQuerySet(models.QuerySet):
+    def filter_by_search_query(self, query):
+        query = SearchQuery(query, config="spanish")
+        rank = SearchRank(F("search_vector"), query)
+        return self.filter(search_vector=query).annotate(rank=rank).order_by("-rank")
 
 
 class HelpRequest(models.Model):
@@ -58,6 +66,7 @@ class HelpRequest(models.Model):
     city = models.CharField(max_length=30, blank=True, default="", editable=False)
     city_code = models.CharField(max_length=30, blank=True, default="", editable=False)
     search_vector = SearchVectorField()
+    objects = HelpRequestQuerySet.as_manager()
 
     @property
     def thumb(self):
