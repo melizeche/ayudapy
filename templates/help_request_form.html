@@ -5,10 +5,13 @@
 <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
     <ul>
         <li>
+          <a href="/">
             <span class="icon is-small">
-                <i class="fas fa-home" aria-hidden="true"></i>
-                </span>
-            <a href="/">Inicio</a></li>
+              <i class="fas fa-home" aria-hidden="true"></i>
+            </span>
+            <span>Inicio</span>
+          </a>
+        </li>
         <li><a href="/recibir">Info</a></li>
         <li class="is-active"><a href="#" aria-current="page">Recibir ayuda</a></li>
     </ul>
@@ -83,9 +86,19 @@ function geoFindMe() {
 
 </script>
 <script>
-
-function disableButton(){
-    console.log('AAA')
+document.querySelector('#submit').addEventListener('click', disableSubmit);
+function disableSubmit() {
+    fields = ['id_title', 'id_message','id_name','id_phone','id_location','id_address']
+    var valid = true;
+    for (field in fields){
+      if (document.getElementById(fields[field]).checkValidity()==false) {
+        valid = false
+      }
+    }
+    if (valid){
+      document.querySelector('#submit').textContent="Enviando..."
+      document.querySelector('#submit').disabled="disabled";
+    }
 }
 
 document.querySelectorAll('.modal-button').forEach(function(el) {

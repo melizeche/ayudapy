@@ -13,16 +13,19 @@
 {% block bread %}
   <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
     <ul>
-        <li>
-            <span class="icon is-small">
-                <i class="fas fa-home" aria-hidden="true"></i>
-                </span>
-            <li><a href="/">Inicio</a></li>
-            <li><a href="/dar">Info ayudar</a></li>
-            <li><a href="/pedidos">Pedidos de ayuda</a></li>
-            <li class="is-active"><a href="#" aria-current="page">Pedido #{{help_request.id}}</a></li>
-        </ul>
-    </nav>
+      <li>
+        <a href="/">
+          <span class="icon is-small">
+            <i class="fas fa-home" aria-hidden="true"></i>
+          </span>
+          <span>Inicio</span>
+        </a>
+      </li>
+      <li><a href="/dar">Info ayudar</a></li>
+      <li><a href="/pedidos">Pedidos de ayuda</a></li>
+      <li class="is-active"><a href="#" aria-current="page">Pedido #{{help_request.id}}</a></li>
+      </ul>
+  </nav>
 {% endblock bread %}
 {% block content%}
 <div class="columns is-centered">
