@@ -7,6 +7,8 @@ from django.shortcuts import (
     get_object_or_404,
 )
 from rest_framework import viewsets
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .forms import HelpRequestForm
 from .models import HelpRequest, FrequentAskedQuestion
@@ -16,6 +18,10 @@ from .serializers import HelpRequestSerializer
 class HelpRequestViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = HelpRequest.objects.all()
     serializer_class = HelpRequestSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    search_fields = ['title', 'phone',]
+    filterset_fields = ['city']
+
 
 
 def home(request):
@@ -27,7 +33,7 @@ def request_form(request):
         form = HelpRequestForm(request.POST, request.FILES)
         if form.is_valid():
             new_help_request = form.save()
-            messages.success(request, "Se creó tu pedido exitosamente!")
+            messages.success(request, "¡Se creó tu pedido exitosamente!")
             return redirect("pedidos-detail", id=new_help_request.id)
     else:
         form = HelpRequestForm()
@@ -95,5 +101,16 @@ def list_by_city(request, city):
     city = list_help_requests[0].city
     query = list_help_requests
     geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
-    context = {"list_help": list_help_requests, "geo": geo, "city": city}
+
+    page= request.GET.get('page', 1)
+    paginate_by = 25
+    paginator = Paginator(list_help_requests,paginate_by)
+    try:
+        list_help_requests_paginated = paginator.page(page)
+    except PageNotAnInteger:
+        list_help_requests_paginated = paginator.page(1)
+    except EmptyPage:
+        list_help_requests_paginated = paginator.page(paginator.num_pages)
+
+    context = {"list_help": list_help_requests, "geo": geo, "city": city, "list_help_paginated": list_help_requests_paginated}
     return render(request, "list_by_city.html", context)
