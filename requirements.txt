@@ -8,3 +8,4 @@ geopy==1.21.0
 Unidecode==1.1.1
 djangorestframework==3.11.0
 django-filter==2.2.0
+djangorestframework-gis==0.15
