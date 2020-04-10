@@ -59,5 +59,5 @@ def text_to_image(text, width, height) -> Image:
 
 def image_to_base64(image):
     with BytesIO() as buffer:
-	image.save(buffer, 'PNG')
-	return base64.b64encode(buffer.getvalue()).decode()
+        image.save(buffer, 'PNG')
+        return base64.b64encode(buffer.getvalue()).decode()        
