@@ -39,24 +39,26 @@
               <div class="cities-dropdown" role="menu">
                 <div class="field is-horizontal">
                   <div class="field-label is-normal">
-                    <label class="label">Ciudades</label>
+                    <label class="label" for="cities">Ciudades</label>
                   </div>
                   <div class="field-body">
                     <div class="field">
-                      <p class="control">
-                        <input name="cities" class="input" list="list_cities" placeholder="Seleccionar ciudad...">
-                      </p>
+                      <div class="control">
+                        <div class="select">
+                          <input name="cities" class="input" list="list_cities" placeholder="Seleccionar ciudad..." autocomplete="off">
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
                 <datalist id="list_cities">
-                    <select size=10>
-                      {% for city, code in list_cities %}
-                        <option data-value="{{code}}">
-                          {{city}}
-                        </option>
-                      {% endfor %}
-                    </select>
+                      <select size=10>
+                        {% for city, code in list_cities %}
+                          <option data-value="{{code}}">
+                            {{city}}
+                          </option>
+                        {% endfor %}
+                      </select>
                   </datalist>
               </div>
             </div>
@@ -161,6 +163,7 @@
 
           /* input.onchange is triggered when the user selects something from the datalist */
           input = document.querySelector('input');
+        
           input.addEventListener('change', function() {
             var selectedValue = input.value;
             var selectedIndex;
@@ -176,6 +179,11 @@
             }
             var selectedOption = options[selectedIndex];
             location.assign('/pedidos_ciudad/' + selectedOption.getAttribute('data-value'));
+          });
+
+          /* when user selects an option from the datalist, write it to text field */
+          select.addEventListener('change', function() {
+            input.value = options[this.selectedIndex].value;
           });
         }
 
