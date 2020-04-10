@@ -83,9 +83,10 @@ function geoFindMe() {
 
 </script>
 <script>
-
-function disableButton(){
-    console.log('AAA')
+document.querySelector('#submit').addEventListener('click', disableSubmit);
+function disableSubmit() {
+    console.log("CDD");
+    document.querySelector('#submit').disabled="disabled";
 }
 
 document.querySelectorAll('.modal-button').forEach(function(el) {
