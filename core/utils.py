@@ -1,9 +1,12 @@
 import logging
 import os
 import time
+import base64
 
 from os import path
-from PIL import Image
+from io import BytesIO
+from PIL import Image, ImageDraw, ImageFont
+
 
 logger = logging.getLogger(__name__)
 
@@ -44,3 +47,17 @@ def rename_img(instance, filename):  # TODO: Use f'strings' instead of % format
             + filename
         )
     return os.path.join(path, format)
+
+
+def text_to_image(text, width, height) -> Image:
+    img = Image.new('RGB', (width, height), color=(0, 209, 178))
+    d = ImageDraw.Draw(img)
+    fnt = ImageFont.truetype("Keyboard.ttf", 30)
+    w, h = d.textsize(text, font=fnt)
+    d.text(((width-w)/2,(height-h)/2), text, font=fnt, align="center", fill=(255, 255, 255))
+    return img
+
+def image_to_base64(image):
+    with BytesIO() as buffer:
+        image.save(buffer, 'PNG')
+        return base64.b64encode(buffer.getvalue()).decode()        
