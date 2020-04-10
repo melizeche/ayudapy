@@ -41,7 +41,11 @@
         <div class="row">
           {% leaflet_map "main" callback="main_map_init" %}
         </div>
-        <button id="find-me" class="button is-success  is-outlined is-fullwidth">Mi ubicación</button>
+        <button id="find-me" class="button is-success  is-outlined is-fullwidth"><span class="icon is-small">
+            <i class="fas fa-location-arrow"></i>
+          </span>
+          <span>Mi ubicación</span>
+        </button>
         <p id="status"></p>
       </div>
       <div class="column is-6">
