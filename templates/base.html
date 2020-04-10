@@ -5,7 +5,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AyudaPy</title>
+    <title>{% block title %} AyudaPy {% endblock %}</title>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{% block fb-url %} {{ request.build_absolute_uri }} {% endblock %}">
+    <meta property="og:title" content="{% block fb-title %} AyudaPy {% endblock %}">
+    <meta property="og:description" content="{% block fb-description %} AyudaPy {% endblock %}">
+    <meta property="og:image" content="{% block fb-image %} {% static "favicon.ico" %} {% endblock %}">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    
+
     <link  rel="icon"   href="{% static "favicon.ico" %}" type="image/ico" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
@@ -47,13 +59,23 @@
             opacity: 0.3 !important;
             font-size: 0.8rem;
         }
+
+        .cities-dropdown-wrapper {
+            margin-bottom: 1em;
+        }
+
+        .cities-dropdown input::-webkit-calendar-picker-indicator {
+              opacity: 0;
+        }
+
+        .cities-dropdown .select {
+            width: 100%;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@vizuaalog/bulmajs@0.10.3/dist/file.js" integrity="sha256-9BDCQ1iKLp8eEXxQD6U8StZ4V2On9KFEHDeHeXLZ/aE=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@vizuaalog/bulmajs@0.10.3/dist/modal.js" integrity="sha256-HDcVnTQ5+DdyigrR4Xge4rxqguBi19XI7vNDhTDr+hs=" crossorigin="anonymous"></script>
     {% leaflet_js plugins="ALL" %}
     {% leaflet_css plugins="ALL" %}
-    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
-    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
 </head>
 
 <body class="Site">

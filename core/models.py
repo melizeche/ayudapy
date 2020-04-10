@@ -23,7 +23,8 @@ class HelpRequest(models.Model):
     )
     message = models.TextField(
         "Descripción del pedido",
-        help_text=mark_safe("Acá podes contar detalladamente lo que necesitas, <b>cuanto mejor cuentes tu situación es más probable que te quieran ayudar</b>"),
+        help_text=mark_safe(
+            "Acá podes contar detalladamente lo que necesitas, <b>cuanto mejor cuentes tu situación es más probable que te quieran ayudar</b>"),
         max_length=2000,
         null=True,
         db_index=True,
@@ -32,10 +33,10 @@ class HelpRequest(models.Model):
     phone = models.CharField("Teléfono de contacto", max_length=30)
     address = models.CharField(
         "Dirección",
-        help_text="Es opcional pero puede ayudar a quien quiera ayudarte saber la direccion, ciudad, barrio, referencias, o como llegar",
+        help_text="Para ayudar a quien quiera ayudarte saber la dirección, ciudad, barrio, referencias, o como llegar",
         max_length=400,
+        blank=False,
         null=True,
-        blank=True,
     )
     location = models.PointField(
         "Ubicación",
@@ -52,10 +53,13 @@ class HelpRequest(models.Model):
     )
     active = models.BooleanField(default=True, db_index=True)
     added = models.DateTimeField("Agregado", auto_now_add=True, null=True, blank=True, db_index=True)
-    votsi = models.IntegerField(default=0, blank=True)
-    votno = models.IntegerField(default=0, blank=True)
+    upvotes = models.IntegerField(default=0, blank=True)
+    downvotes = models.IntegerField(default=0, blank=True)
     city = models.CharField(max_length=30, blank=True, default="", editable=False)
     city_code = models.CharField(max_length=30, blank=True, default="", editable=False)
+
+    class Meta:
+        unique_together = ["title", "name", "phone"]
 
     @property
     def thumb(self):
@@ -73,7 +77,7 @@ class HelpRequest(models.Model):
             elif location.raw['address'].get('town'):
                 city = location.raw['address']['town']
             elif location.raw['address'].get('locality'):
-                city = city = location.raw['address']['locality']
+                city = location.raw['address']['locality']
         return city
 
     def save(self):
@@ -96,3 +100,19 @@ def thumbnail(sender, instance, created, **kwargs):
             )
         except Exception as e:
             logger.error(f"Error creating thumbnail: {repr(e)}")
+
+
+class Status(models.Model):
+    name = models.CharField(
+        "Nombre del estado",
+        max_length=40,
+        help_text="Nombre del estado"
+    )
+    code = models.CharField(
+        "Código del estado",
+        max_length=10,
+        help_text="Código del estado",
+        primary_key=True,
+        db_index=True
+    )
+    active = models.BooleanField(default=True, db_index=True)

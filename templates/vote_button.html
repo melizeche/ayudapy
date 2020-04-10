@@ -1,0 +1,27 @@
+<section class="card-content">
+<form name="thumbs" class="">
+<div class="field is-flex" style="justify-content: center;">
+    <p class="control buttons">
+        <button name='vote' class="button is-medium is-centered is-success is-outlined" type="submit"
+            formmethod="post"
+            value="up"> {% csrf_token %}
+            <span class="icon is-small">
+                <i class="fa fa-thumbs-up"></i>
+            </span>
+            <span>
+                {{help_request.upvotes}}
+            </span>
+        </button>
+        <button name='vote' class="button is-medium is-centered is-danger is-outlined" type="submit" formmethod="post"
+            value="down"> {% csrf_token %}
+            <span class="icon is-small">
+                <i class="fa fa-thumbs-down"></i>
+            </span>
+            <span>
+                {{help_request.downvotes}}
+            </span>
+        </button>
+    </p>
+</div>
+</form>
+</section>

@@ -1,4 +1,11 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
+
+{% block title %} Pedido #{{help_request.id}} {% endblock %} 
+
+{% block fb-title %} Pedido #{{help_request.id}} - {{ help_request.title}} {% endblock %} 
+{% block fb-description %} {{help_request.message}} {% endblock %} 
+{% block fb-image %} {{thumbnail}} {% endblock %} 
+
 {% load leaflet_tags %} 
 {% load static %}
 {% load l10n %}
@@ -6,16 +13,19 @@
 {% block bread %}
   <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
     <ul>
-        <li>
-            <span class="icon is-small">
-                <i class="fas fa-home" aria-hidden="true"></i>
-                </span>
-            <li><a href="/">Inicio</a></li>
-            <li><a href="/dar">Info ayudar</a></li>
-            <li><a href="/pedidos">Pedidos de ayuda</a></li>
-            <li class="is-active"><a href="#" aria-current="page">Pedido #{{help_request.id}}</a></li>
-        </ul>
-    </nav>
+      <li>
+        <a href="/">
+          <span class="icon is-small">
+            <i class="fas fa-home" aria-hidden="true"></i>
+          </span>
+          <span>Inicio</span>
+        </a>
+      </li>
+      <li><a href="/dar">Info ayudar</a></li>
+      <li><a href="/pedidos">Pedidos de ayuda</a></li>
+      <li class="is-active"><a href="#" aria-current="page">Pedido #{{help_request.id}}</a></li>
+      </ul>
+  </nav>
 {% endblock bread %}
 {% block content%}
 <div class="columns is-centered">
@@ -24,7 +34,7 @@
         {% for message in messages %}
             <div class="notification is-success is-half" id='msg{{ forloop.counter }}'>
                 <button class="delete" onclick="document.getElementById('msg{{ forloop.counter }}').style.display = 'none';"></button>
-                    <span class="is-5">{{ message }}Se creó tu pedido exitosamente!</span>
+                    <span class="is-5">{{ message }}</span>
                     <p><span class="icon is-medium"><i class="far fa-hand-point-down"></i></span>
                     Podés compartir tu pedido haciendo click en los botones</p>
             {% include 'includes/buttons.html'%}
@@ -80,6 +90,7 @@
                      </a>
 
         </section>
+                    {% include 'vote_button.html' %}
 
     </div>
 

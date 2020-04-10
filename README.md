@@ -11,6 +11,7 @@ https://ayudapy.org
 * PostGIS 3.0+
 
 ## Install
+GeoDjango https://kitcharoenp.github.io/gis/2018/06/12/geodjango_installation.html
 
 ```
 git clone git@github.com:melizeche/ayudapy.git

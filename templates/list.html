@@ -1,15 +1,17 @@
 {% extends 'base.html' %}
 {% load leaflet_tags %}
-{% load humanize %} 
+{% load humanize %}
 
 {% block bread %}
   <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
     <ul>
         <li>
+          <a href="/">
             <span class="icon is-small">
-            <i class="fas fa-home" aria-hidden="true"></i>
+              <i class="fas fa-home" aria-hidden="true"></i>
             </span>
-            <a href="/">Inicio</a>
+            <span>Inicio</span>
+          </a>
         </li>
         <li><a href="/dar">Info ayudar</a></li>
         <li class="is-active"><a href="#" aria-current="page">Pedidos de ayuda</a></li>
@@ -29,83 +31,97 @@
     <div class="columns is-centered">
       <div class="column is-6">
         {% leaflet_map "main" callback="main_map_init" %}
-        <button id="find-me" class="button is-success  is-outlined is-fullwidth">Mi ubicacion</button>
+        <button id="find-me" class="button is-success  is-outlined is-fullwidth">Mi ubicación</button>
         <p id="status"></p>
       </div>
       <div class="column is-6">
-          <div class="row is-centered">
-            <div class="dropdown">
-              <div class="dropdown-trigger">
-                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                  <span>Ciudades</span>
-                  <span class="icon is-small">
-                    <i class="fas fa-angle-down" aria-hidden="true"></i>
-                  </span>
-                </button>
-              </div>
-              <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                <div class="dropdown-content">
-                    {% for city, code in list_cities %}
-                      <a href="/pedidos_ciudad/{{code}}" class="dropdown-item">
-                        {{city}}
-                      </a>
-                    {% endfor %}
-
+        <div class="row is-centered cities-dropdown-wrapper">
+          <div class="columns is-vcentered is-desktop">
+            <div class="column">
+              <div class="cities-dropdown" role="menu">
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                    <label class="label" for="cities">Ciudades</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field">
+                      <div class="control">
+                        <div class="select">
+                          <input name="cities" class="input" list="list_cities" placeholder="Seleccionar ciudad..." autocomplete="off">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+                <datalist id="list_cities">
+                      <select size=10>
+                        {% for city, code in list_cities %}
+                          <option data-value="{{code}}">
+                            {{city}}
+                          </option>
+                        {% endfor %}
+                      </select>
+                  </datalist>
               </div>
             </div>
-          </div>
-          <article class="panel is-info">
-            <p class="panel-heading">
-              Últimos pedidos de ayuda
-            </p>
-        {% for pedido in list_help %}
-            <a href="/pedidos/{{pedido.id}}" class="panel-block is-success" title="{{pedido.added}}">
-              <span class="panel-icon">
-                <i class="fas fa-people-carry" aria-hidden="true"></i>
-              </span>
-              #{{pedido.id}} | {{pedido.title}} | {{pedido.added|naturaltime}}
-            </a>
-        {% endfor %}
-          </article>
+            <div class="column is-half-desktop">
+              <div style="margin-bottom: .75em;">
+                <h5 class="has-text-danger has-text-weight-light has-text-centered">
+                  Si no ves tu ciudad es porque no hay pedidos, volvé más tarde para ayudar!
+                </h5>
+              </div>
+            </div>
+          </div> 
+        </div>
+
+        <article class="panel is-info">
+          <p class="panel-heading">
+            Últimos pedidos de ayuda
+          </p>
+          {% for pedido in list_help_paginated %}
+          <a href="/pedidos/{{pedido.id}}" class="panel-block is-success" title="{{pedido.added}}">
+            <span class="panel-icon">
+              <i class="fas fa-people-carry" aria-hidden="true"></i>
+            </span>
+            #{{pedido.id}} | {{pedido.title}} | {{pedido.added|naturaltime}}
+          </a>
+          {% endfor %}
+        </article>
+        {% include "nav_paginator_controls.html" %}
       </div>
     </div>
     <script type="text/javascript">
         function main_map_init (map, options) {
             // Use Leaflet API here
-            this.map = map
-            {% autoescape off %}
-            var lon = "{{ help_request.location.x|escapejs }}";
-            var lat = "{{ help_request.location.y|escapejs }}";
-            data = {{ geo }}
-            {% endautoescape %}
-            // zoom to point & add it to map
-            //map.setView([lat, lon], 14);
-            //L.marker([lat, lon]).addTo(map);
-            // Agregar boton de FullScreen al mapa
-            //map.addControl(new L.Control.Fullscreen());
+            const myRequest = new Request('/api/v1/helprequestsgeo/');
+
             map.locate({setView : true});
             map.setZoom(12);
             //L.geoJson(data).addTo(map)
-            map.addControl(new L.Control.Fullscreen());
-            var layerGroup = L.geoJSON(data, {
-              onEachFeature: function (feature, layer) {
-                layer.bindPopup('<a class="subtitle" href="/pedidos/'+feature.properties.pk+'"><h1>Pedido #'+feature.properties.pk+
-                  '</h1></a><p class="has-text-weight-bold">Nombre: '+feature.properties.name+'</p><p>'+feature.properties.title+'</p>'+
-                  '<a class="is-size-6" href="/pedidos/'+feature.properties.pk+'">Ver Pedido</a>');
-              }
-            }).addTo(map);
-       /* L.control.fullscreen({
-          position: 'topleft', // change the position of the button can be topleft, topright, bottomright or bottomleft, defaut topleft
-          title: 'Show me the fullscreen !', // change the title of the button, default Full Screen
-          titleCancel: 'Exit fullscreen mode', // change the title of the button when fullscreen is on, default Exit Full Screen
-          content: null, // change the content of the button, can be HTML, default null
-          forceSeparateButton: true, // force seperate button to detach from zoom buttons, default false
-          forcePseudoFullscreen: true, // force use of pseudo full screen even if full screen API is available, default false
-          fullscreenElement: false // Dom element to render in full screen, false by default, fallback to map._container
-        }).addTo(map);
-        */
+            map.addControl(new L.Control.Fullscreen({
+                title: {
+                    'false': 'Ver en Pantalla Completa',
+                    'true': 'Salir de Pantalla Completa'
+                }
+            }));
+            fetch(myRequest)
+              .then(response => response.json())
+              .then(data => {
+                    var markerClusters = L.markerClusterGroup();
+                    var layerGroup = L.geoJSON(data, {
+                      onEachFeature: function (feature, layer) {
+                        var popup = '<a class="subtitle" href="/pedidos/'+feature.properties.pk+'"><h1>Pedido #'+feature.properties.pk+
+                          '</h1></a><p class="has-text-weight-bold">Nombre: '+feature.properties.name+'</p><p>'+feature.properties.title+'</p>'+
+                          '<a class="is-size-6" href="/pedidos/'+feature.properties.pk+'">Ver Pedido</a>';
+                        layer.bindPopup(popup);
+
+                        markerClusters.addLayer(layer);
+                      }
+                    });
+                    map.addLayer( markerClusters );
+                });
         }
+
         function geoFindMe() {
 
             const status = document.querySelector('#status');
@@ -131,15 +147,45 @@
               navigator.geolocation.getCurrentPosition(success, error);
             }
 
-          }
+        }
 
-          document.querySelector('#find-me').addEventListener('click', geoFindMe);
+        document.querySelector('#find-me').addEventListener('click', geoFindMe);
 
-    var dropdown = document.querySelector('.dropdown');
-    dropdown.addEventListener('click', function(event) {
-      event.stopPropagation();
-      dropdown.classList.toggle('is-active');
-    });
+
+        function setupCitiesDropdown() {
+          // based on https://codepen.io/airen/pen/arGXvz
+          var datalist = document.querySelector('.cities-dropdown > datalist');
+          var select = document.querySelector('.cities-dropdown > datalist > select');
+          var options = select.options;
+
+          /* input.onchange is triggered when the user selects something from the datalist */
+          input = document.querySelector('input');
+        
+          input.addEventListener('change', function() {
+            var selectedValue = input.value;
+            var selectedIndex;
+            
+            for(var i = 0; i < options.length; i++) {
+              if(options[i].text == selectedValue) {
+                selectedIndex = i;
+                break;
+              }
+            }
+            if(selectedIndex == undefined) {
+              return;
+            }
+            var selectedOption = options[selectedIndex];
+            location.assign('/pedidos_ciudad/' + selectedOption.getAttribute('data-value'));
+          });
+
+          /* when user selects an option from the datalist, write it to text field */
+          select.addEventListener('change', function() {
+            input.value = options[this.selectedIndex].value;
+          });
+        }
+
+        
+        setupCitiesDropdown()
     </script>
 
 {% endblock %}
