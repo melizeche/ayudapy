@@ -3,6 +3,7 @@ from os import path
 
 from django.conf import settings
 from django.contrib.gis.db import models
+from django.contrib.postgres.search import SearchVectorField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.safestring import mark_safe
@@ -56,6 +57,7 @@ class HelpRequest(models.Model):
     downvotes = models.IntegerField(default=0, blank=True)
     city = models.CharField(max_length=30, blank=True, default="", editable=False)
     city_code = models.CharField(max_length=30, blank=True, default="", editable=False)
+    search_vector = SearchVectorField()
 
     @property
     def thumb(self):
