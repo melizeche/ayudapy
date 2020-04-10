@@ -23,7 +23,8 @@ class HelpRequest(models.Model):
     )
     message = models.TextField(
         "Descripción del pedido",
-        help_text=mark_safe("Acá podes contar detalladamente lo que necesitas, <b>cuanto mejor cuentes tu situación es más probable que te quieran ayudar</b>"),
+        help_text=mark_safe(
+            "Acá podes contar detalladamente lo que necesitas, <b>cuanto mejor cuentes tu situación es más probable que te quieran ayudar</b>"),
         max_length=2000,
         null=True,
         db_index=True,
@@ -56,6 +57,9 @@ class HelpRequest(models.Model):
     downvotes = models.IntegerField(default=0, blank=True)
     city = models.CharField(max_length=30, blank=True, default="", editable=False)
     city_code = models.CharField(max_length=30, blank=True, default="", editable=False)
+
+    class Meta:
+        unique_together = ["title", "name", "phone"]
 
     @property
     def thumb(self):
