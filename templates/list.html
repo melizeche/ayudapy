@@ -93,17 +93,8 @@
     <script type="text/javascript">
         function main_map_init (map, options) {
             // Use Leaflet API here
-            this.map = map
-            {% autoescape off %}
-            var lon = "{{ help_request.location.x|escapejs }}";
-            var lat = "{{ help_request.location.y|escapejs }}";
-            data = {{ geo }}
-            {% endautoescape %}
-            // zoom to point & add it to map
-            //map.setView([lat, lon], 14);
-            //L.marker([lat, lon]).addTo(map);
-            // Agregar boton de FullScreen al mapa
-            //map.addControl(new L.Control.Fullscreen());
+            const myRequest = new Request('/api/v1/helprequestsgeo/');
+
             map.locate({setView : true});
             map.setZoom(12);
             //L.geoJson(data).addTo(map)
@@ -113,18 +104,22 @@
                     'true': 'Salir de Pantalla Completa'
                 }
             }));
-            var markerClusters = L.markerClusterGroup();
-            var layerGroup = L.geoJSON(data, {
-              onEachFeature: function (feature, layer) {
-                var popup = '<a class="subtitle" href="/pedidos/'+feature.properties.pk+'"><h1>Pedido #'+feature.properties.pk+
-                  '</h1></a><p class="has-text-weight-bold">Nombre: '+feature.properties.name+'</p><p>'+feature.properties.title+'</p>'+
-                  '<a class="is-size-6" href="/pedidos/'+feature.properties.pk+'">Ver Pedido</a>';
-                layer.bindPopup(popup);
+            fetch(myRequest)
+              .then(response => response.json())
+              .then(data => {
+                    var markerClusters = L.markerClusterGroup();
+                    var layerGroup = L.geoJSON(data, {
+                      onEachFeature: function (feature, layer) {
+                        var popup = '<a class="subtitle" href="/pedidos/'+feature.properties.pk+'"><h1>Pedido #'+feature.properties.pk+
+                          '</h1></a><p class="has-text-weight-bold">Nombre: '+feature.properties.name+'</p><p>'+feature.properties.title+'</p>'+
+                          '<a class="is-size-6" href="/pedidos/'+feature.properties.pk+'">Ver Pedido</a>';
+                        layer.bindPopup(popup);
 
-                markerClusters.addLayer(layer);
-              }
-            });
-            map.addLayer( markerClusters );
+                        markerClusters.addLayer(layer);
+                      }
+                    });
+                    map.addLayer( markerClusters );
+                });
         }
 
         function geoFindMe() {
