@@ -7,6 +7,8 @@ from django.shortcuts import (
     get_object_or_404,
 )
 from rest_framework import viewsets
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .forms import HelpRequestForm
 from .models import HelpRequest
@@ -16,6 +18,10 @@ from .serializers import HelpRequestSerializer
 class HelpRequestViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = HelpRequest.objects.all()
     serializer_class = HelpRequestSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    search_fields = ['title', 'phone',]
+    filterset_fields = ['city']
+
 
 
 def home(request):
