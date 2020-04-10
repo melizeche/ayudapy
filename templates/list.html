@@ -30,7 +30,15 @@
 {% endif %}
     <div class="columns is-centered">
       <div class="column is-6">
-        {% leaflet_map "main" callback="main_map_init" %}
+        <div style="margin-bottom: .75em; ">
+          <div class="field">
+            <input id="switchNormal" type="checkbox" onclick="groupMarkerRequest()" name="switchNormal" class="switch">
+            <label for="switchNormal">Agrupar pedidos</label>
+          </div>
+        </div>
+        <div class="row">
+          {% leaflet_map "main" callback="main_map_init" %}
+        </div>
         <button id="find-me" class="button is-success  is-outlined is-fullwidth">Mi ubicación</button>
         <p id="status"></p>
       </div>
@@ -91,6 +99,22 @@
       </div>
     </div>
     <script type="text/javascript">
+        //We check if the browser support local Storage caching
+        //in case does not, we disable the switch
+        var switchElement = document.getElementById('switchNormal');
+
+          if (typeof (Storage) === "undefined") {
+            switchElement.disabled = true;
+          } else {
+            switchElement.checked = false;
+            var isGroupMarksActive = JSON.parse(localStorage.getItem("group_markers_setting"));
+            if (isGroupMarksActive != null) {
+              if (isGroupMarksActive) {
+                switchElement.checked = true;
+              }
+            }
+          }
+
         function main_map_init (map, options) {
             // Use Leaflet API here
             this.map = map
@@ -113,7 +137,18 @@
                     'true': 'Salir de Pantalla Completa'
                 }
             }));
-            var markerClusters = L.markerClusterGroup();
+            
+            //We check the switch status
+            var isGroupMarksActive = JSON.parse(localStorage.getItem("group_markers_setting"));
+            if (!isGroupMarksActive) {
+              loadMarkers(map, data);//load markers without clustering
+            } else {
+              loadMarkersAndGroup(map, data);
+            }
+        }
+
+        function loadMarkersAndGroup(map, data){
+          var markerClusters = L.markerClusterGroup();
             var layerGroup = L.geoJSON(data, {
               onEachFeature: function (feature, layer) {
                 var popup = '<a class="subtitle" href="/pedidos/'+feature.properties.pk+'"><h1>Pedido #'+feature.properties.pk+
@@ -127,8 +162,18 @@
             map.addLayer( markerClusters );
         }
 
-        function geoFindMe() {
+        function loadMarkers(map, data){
+            L.geoJSON(data, {
+              onEachFeature: function (feature, layer) {
+                var popup = '<a class="subtitle" href="/pedidos/'+feature.properties.pk+'"><h1>Pedido #'+feature.properties.pk+
+                  '</h1></a><p class="has-text-weight-bold">Nombre: '+feature.properties.name+'</p><p>'+feature.properties.title+'</p>'+
+                  '<a class="is-size-6" href="/pedidos/'+feature.properties.pk+'">Ver Pedido</a>';
+                layer.bindPopup(popup);
+              }
+            }).addTo(map);
+        }
 
+        function geoFindMe() {
             const status = document.querySelector('#status');
 
             function success(position) {
@@ -156,6 +201,18 @@
 
         document.querySelector('#find-me').addEventListener('click', geoFindMe);
 
+        function groupMarkerRequest() {
+          //Update cached status
+          var checkbox = document.getElementById('switchNormal');
+            if (checkbox.checked != true) {
+              localStorage.setItem('group_markers_setting', JSON.stringify(false));
+            } else {
+              localStorage.setItem('group_markers_setting', JSON.stringify(true));
+            }
+
+            location.reload(); //refresh the page with the new map display setting
+
+        }
 
         function setupCitiesDropdown() {
           // based on https://codepen.io/airen/pen/arGXvz
