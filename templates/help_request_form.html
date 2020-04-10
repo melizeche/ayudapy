@@ -22,7 +22,7 @@
     <div class="column is-half">
      <button href="#" id="find-me" class="button is-success  is-outlined is-fullwidth">Apreta acá voy a tratar de encontrarte</button>
                       <p id="status"></p>
-        <form enctype="multipart/form-data" method="post" action="/solicitar">
+        <form id="form-help-request" enctype="multipart/form-data" method="post" action="/solicitar" onsubmit="return checkRequestForm(this);">
             {% csrf_token %} 
             {% include 'includes/bulma_form.html' with form=form %}
             <div class="control">
@@ -86,20 +86,23 @@ function geoFindMe() {
 
 </script>
 <script>
-document.querySelector('#submit').addEventListener('click', disableSubmit);
-function disableSubmit() {
+
+function checkRequestForm() {
     fields = ['id_title', 'id_message','id_name','id_phone','id_location','id_address']
     var valid = true;
-    for (field in fields){
-      if (document.getElementById(fields[field]).checkValidity()==false) {
+    for (field in fields) {
+        if (!document.getElementById(fields[field]).checkValidity()) {
         valid = false
       }
     }
-    if (valid){
+
+    if (valid) {
       document.querySelector('#submit').textContent="Enviando..."
       document.querySelector('#submit').disabled="disabled";
+      return true;
     }
 }
+
 
 document.querySelectorAll('.modal-button').forEach(function(el) {
   el.addEventListener('click', function() {
