@@ -27,7 +27,8 @@ urlpatterns = [
     path('pedidos/<int:id>', core_views.view_request, name='pedidos-detail'),
     path('pedidos_ciudad/<slug:city>', core_views.list_by_city, name='pedidos-by-city'),
     path('pedidos', core_views.list_requests),
-    path('contacto', TemplateView.as_view(template_name="contact_us.html"))
+    path('preguntas_frecuentes', core_views.view_faq, name='general_faq'),
+    path('contacto', TemplateView.as_view(template_name="contact_us.html"), name='contact_us')
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
