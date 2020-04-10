@@ -6,3 +6,5 @@ black
 django-widget-tweaks==1.4.8
 geopy==1.21.0
 Unidecode==1.1.1
+djangorestframework==3.11.0
+django-filter==2.2.0

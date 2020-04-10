@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'core',
     'widget_tweaks',
+    'rest_framework',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -135,4 +137,24 @@ LEAFLET_CONFIG = {
     'MIN_ZOOM': 3,
     'MAX_ZOOM': 18,
     'RESET_VIEW': False,
+    'NO_GLOBALS': False,
+
+    'PLUGINS': {
+        'markercluster': {
+            'css': 'https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css',
+            'js': 'https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js',
+            'auto-include': True,
+        },
+        'fullscreen': {
+            'css': 'https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css',
+            'js': 'https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js',
+            'auto-include': True,
+        },
+    }
+}
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
 }
