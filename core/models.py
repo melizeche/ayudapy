@@ -10,8 +10,33 @@ from geopy.geocoders import Nominatim
 
 from core.utils import create_thumbnail, rename_img
 
+
 logger = logging.getLogger(__name__)
 THUMBNAIL_BASEWIDTH = 500
+
+
+class FrequentAskedQuestion(models.Model):
+    """
+    Frequent asked question model.
+    Issue #6
+    """
+
+    # defines rendering order in template. Do not use IntegerField
+    order = models.CharField("orden", max_length=3)
+    question = models.CharField("Pregunta", max_length=200)
+    answer = models.TextField("Respuesta", max_length=1000)
+
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        # table actual name
+        db_table = "core_faq"
+
+        # default "ORDER BY" statement
+        ordering = ["order"]
+
+    def __str__(self):
+        return self.question
 
 
 class HelpRequest(models.Model):
