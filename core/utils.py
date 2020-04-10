@@ -10,6 +10,11 @@ from PIL import Image, ImageDraw, ImageFont
 
 logger = logging.getLogger(__name__)
 
+if "core" in os.getcwd():
+    FONT_PATH = "../static/Roboto/Roboto-Regular.ttf"
+else:
+    FONT_PATH = "./static/Roboto/Roboto-Regular.ttf"
+
 
 def create_thumbnail(imagepath: str, basewidth: int, force=False) -> bool:  # TODO: Use f'strings' instead of % format
     thumbfilename = "%s_th%s" % (
@@ -52,12 +57,13 @@ def rename_img(instance, filename):  # TODO: Use f'strings' instead of % format
 def text_to_image(text, width, height) -> Image:
     img = Image.new('RGB', (width, height), color=(0, 209, 178))
     d = ImageDraw.Draw(img)
-    fnt = ImageFont.truetype("Arial.ttf", 30)
+    fnt = ImageFont.truetype(FONT_PATH, 30)
     w, h = d.textsize(text, font=fnt)
-    d.text(((width-w)/2,(height-h)/2), text, font=fnt, align="center", fill=(255, 255, 255))
+    d.text(((width-w)/2, (height-h)/2), text, font=fnt, align="center", fill=(255, 255, 255))
     return img
+
 
 def image_to_base64(image):
     with BytesIO() as buffer:
         image.save(buffer, 'PNG')
-        return base64.b64encode(buffer.getvalue()).decode()        
+        return base64.b64encode(buffer.getvalue()).decode()
