@@ -33,38 +33,43 @@
         <p id="status"></p>
       </div>
       <div class="column is-6">
-        <div class="row is-centered">
-          <div class="dropdown">
-            <div class="columns is-mobile is-vcentered">
-              <div class="column">
-                <div class="dropdown-trigger">
-                  <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                    <span>Ciudades</span>
-                    <span class="icon is-small">
-                      <i class="fas fa-angle-down" aria-hidden="true"></i>
-                    </span>
-                  </button>
+        <div class="row is-centered cities-dropdown-wrapper">
+          <div class="columns is-vcentered is-desktop">
+            <div class="column">
+              <div class="cities-dropdown" role="menu">
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                    <label class="label">Ciudades</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field">
+                      <p class="control">
+                        <input name="cities" class="input" list="list_cities" placeholder="Seleccionar ciudad...">
+                      </p>
+                    </div>
+                  </div>
                 </div>
+                <datalist id="list_cities">
+                    <select size=10>
+                      {% for city, code in list_cities %}
+                        <option data-value="{{code}}">
+                          {{city}}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  </datalist>
               </div>
-              <div class="column is-four-fifths">
+            </div>
+            <div class="column is-half-desktop">
+              <div style="margin-bottom: .75em;">
                 <h5 class="has-text-danger has-text-weight-light has-text-centered">
                   Si no ves tu ciudad es porque no hay pedidos, volvé más tarde para ayudar!
                 </h5>
               </div>
             </div>
-            <div class="dropdown-menu" id="dropdown-menu" role="menu">
-              <div class="dropdown-content">
-                {% for city, code in list_cities %}
-                <a href="/pedidos_ciudad/{{code}}" class="dropdown-item">
-                  {{city}}
-                </a>
-                {% endfor %}
-    
-              </div>
-            </div>
-          </div>
+          </div> 
         </div>
-    
+
         <article class="panel is-info">
           <p class="panel-heading">
             Últimos pedidos de ayuda
@@ -154,6 +159,7 @@
             });
             map.addLayer( markerClusters );
         }
+
         function geoFindMe() {
 
             const status = document.querySelector('#status');
@@ -179,15 +185,39 @@
               navigator.geolocation.getCurrentPosition(success, error);
             }
 
-          }
+        }
 
-          document.querySelector('#find-me').addEventListener('click', geoFindMe);
+        document.querySelector('#find-me').addEventListener('click', geoFindMe);
 
-    var dropdown = document.querySelector('.dropdown');
-    dropdown.addEventListener('click', function(event) {
-      event.stopPropagation();
-      dropdown.classList.toggle('is-active');
-    });
+
+        function setupCitiesDropdown() {
+          // based on https://codepen.io/airen/pen/arGXvz
+          var datalist = document.querySelector('.cities-dropdown > datalist');
+          var select = document.querySelector('.cities-dropdown > datalist > select');
+          var options = select.options;
+
+          /* input.onchange is triggered when the user selects something from the datalist */
+          input = document.querySelector('input');
+          input.addEventListener('change', function() {
+            var selectedValue = input.value;
+            var selectedIndex;
+            
+            for(var i = 0; i < options.length; i++) {
+              if(options[i].text == selectedValue) {
+                selectedIndex = i;
+                break;
+              }
+            }
+            if(selectedIndex == undefined) {
+              return;
+            }
+            var selectedOption = options[selectedIndex];
+            location.assign('/pedidos_ciudad/' + selectedOption.getAttribute('data-value'));
+          });
+        }
+
+        
+        setupCitiesDropdown()
     </script>
 
 {% endblock %}
