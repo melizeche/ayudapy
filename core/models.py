@@ -34,6 +34,8 @@ class HelpRequest(models.Model):
         "Dirección",
         help_text="Para ayudar a quien quiera ayudarte saber la dirección, ciudad, barrio, referencias, o como llegar",
         max_length=400,
+        blank=False,
+        null=True,
     )
     location = models.PointField(
         "Ubicación",
@@ -94,3 +96,19 @@ def thumbnail(sender, instance, created, **kwargs):
             )
         except Exception as e:
             logger.error(f"Error creating thumbnail: {repr(e)}")
+
+
+class Status(models.Model):
+    name = models.CharField(
+        "Nombre del estado",
+        max_length=40,
+        help_text="Nombre del estado"
+    )
+    code = models.CharField(
+        "Código del estado",
+        max_length=10,
+        help_text="Código del estado",
+        primary_key=True,
+        db_index=True
+    )
+    active = models.BooleanField(default=True, db_index=True)
