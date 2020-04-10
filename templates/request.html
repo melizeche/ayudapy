@@ -68,7 +68,11 @@
                     <p class="subtitle">Nombre:</p>
                     <p class="title is-4">{{ help_request.name}}</p>
                     <p class="subtitle">Contacto:</p>
-                    <p class="title is-4"><a href="tel:{{help_request.phone}}">{{help_request.phone}}</a></p>
+		    <p class="title is-4">
+		      <a href="tel:{{help_request.phone}}">
+			<img src="data:image/jpeg;base64,{{phone_number_img}}">
+		      </a>
+		    </p>
                     {% if help_request.address %}
                       <p class="subtitle">direccion:</p>
                       <p class="title is-4">{{help_request.address}}</p>
