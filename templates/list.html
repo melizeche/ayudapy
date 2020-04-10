@@ -63,7 +63,22 @@
                       </select>
                   </datalist>
               </div>
-            </div>
+              <form method="get">
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                    <label class="label" for="search">Buscar</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field">
+                      <div class="control">
+                        <input class="input" type="text" name="q" placeholder="Ej: Pañal" value="{% if search%}{{ search }}{% endif %}">
+                      </div>
+                    </div>
+                  </div>
+                  <input type="submit" class="button is-info" value="Buscar">
+                </div>
+              </div>
+            </form>
             <div class="column is-half-desktop">
               <div style="margin-bottom: .75em;">
                 <h5 class="has-text-danger has-text-weight-light has-text-centered">
