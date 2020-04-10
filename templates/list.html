@@ -30,12 +30,14 @@
 {% endif %}
     <div class="columns is-centered">
       <div class="column is-6">
+        <!-- Start Switch clustering -->
         <div style="margin-bottom: .75em; ">
           <div class="field">
             <input id="switchNormal" type="checkbox" onclick="groupMarkerRequest()" name="switchNormal" class="switch">
             <label for="switchNormal">Agrupar pedidos</label>
           </div>
         </div>
+        <!-- End Switch clustering -->
         <div class="row">
           {% leaflet_map "main" callback="main_map_init" %}
         </div>
@@ -99,35 +101,36 @@
       </div>
     </div>
     <script type="text/javascript">
-        //We check if the browser support local Storage caching
-        //in case does not, we disable the switch
-        var switchElement = document.getElementById('switchNormal');
+        // start on load
+        switchClusteringInit();
+        
+        document.querySelector('#find-me').addEventListener('click', geoFindMe);
+        
+        setupCitiesDropdown()
+        // end on load
+        
+        function switchClusteringInit() {
+            //We check if the browser support local Storage caching
+            //in case does not, we disable the switch
+            var switchElement = document.getElementById('switchNormal');
 
-          if (typeof (Storage) === "undefined") {
-            switchElement.disabled = true;
-          } else {
-            switchElement.checked = false;
-            var isGroupMarksActive = JSON.parse(localStorage.getItem("group_markers_setting"));
-            if (isGroupMarksActive != null) {
-              if (isGroupMarksActive) {
-                switchElement.checked = true;
+            if (typeof (Storage) === "undefined") {
+              switchElement.disabled = true;
+            } else {
+              switchElement.checked = false;
+              var isGroupMarksActive = JSON.parse(localStorage.getItem("group_markers_setting"));
+              if (isGroupMarksActive != null) {
+                if (isGroupMarksActive) {
+                  switchElement.checked = true;
+                }
               }
             }
           }
 
         function main_map_init (map, options) {
             // Use Leaflet API here
-            this.map = map
-            {% autoescape off %}
-            var lon = "{{ help_request.location.x|escapejs }}";
-            var lat = "{{ help_request.location.y|escapejs }}";
-            data = {{ geo }}
-            {% endautoescape %}
-            // zoom to point & add it to map
-            //map.setView([lat, lon], 14);
-            //L.marker([lat, lon]).addTo(map);
-            // Agregar boton de FullScreen al mapa
-            //map.addControl(new L.Control.Fullscreen());
+            const myRequest = new Request('/api/v1/helprequestsgeo/');
+
             map.locate({setView : true});
             map.setZoom(12);
             //L.geoJson(data).addTo(map)
@@ -137,14 +140,19 @@
                     'true': 'Salir de Pantalla Completa'
                 }
             }));
-            
-            //We check the switch status
-            var isGroupMarksActive = JSON.parse(localStorage.getItem("group_markers_setting"));
-            if (!isGroupMarksActive) {
-              loadMarkers(map, data);//load markers without clustering
-            } else {
-              loadMarkersAndGroup(map, data);
-            }
+
+            fetch(myRequest)
+            .then(response => response.json())
+            .then(data => {
+              //We check the switch status
+              var isGroupMarksActive = JSON.parse(localStorage.getItem("group_markers_setting"));
+              if (!isGroupMarksActive) {
+                loadMarkers(map, data);//load markers without clustering
+              } else {
+                loadMarkersAndGroup(map, data);
+              }
+            });
+
         }
 
         function loadMarkersAndGroup(map, data){
@@ -159,7 +167,7 @@
                 markerClusters.addLayer(layer);
               }
             });
-            map.addLayer( markerClusters );
+            map.addLayer( markerClusters );            
         }
 
         function loadMarkers(map, data){
@@ -198,8 +206,6 @@
             }
 
         }
-
-        document.querySelector('#find-me').addEventListener('click', geoFindMe);
 
         function groupMarkerRequest() {
           //Update cached status
@@ -245,9 +251,6 @@
             input.value = options[this.selectedIndex].value;
           });
         }
-
-        
-        setupCitiesDropdown()
     </script>
 
 {% endblock %}
