@@ -14,6 +14,7 @@ from core import views as core_views
 
 router = routers.DefaultRouter()
 router.register(r'helprequests', core_views.HelpRequestViewSet)
+router.register(r'helprequestsgeo', core_views.HelpRequestGeoViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'core',
     'widget_tweaks',
     'rest_framework',
+    'rest_framework_gis',
     'django_filters',
     'silk',
 ]
