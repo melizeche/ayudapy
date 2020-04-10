@@ -32,7 +32,6 @@
     <div class="columns is-centered">
       <div class="column is-6">
         {% leaflet_map "main" callback="main_map_init" %}
-        <button class="button is-success  is-outlined is-fullwidth" onclick="locateUser()" disabled>Mi ubicacion</button>
       </div>
       <div class="column is-6">
           <article class="panel is-info">
@@ -76,9 +75,6 @@
             map.fitBounds(layerGroup.getBounds(), {padding: [50, 50]});
         }
 
-        function locateUser() {
-            this.map.locate({setView : true});
-        }
         var map = null
 
     </script>

@@ -31,7 +31,12 @@
     <div class="columns is-centered">
       <div class="column is-6">
         {% leaflet_map "main" callback="main_map_init" %}
-        <button id="find-me" class="button is-success  is-outlined is-fullwidth">Mi ubicación</button>
+        <button id="find-me" class="button is-success  is-outlined is-fullwidth">
+          <span class="icon is-small">
+            <i class="fas fa-location-arrow"></i>
+          </span>
+          <span>Mi ubicación</span>
+        </button>
         <p id="status"></p>
       </div>
       <div class="column is-6">
@@ -139,6 +144,7 @@
               you = L.marker([latitude, longitude], {opacity: 0.3, title:'Tu ubicación'}).addTo(maps[0]);
               you.bindPopup('Tu ubicación').openPopup();
               maps[0].panTo(new L.LatLng(latitude, longitude), 14);
+              status.textContent = 'Mostrando tu localización actual';
             }
 
             function error() {
