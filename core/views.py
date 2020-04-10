@@ -12,7 +12,7 @@ from rest_framework_gis.filters import InBBoxFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .forms import HelpRequestForm
-from .models import HelpRequest
+from .models import HelpRequest, FrequentAskedQuestion
 from .serializers import HelpRequestSerializer, HelpRequestGeoJSONSerializer
 
 
@@ -65,6 +65,23 @@ def view_request(request, id):
                 help_request.downvotes += 1
             help_request.save()
     return render(request, "request.html", context)
+
+
+def view_faq(request):
+    """ Frequent Asked Questions controller """
+    try:
+        faq_list = FrequentAskedQuestion.objects.filter(active=True)
+    except:
+        # no exception should break the flow.
+        faq_list = []
+
+    context = {
+        'faq_list': faq_list
+    }
+
+    template = "general_faq.html"
+
+    return render(request, template, context)
 
 
 def list_requests(request):
