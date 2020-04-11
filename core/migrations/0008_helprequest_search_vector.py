@@ -14,7 +14,7 @@ def populate_search_vector(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0005_add_status'),
+        ('core', '0007_addusercookies'),
     ]
 
     operations = [
