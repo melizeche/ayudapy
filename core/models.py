@@ -14,7 +14,7 @@ from core.utils import create_thumbnail, rename_img
 
 
 logger = logging.getLogger(__name__)
-THUMBNAIL_BASEWIDTH = 50
+THUMBNAIL_BASEWIDTH = 500
 
 
 class HelpRequestQuerySet(models.QuerySet):
