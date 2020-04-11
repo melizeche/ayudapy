@@ -79,20 +79,24 @@
           </div> 
         </div>
 
-      <div>
-          <form method='get'>
-            <div class="field has-addons">
-              <div class="control is-expanded">
-                <input class="input is-small" type="text" name="q"
-                       placeholder="Búsqueda por título o descripción, Ejemplo: Pañal" value="{% if search%}{{ search }}{% endif %}">
-              </div>
-              <div class="control">
-                <a class="button is-warning is-small">
-                  Buscar
-                </a>
-              </div>
-            </div>
-          </form>
+      <div>  
+        <div class="field has-addons">
+          <div class="control is-expanded">
+            <input 
+              id="q" 
+              class="input is-small" 
+              type="text" 
+              name="q"
+              placeholder="Búsqueda por título o descripción, Ejemplo: Pañal" 
+              value="{% if search%}{{ search }}{% endif %}"
+            >
+          </div>
+          <div class="control" >
+            <button class="button is-warning is-small" onclick="getQuery()">
+              Buscar
+            </button>
+          </div>
+        </div>
       </div>
 
       <br>
@@ -132,6 +136,15 @@
 
       setupCitiesDropdown()
       //===== end onload
+
+      document.getElementById('q').addEventListener('keypress', function(e) {
+        if (e.charCode == 13) getQuery();
+      });
+
+      function getQuery() {
+        const texto = document.getElementById('q').value.trim();
+        if (texto.length >= 3) location.href = `/pedidos?q=${texto}`;      
+      }
 
       function switchClusteringInit() {
         //We check if the browser support local Storage caching
