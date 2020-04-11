@@ -15,14 +15,20 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .forms import HelpRequestForm
 from .models import HelpRequest, HelpRequestOwner, FrequentAskedQuestion, HelpRequestQuerySet
-from .serializers import HelpRequestSerializer, HelpRequestGeoJSONSerializer, HelpRequestSearchSerializer
+from .serializers import HelpRequestSerializer, HelpRequestGeoJSONSerializer
 from .utils import text_to_image, image_to_base64
 
+"""
+    API endpoints that allows search queries on HelpRequest
+"""
+class DynamicSearchFilter(filters.SearchFilter):
+    def get_search_fields(self, view, request):
+        return request.GET.getlist('search_fields', [])
 
 class HelpRequestViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = HelpRequest.objects.filter(active=True)
     serializer_class = HelpRequestSerializer
-    filter_backends = [InBBoxFilter, DjangoFilterBackend, filters.SearchFilter]
+    filter_backends = [InBBoxFilter, DjangoFilterBackend, DynamicSearchFilter,]
     search_fields = ['title', 'phone',]
     filterset_fields = ['city']
     bbox_filter_field = 'location'
@@ -34,21 +40,8 @@ class HelpRequestGeoViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = None
     serializer_class = HelpRequestGeoJSONSerializer
     bbox_filter_field = 'location'
-    filter_backends = (InBBoxFilter, )
+    filter_backends = (InBBoxFilter, DynamicSearchFilter,)
     bbox_filter_include_overlapping = True
-
-"""
-    API endpoint that allows search queries on the HelpRequest
-"""
-class DynamicSearchFilter(filters.SearchFilter):
-    def get_search_fields(self, view, request):
-        return request.GET.getlist('search_fields', [])
-
-class HelpRequestSearchViewSet(viewsets.ReadOnlyModelViewSet):
-    filter_backends = (DynamicSearchFilter,)
-    queryset = HelpRequest.objects.all()
-    pagination_class = None
-    serializer_class = HelpRequestSearchSerializer
 
 
 def home(request):
