@@ -1,0 +1,3 @@
+POSTGRES_DB=ayudapy
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres

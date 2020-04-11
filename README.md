@@ -24,6 +24,12 @@ cp conf/.env.example conf/.env # you should edit this file with your configurati
 ./manage.py migrate
 ./manage.py runserver
 ```
+## Install using docker-compose
+```
+git clone git@github.com:melizeche/ayudapy.git && cd ayudapy
+docker-compose up -d --build
+docker-compose exec app ./manage.py migrate
+```
 
 ## Contributing
 
