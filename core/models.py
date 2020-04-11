@@ -52,13 +52,13 @@ class HelpRequest(models.Model):
     title = models.CharField(
         "Título del pedido",
         max_length=200,
-        help_text="Descripción corta de que estás necesitando",
+        help_text="Descripción corta de qué estás necesitando",
         db_index=True,
     )
     message = models.TextField(
         "Descripción del pedido",
         help_text=mark_safe(
-            "Acá podes contar detalladamente lo que necesitas, <b>cuanto mejor cuentes tu situación es más probable que te quieran ayudar</b>"),
+            "Acá podés contar detalladamente lo que necesitás, <b>cuanto mejor cuentes tu situación es más probable que te quieran ayudar</b>"),
         max_length=2000,
         null=True,
         db_index=True,
@@ -67,7 +67,7 @@ class HelpRequest(models.Model):
     phone = models.CharField("Teléfono de contacto", max_length=30)
     address = models.CharField(
         "Dirección",
-        help_text="Para ayudar a quien quiera ayudarte saber la dirección, ciudad, barrio, referencias, o como llegar",
+        help_text="Para ayudar a quien quiera ayudarte saber la dirección, ciudad, barrio, referencias, o cómo llegar",
         max_length=400,
         blank=False,
         null=True,
@@ -146,6 +146,206 @@ class Status(models.Model):
         max_length=10,
         help_text="Código del estado",
         primary_key=True,
-        db_index=True
     )
     active = models.BooleanField(default=True, db_index=True)
+
+
+# Devices are going to be registered and identified by cookies (in browsers)
+# or by any other thing
+
+class Device(models.Model):
+    device_iid = models.AutoField(
+        primary_key=True
+    )
+    device_id = models.CharField(
+        "Id Dispositivo",
+        max_length=128,
+        help_text= "Identificador del Dispositivo",
+        unique=True
+    )
+    ua_string = models.CharField(
+        "User Agent",
+        max_length=512,
+        help_text = "User Agent",
+        null=True,
+        blank=True
+    )
+    status = models.CharField(
+        "Estado",
+        max_length=32,
+        help_text="Estado del Dispositivo",
+        default="ACTIVE"
+    )
+    dev_brand = models.CharField(
+        "Marca",
+        max_length=128,
+        help_text="Marca del Dispositivo",
+        null=True,
+        blank=True
+    )
+    dev_family = models.CharField(
+        "Familia",
+        max_length=128,
+        help_text="Familia del Dispositivo",
+        null=True,
+        blank=True
+    )
+    dev_model = models.CharField(
+        "Modelo",
+        max_length=128,
+        help_text="Modelo del Dispositivo",
+        null=True,
+        blank=True
+    )
+    os_family = models.CharField(
+        "SO",
+        max_length=128,
+        help_text="Sistema Operativo",
+        null=True,
+        blank=True
+    )
+    os_version = models.CharField(
+        "Version SO",
+        max_length=32,
+        help_text="Versión del Sistema Operativo",
+        null=True,
+        blank=True
+    )
+    browser_family = models.CharField(
+        "Navegador",
+        max_length=64,
+        help_text="Navegador del User Agent",
+        null=True,
+        blank=True
+    )
+    browser_version = models.CharField(
+        "Version Navegador",
+        max_length=32,
+        help_text="Versión del Navegador del User Agent",
+        null=True,
+        blank=True
+    )
+    created = models.DateTimeField(
+        "Creado",
+        help_text="Fecha de Creación del Dispositivo",
+        auto_now=True
+    )
+    last_seen = models.DateTimeField(
+        "Última Visita",
+        help_text="Última Visita del Dispositivo",
+        auto_now_add=True
+    )
+    created_ip_address = models.CharField(
+        "IP de creación",
+        help_text="Dirección IP desde la que fue creado",
+        max_length=32,
+        null=True,
+        blank=True
+    )
+
+
+# User: to represent a user in ayudapy
+
+class User(models.Model):
+    user_iid = models.AutoField(
+        primary_key=True
+    )
+    user_type = models.CharField(
+        "Tipo",
+        max_length=32,
+        help_text="Tipo de usuario"
+    )
+    user_value = models.CharField(
+        "Sujeto",
+        max_length=128,
+        help_text="Valor/Nombre de Usuario"
+    )
+    name = models.CharField(
+        "Nombre Completo",
+        max_length=512,
+        help_text = "Nombre Completo del Usuario",
+        null=True,
+        blank=True
+    )
+    email = models.CharField(
+        "Correo Electrónico",
+        max_length=256,
+        help_text="Correo Electrónico del Usuario",
+        null=True,
+        blank=True
+    )
+    phone = models.CharField(
+        "Teléfono",
+        max_length=64,
+        help_text="Número Telefónico del Usuario",
+        null=True,
+        blank=True
+    )
+    created = models.DateTimeField(
+        "Creado",
+        help_text="Fecha de Creación del Dispositivo",
+        auto_now=True
+    )
+    last_seen = models.DateTimeField(
+        "Última Visita",
+        help_text="Última Visita del Dispositivo",
+        auto_now_add=True
+    )
+    created_ip_address = models.CharField(
+        "IP de creación",
+        help_text="Dirección IP desde la que fue creado",
+        max_length=32,
+        null=True,
+        blank=True
+    )
+    address = models.CharField(
+        "Dirección",
+        help_text="Dirección por defecto del Usuario",
+        max_length=400,
+        blank=True,
+        null=True,
+    )
+    location = models.PointField(
+        "Ubicación",
+        help_text="Ubicación por defecto del Usuario",
+        blank=True,
+        null=True,
+    )
+    city = models.CharField(
+        "Ciudad",
+        max_length=30,
+        help_text="Dirección por defecto del Usuario",
+        blank=True,
+        null=True
+    )
+    city_code = models.CharField(
+        "Código Ciudad",
+        max_length=30,
+        help_text="Código de Ciudad por Defecto del Usuario",
+        blank=True,
+        null=True
+    )
+    password_hash = models.CharField(
+        "Password",
+        max_length=64,
+        help_text="Contraseña del Usuario",
+        blank=True,
+        null=True
+    )
+    password_salt = models.CharField(
+        "Password Salta",
+        max_length=64,
+        help_text="Salt de Contraseña del Usuario",
+        blank=True,
+        null=True
+    )
+
+
+class HelpRequestOwner(models.Model):
+    help_request = models.OneToOneField(
+        HelpRequest,
+        on_delete=models.CASCADE,
+        primary_key=True
+    )
+    user_iid = models.ForeignKey(User, on_delete=models.CASCADE)
+

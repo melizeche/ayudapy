@@ -12,7 +12,7 @@ from rest_framework_gis.filters import InBBoxFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .forms import HelpRequestForm
-from .models import HelpRequest, FrequentAskedQuestion
+from .models import HelpRequest, HelpRequestOwner, FrequentAskedQuestion
 from .serializers import HelpRequestSerializer, HelpRequestGeoJSONSerializer
 from .utils import text_to_image, image_to_base64
 
@@ -40,11 +40,35 @@ def home(request):
     return render(request, "home.html")
 
 
+def set_owner_and_update_values(request, new_help_request):
+    if 'user' in request.ayuda_session and request.ayuda_session['user'] is not None:
+        user = request.ayuda_session['user']
+        help_request_owner = HelpRequestOwner()
+        help_request_owner.help_request = new_help_request
+        help_request_owner.user_iid = user
+        help_request_owner.save()
+
+        # try to update user values
+        if user.name is None:
+            user.name = help_request_owner.help_request.name
+            user.city = help_request_owner.help_request.city
+            user.city_code = help_request_owner.help_request.city_code
+            user.phone = help_request_owner.help_request.phone
+            user.address = help_request_owner.help_request.address
+            user.location = help_request_owner.help_request.location
+            user.save()
+
 def request_form(request):
     if request.method == "POST":
         form = HelpRequestForm(request.POST, request.FILES)
         if form.is_valid():
             new_help_request = form.save()
+            try:
+                set_owner_and_update_values(request, new_help_request)
+            except Exception as e:
+                # ignore if we can't set the help_request_ownser
+                print(str(e))
+
             messages.success(request, "¡Se creó tu pedido exitosamente!")
             return redirect("pedidos-detail", id=new_help_request.id)
     else:

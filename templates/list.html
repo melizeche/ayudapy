@@ -100,20 +100,34 @@
     <script type="text/javascript">
         function main_map_init (map, options) {
             // Use Leaflet API here
-            const myRequest = new Request('/api/v1/helprequestsgeo/');
 
+            var clusters;
+            
             map.locate({setView : true});
             map.setZoom(12);
             //L.geoJson(data).addTo(map)
+
             map.addControl(new L.Control.Fullscreen({
                 title: {
                     'false': 'Ver en Pantalla Completa',
                     'true': 'Salir de Pantalla Completa'
                 }
             }));
-            fetch(myRequest)
+            
+            map.on('moveend', function() {
+              requestGeoData();
+            });
+
+            function requestGeoData() {
+              
+              const myRequest = new Request(`https://ayudapy.org/api/v1/helprequestsgeo/?in_bbox=${map.getBounds().toBBoxString()}`);
+              
+              fetch(myRequest)
               .then(response => response.json())
               .then(data => {
+                    if (clusters) {
+                      map.removeLayer(clusters);
+                    }
                     var markerClusters = L.markerClusterGroup();
                     var layerGroup = L.geoJSON(data, {
                       onEachFeature: function (feature, layer) {
@@ -121,12 +135,15 @@
                           '</h1></a><p class="has-text-weight-bold">Nombre: '+feature.properties.name+'</p><p>'+feature.properties.title+'</p>'+
                           '<a class="is-size-6" href="/pedidos/'+feature.properties.pk+'">Ver Pedido</a>';
                         layer.bindPopup(popup);
-
+                       
                         markerClusters.addLayer(layer);
+                        clusters = markerClusters;
                       }
                     });
                     map.addLayer( markerClusters );
                 });
+            }
+            
         }
 
         function geoFindMe() {
