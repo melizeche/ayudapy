@@ -12,8 +12,9 @@ from rest_framework_gis.filters import InBBoxFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .forms import HelpRequestForm
-from .models import HelpRequest, HelpRequestOwner
+from .models import HelpRequest, HelpRequestOwner, FrequentAskedQuestion
 from .serializers import HelpRequestSerializer, HelpRequestGeoJSONSerializer
+from .utils import text_to_image, image_to_base64
 
 
 class HelpRequestViewSet(viewsets.ReadOnlyModelViewSet):
@@ -80,6 +81,7 @@ def view_request(request, id):
     context = {
         "help_request": help_request,
         "thumbnail": help_request.thumb if help_request.picture else "/static/favicon.ico",
+        "phone_number_img": image_to_base64(text_to_image(help_request.phone, 300, 50))
     }
     if request.POST:
         if request.POST['vote']:
@@ -89,6 +91,23 @@ def view_request(request, id):
                 help_request.downvotes += 1
             help_request.save()
     return render(request, "request.html", context)
+
+
+def view_faq(request):
+    """ Frequent Asked Questions controller """
+    try:
+        faq_list = FrequentAskedQuestion.objects.filter(active=True)
+    except:
+        # no exception should break the flow.
+        faq_list = []
+
+    context = {
+        'faq_list': faq_list
+    }
+
+    template = "general_faq.html"
+
+    return render(request, template, context)
 
 
 def list_requests(request):
