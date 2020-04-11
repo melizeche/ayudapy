@@ -262,7 +262,7 @@
         var options = select.options;
 
         /* input.onchange is triggered when the user selects something from the datalist */
-        input = document.querySelector('input[name="cities"]');
+        input = document.querySelector('input');
 
         input.addEventListener('change', function () {
           var selectedValue = input.value;
@@ -278,8 +278,6 @@
             return;
           }
           var selectedOption = options[selectedIndex];
-          console.log(selectedOption)
-
           location.assign('/pedidos_ciudad/' + selectedOption.getAttribute('data-value'));
         });
 
