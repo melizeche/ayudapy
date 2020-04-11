@@ -43,12 +43,13 @@ class HelpRequest(models.Model):
     title = models.CharField(
         "Título del pedido",
         max_length=200,
-        help_text="Descripción corta de que estás necesitando",
+        help_text="Descripción corta de qué estás necesitando",
         db_index=True,
     )
     message = models.TextField(
         "Descripción del pedido",
-        help_text=mark_safe("Acá podes contar detalladamente lo que necesitas, <b>cuanto mejor cuentes tu situación es más probable que te quieran ayudar</b>"),
+        help_text=mark_safe(
+            "Acá podés contar detalladamente lo que necesitás, <b>cuanto mejor cuentes tu situación es más probable que te quieran ayudar</b>"),
         max_length=2000,
         null=True,
         db_index=True,
@@ -57,7 +58,7 @@ class HelpRequest(models.Model):
     phone = models.CharField("Teléfono de contacto", max_length=30)
     address = models.CharField(
         "Dirección",
-        help_text="Para ayudar a quien quiera ayudarte saber la dirección, ciudad, barrio, referencias, o como llegar",
+        help_text="Para ayudar a quien quiera ayudarte saber la dirección, ciudad, barrio, referencias, o cómo llegar",
         max_length=400,
         blank=False,
         null=True,

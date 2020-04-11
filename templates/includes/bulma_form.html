@@ -1,61 +1,79 @@
-{% load widget_tweaks %} 
-{% for hidden_field in form.hidden_fields %} 
-    {{ hidden_field }} 
+{% load widget_tweaks %}
+{% for hidden_field in form.hidden_fields %}
+{{ hidden_field }}
 {% endfor %}
 {% if form.non_field_errors %}
-    <div class="modal is-danger" role="alert">
-        {% for error in form.non_field_errors %} {{ error }} {% endfor %}
+<div class="modal is-danger" role="alert">
+    {% for error in form.non_field_errors %} {{ error }} {% endfor %}
+</div>
+{% endif %}
+{% if form.errors %}
+{% for field in form %}
+{% for error in field.errors %}
+<div class="message is-danger">
+    <div class="message-body">
+        {{ error|escape }}
     </div>
-{% endif %} 
+</div>
+{% endfor %}
+{% endfor %}
+{% for error in form.non_field_errors %}
+<div class="message is-danger">
+    <div class="message-body">
+        {{ error|escape }}
+    </div>
+</div>
+{% endfor %}
+{% endif %}
 {% for field in form.visible_fields %}
-    <div class="field">
-        {% if field.field.required %}            
-            <label class="label" for="{{ field.name }}">{{ field.label }}*</label>
-        {%else%}
-            <label class="label has-text-weight-normal" for="{{ field.name }}">{{ field.label }}</label>
-        {%endif%}
-        {% if field.help_text|safe %}
-        <p class="help text-muted">{{ field.help_text }}</p>
-        {% endif %}
+<div class="field">
+    {% if field.field.required %}
+    <label class="label" for="{{ field.name }}">{{ field.label }}*</label>
+    {%else%}
+    <label class="label has-text-weight-normal" for="{{ field.name }}">{{ field.label }}</label>
+    {%endif%}
+    {% if field.help_text|safe %}
+    <p class="help text-muted">{{ field.help_text }}</p>
+    {% endif %}
 
-        {% if form.is_bound %} 
-            {% if field.errors %}
-                <div class="control">
-                    {% render_field field class="input is-danger" %}
-                </div>
-                {% for error in field.errors %}
-                    <div class="help is-danger">
-                        {{ error }}
-                    </div>
-                {% endfor %} 
-            {% else %} 
-                {% render_field field class="input is-success" %} 
-            {% endif %} 
-        {% else %}
-            {% if field.field.widget.input_type == "file" %}
-                <p id="status"></p>
-                <div class="file has-name is-boxed is-primary is-fullwidth ">
-                <label class="file-label">
-                     {% render_field field class="file-input" %}
-                    <span class="file-cta">
+    {% if form.is_bound %}
+    {% if field.errors %}
+    <div class="control">
+        {% render_field field class="input is-danger" %}
+    </div>
+    {% for error in field.errors %}
+    <div class="help is-danger">
+        {{ error }}
+    </div>
+    {% endfor %}
+    {% else %}
+    {% render_field field class="input is-success" %}
+    {% endif %}
+    {% else %}
+    {% if field.field.widget.input_type == "file" %}
+    <p id="status"></p>
+    <div class="file has-name is-boxed is-primary is-fullwidth ">
+        <label class="file-label">
+            {% render_field field class="file-input" %}
+            <span class="file-cta">
                     <span class="file-icon">
                         <i class="fas fa-upload"></i>
                     </span>
                     <span class="file-label center">
-                        Adjunta una foto
+                        Adjuntá una foto
                     </span>
                     </span>
-                    <span class="file-name">
+            <span class="file-name">
                     
                     </span>
-                </label>
-                </div>
-            {% else %}
-                <div class="control">
-                    {{ field }}
-                </div>
-            {% endif %}
-        {% endif %}
-        
+        </label>
     </div>
+    {% else %}
+    <div class="control">
+        {{ field }}
+    </div>
+    {% endif %}
+    {% endif %}
+
+</div>
 {% endfor %}
