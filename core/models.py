@@ -83,9 +83,6 @@ class HelpRequest(models.Model):
     city = models.CharField(max_length=30, blank=True, default="", editable=False)
     city_code = models.CharField(max_length=30, blank=True, default="", editable=False)
 
-    class Meta:
-        unique_together = ["title", "name", "phone"]
-
     @property
     def thumb(self):
         filepath, extension = path.splitext(self.picture.url)
