@@ -6,6 +6,8 @@ from django.shortcuts import (
     render,
     get_object_or_404,
 )
+
+from urllib.parse import quote_plus
 from rest_framework import viewsets
 from rest_framework import filters
 from rest_framework_gis.filters import InBBoxFilter
@@ -78,11 +80,14 @@ def request_form(request):
 
 def view_request(request, id):
     help_request = get_object_or_404(HelpRequest, pk=id)
+
     context = {
         "help_request": help_request,
         "thumbnail": help_request.thumb if help_request.picture else "/static/favicon.ico",
         "phone_number_img": image_to_base64(text_to_image(help_request.phone, 300, 50)),
-        "whatsapp": '595'+help_request.phone[1:]
+        "whatsapp": '595'+help_request.phone[1:]+'?text=Hola+'+help_request.name
+                    +',+te+escribo+por+el+pedido+que+hiciste:+'+quote_plus(help_request.title)
+                    +'+https:'+'/'+'/'+'ayudapy.org/pedidos/'+help_request.id.__str__()
     }
     if request.POST:
         if request.POST['vote']:
@@ -112,10 +117,16 @@ def view_faq(request):
 
 
 def list_requests(request):
-    list_help_requests = HelpRequest.objects.filter(active=True).order_by("-added")  # TODO limit this
+    list_help_requests = HelpRequest.objects.filter(active=True)
     cities = [(i['city'], i['city_code']) for i in HelpRequest.objects.all().values('city', 'city_code').distinct().order_by('city_code')]
     query = list_help_requests
     geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
+
+    search = request.GET.get('q')
+    if search:
+        list_help_requests = list_help_requests.filter_by_search_query(search)
+
+    list_help_requests = list_help_requests.order_by("-added")
 
     # Start Pagination
     page = request.GET.get('page', 1)
@@ -130,7 +141,7 @@ def list_requests(request):
         list_help_requests_paginated = paginator.page(paginator.num_pages)
     # End Pagination
 
-    context = {"list_cities": cities, "list_help": list_help_requests, "geo": geo, "list_help_paginated": list_help_requests_paginated}
+    context = {"list_cities": cities, "list_help": list_help_requests, "geo": geo, "list_help_paginated": list_help_requests_paginated, "search": search}
     return render(request, "list.html", context)
 
 
@@ -142,7 +153,7 @@ def list_by_city(request, city):
 
     page= request.GET.get('page', 1)
     paginate_by = 25
-    paginator = Paginator(list_help_requests,paginate_by)
+    paginator = Paginator(list_help_requests, paginate_by)
     try:
         list_help_requests_paginated = paginator.page(page)
     except PageNotAnInteger:
