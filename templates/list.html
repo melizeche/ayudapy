@@ -74,39 +74,64 @@
           </div> 
         </div>
 
-        <article class="panel is-info">
+        <div class="panel is-info">
           <p class="panel-heading">
             Últimos pedidos de ayuda
           </p>
-          {% for pedido in list_help_paginated %}
-          <a href="/pedidos/{{pedido.id}}" class="panel-block is-success" title="{{pedido.added}}">
-            <span class="panel-icon">
-              <i class="fas fa-people-carry" aria-hidden="true"></i>
-            </span>
-            #{{pedido.id}} | {{pedido.title}} | {{pedido.added|naturaltime}}
-          </a>
-          {% endfor %}
-        </article>
+          <div style="overflow-y:auto;max-height:75vh;padding:15px;">
+            {% for pedido in list_help_paginated %}
+            <div class="media">
+              <a href="/pedidos/{{pedido.id}}" class="has-text-grey-dark" title="{{pedido.added}}">
+                <div class="media-content">
+                  <div class="content">
+                    <p>
+                      <i class="fas fa-people-carry" aria-hidden="true"></i>
+                      <strong style="color:#363636;">#{{pedido.id}} | {{pedido.name}}</strong>
+                      <small>{{pedido.added|naturaltime}}</small>
+                      <br>
+                      {{pedido.title}}
+                    </p>
+                  </div>
+                </div>
+            </a>
+          </div>
+            {% endfor %}
+        </div>
+      </div>
         {% include "nav_paginator_controls.html" %}
       </div>
     </div>
     <script type="text/javascript">
         function main_map_init (map, options) {
             // Use Leaflet API here
-            const myRequest = new Request('/api/v1/helprequestsgeo/');
 
+            var clusters;
+            
             map.locate({setView : true});
             map.setZoom(12);
             //L.geoJson(data).addTo(map)
+
             map.addControl(new L.Control.Fullscreen({
                 title: {
                     'false': 'Ver en Pantalla Completa',
                     'true': 'Salir de Pantalla Completa'
                 }
             }));
-            fetch(myRequest)
+            
+            map.on('moveend', function() {
+              requestGeoData();
+            });
+
+            function requestGeoData() {
+              
+              const myRequest = new Request(`/api/v1/helprequestsgeo/?in_bbox=${map.getBounds().toBBoxString()}`);
+              
+              fetch(myRequest)
               .then(response => response.json())
               .then(data => {
+                    if (clusters) {
+                      map.removeLayer(clusters);
+                    }
                     var markerClusters = L.markerClusterGroup();
                     var layerGroup = L.geoJSON(data, {
                       onEachFeature: function (feature, layer) {
@@ -114,12 +139,15 @@
                           '</h1></a><p class="has-text-weight-bold">Nombre: '+feature.properties.name+'</p><p>'+feature.properties.title+'</p>'+
                           '<a class="is-size-6" href="/pedidos/'+feature.properties.pk+'">Ver Pedido</a>';
                         layer.bindPopup(popup);
-
+                       
                         markerClusters.addLayer(layer);
+                        clusters = markerClusters;
                       }
                     });
                     map.addLayer( markerClusters );
                 });
+            }
+            
         }
 
         function geoFindMe() {
