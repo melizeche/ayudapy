@@ -81,7 +81,8 @@ def view_request(request, id):
     context = {
         "help_request": help_request,
         "thumbnail": help_request.thumb if help_request.picture else "/static/favicon.ico",
-        "phone_number_img": image_to_base64(text_to_image(help_request.phone, 300, 50))
+        "phone_number_img": image_to_base64(text_to_image(help_request.phone, 300, 50)),
+        "whatsapp": '595'+help_request.phone[1:]
     }
     if request.POST:
         if request.POST['vote']:
