@@ -62,6 +62,5 @@ target/
 #mine
 db.sqlite3
 listahu/settings.py
-conf/settings.py
 media/
 gunicorn_start.sh
