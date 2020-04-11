@@ -14,8 +14,8 @@ from rest_framework_gis.filters import InBBoxFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .forms import HelpRequestForm
-from .models import HelpRequest, HelpRequestOwner, FrequentAskedQuestion
-from .serializers import HelpRequestSerializer, HelpRequestGeoJSONSerializer
+from .models import HelpRequest, HelpRequestOwner, FrequentAskedQuestion, HelpRequestQuerySet
+from .serializers import HelpRequestSerializer, HelpRequestGeoJSONSerializer, HelpRequestSearchSerializer
 from .utils import text_to_image, image_to_base64
 
 
@@ -36,6 +36,19 @@ class HelpRequestGeoViewSet(viewsets.ReadOnlyModelViewSet):
     bbox_filter_field = 'location'
     filter_backends = (InBBoxFilter, )
     bbox_filter_include_overlapping = True
+
+"""
+    API endpoint that allows search queries on the HelpRequest
+"""
+class DynamicSearchFilter(filters.SearchFilter):
+    def get_search_fields(self, view, request):
+        return request.GET.getlist('search_fields', [])
+
+class HelpRequestSearchViewSet(viewsets.ReadOnlyModelViewSet):
+    filter_backends = (DynamicSearchFilter,)
+    queryset = HelpRequest.objects.all()
+    pagination_class = None
+    serializer_class = HelpRequestSearchSerializer
 
 
 def home(request):
