@@ -55,18 +55,33 @@ function geoFindMe() {
             const status = document.querySelector('#status');
             const boton = document.querySelector('#find-me');
 
+            function makePoint(longitude, latitude) {
+              return JSON.stringify({
+                type: 'Point',
+                coordinates: [longitude, latitude]
+              });
+            }
+
             function success(position) {
               const latitude  = position.coords.latitude;
               const longitude = position.coords.longitude;
 
-              boton.textContent = 'Encontré, seguí completando tus datos';
+              boton.textContent = 'Encontré, seguí completando tus datos !';
               boton.disabled = true;
               status.textContent = '';
+
+              document.getElementById('id_location').innerHTML = makePoint(longitude, latitude);
               
-              //you = L.marker([latitude, longitude], {opacity: 0.3, title:'Tu ubicación'}).addTo(maps[0]);
-              //you.bindPopup('Tu ubicación').openPopup();
-              L.circle(new L.LatLng(latitude, longitude), {radius: 10}).addTo(maps[0]);
-              maps[0].panTo(new L.LatLng(latitude, longitude), 16);
+              // No mostramos mas el circle, ya tenemos marker
+              //L.circle(new L.LatLng(latitude, longitude), {radius: 10}).addTo(maps[0]);
+              const you = L.marker([latitude, longitude], {draggable: true, opacity: 0.9, title:'Tu ubicación'}).addTo(maps[0]);
+              you.bindPopup('Moveme si queres !').openPopup();
+              
+              maps[0].setView([latitude, longitude], 16);
+
+              you.on('dragend', function (e) {
+                document.getElementById('id_location').innerHTML = makePoint(e.target._latlng.lng, e.target._latlng.lat);
+              });
             }
 
             function error() {
