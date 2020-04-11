@@ -38,10 +38,19 @@ cp conf/settings.py.example conf/settings.py # you should edit this file with yo
 
 ## Contributors / Thanks
 
-* Agustin Gómez https://github.com/gomezag
-* Carlos Vallejos  https://github.com/cabupy
+* Agustín Gómez https://github.com/gomezag
+* Cabu Vallejos  https://github.com/cabupy
 * Diosnel Velázquez https://github.com/diosnelv
+* Félix Pedrozo https://github.com/X1lef
+* Guillermo Caballero https://github.com/Guillecaba
+* Jean Claude Adams https://github.com/jcroot
+* Jesus Alderete https://github.com/jesus-bucksapp
+* Joaquín Olivera https://github.com/joaquinolivera
+* Jorge Ramírez https://github.com/jorgeramirez
 * Juan Hüttemann https://github.com/juanhuttemann
+* Leonardo Carreras https://github.com/leocarreras
+* Manuel Nuñez https://github.com/manununhez
+* Osbarge https://github.com/osbarge
 
 ## TODO
 

@@ -124,7 +124,7 @@
 
             function requestGeoData() {
               
-              const myRequest = new Request(`https://ayudapy.org/api/v1/helprequestsgeo/?in_bbox=${map.getBounds().toBBoxString()}`);
+              const myRequest = new Request(`/api/v1/helprequestsgeo/?in_bbox=${map.getBounds().toBBoxString()}`);
               
               fetch(myRequest)
               .then(response => response.json())

@@ -10,3 +10,4 @@ djangorestframework==3.11.0
 django-filter==2.2.0
 djangorestframework-gis==0.15
 django-silk==4.0.1
+ua-parser~=0.10
