@@ -6,6 +6,8 @@ from django.shortcuts import (
     render,
     get_object_or_404,
 )
+
+from urllib.parse import quote_plus
 from rest_framework import viewsets
 from rest_framework import filters
 from rest_framework_gis.filters import InBBoxFilter
@@ -78,11 +80,14 @@ def request_form(request):
 
 def view_request(request, id):
     help_request = get_object_or_404(HelpRequest, pk=id)
+
     context = {
         "help_request": help_request,
         "thumbnail": help_request.thumb if help_request.picture else "/static/favicon.ico",
         "phone_number_img": image_to_base64(text_to_image(help_request.phone, 300, 50)),
-        "whatsapp": '595'+help_request.phone[1:]
+        "whatsapp": '595'+help_request.phone[1:]+'?text=Hola+'+help_request.name+
+                    ',+te+escribo+por+el+pedido+que+hiciste:+'+'+'
+                    +quote_plus(help_request.title)+'+https:'+'/'+'/'+'ayudapy.org/pedidos/'+help_request.id.__str__()
     }
     if request.POST:
         if request.POST['vote']:
