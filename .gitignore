@@ -65,3 +65,4 @@ listahu/settings.py
 conf/settings.py
 media/
 gunicorn_start.sh
+conf/.env

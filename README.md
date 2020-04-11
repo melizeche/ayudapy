@@ -19,7 +19,7 @@ cd ayudapy
 python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt
-cp conf/settings.py.example conf/settings.py # you should edit this file with your configuration
+cp conf/.env.example conf/.env # you should edit this file with your configuration
 ./manage.py migrate
 ./manage.py runserver
 ```
