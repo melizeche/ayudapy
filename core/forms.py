@@ -1,5 +1,6 @@
 from django import forms
 from leaflet.forms.widgets import LeafletWidget
+from django.core.exceptions import NON_FIELD_ERRORS
 
 from .models import HelpRequest
 
@@ -35,4 +36,9 @@ class HelpRequestForm(forms.ModelForm):
             "name": forms.TextInput(attrs={"class": "input"}),
             "phone": forms.TextInput(attrs={"class": "input", "type": "tel"}),
             "address": forms.TextInput(attrs={"class": "input"}),
+        }
+        error_messages = {
+            NON_FIELD_ERRORS: {
+                'unique_together': "Registro ya ingresado, no puede duplicar mismo pedido.",
+            }
         }

@@ -12,6 +12,7 @@ from geopy.geocoders import Nominatim
 
 from core.utils import create_thumbnail, rename_img
 
+
 logger = logging.getLogger(__name__)
 THUMBNAIL_BASEWIDTH = 50
 
@@ -23,6 +24,30 @@ class HelpRequestQuerySet(models.QuerySet):
         return self.filter(search_vector=query).annotate(rank=rank).order_by("-rank")
 
 
+class FrequentAskedQuestion(models.Model):
+    """
+    Frequent asked question model.
+    Issue #6
+    """
+
+    # defines rendering order in template. Do not use IntegerField
+    order = models.CharField("orden", max_length=3)
+    question = models.CharField("Pregunta", max_length=200)
+    answer = models.TextField("Respuesta", max_length=1000)
+
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        # table actual name
+        db_table = "core_faq"
+
+        # default "ORDER BY" statement
+        ordering = ["order"]
+
+    def __str__(self):
+        return self.question
+
+
 class HelpRequest(models.Model):
     title = models.CharField(
         "Título del pedido",
@@ -32,7 +57,8 @@ class HelpRequest(models.Model):
     )
     message = models.TextField(
         "Descripción del pedido",
-        help_text=mark_safe("Acá podes contar detalladamente lo que necesitas, <b>cuanto mejor cuentes tu situación es más probable que te quieran ayudar</b>"),
+        help_text=mark_safe(
+            "Acá podes contar detalladamente lo que necesitas, <b>cuanto mejor cuentes tu situación es más probable que te quieran ayudar</b>"),
         max_length=2000,
         null=True,
         db_index=True,
