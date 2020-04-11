@@ -64,3 +64,8 @@ db.sqlite3
 listahu/settings.py
 media/
 gunicorn_start.sh
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
