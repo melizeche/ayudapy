@@ -47,6 +47,13 @@
           <span>Mi ubicación</span>
         </button>
         <p id="status"></p>
+        <p class="padding">
+          Necesidades mas comunes:
+          <br />
+          {% for mt in common_tags %}
+            <a href="#" class="tag is-link">{{mt}}</a>
+          {% endfor %}
+        </p>
       </div>
       <div class="column is-6">
         <div class="row is-centered cities-dropdown-wrapper">

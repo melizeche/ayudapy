@@ -12,18 +12,20 @@ from rest_framework import viewsets
 from rest_framework import filters
 from rest_framework_gis.filters import InBBoxFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from django.template.defaultfilters import slugify
 
 from .forms import HelpRequestForm
 from .models import HelpRequest, HelpRequestOwner, FrequentAskedQuestion
 from .serializers import HelpRequestSerializer, HelpRequestGeoJSONSerializer
 from .utils import text_to_image, image_to_base64
+from taggit.models import Tag
 
 
 class HelpRequestViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = HelpRequest.objects.filter(active=True)
     serializer_class = HelpRequestSerializer
     filter_backends = [InBBoxFilter, DjangoFilterBackend, filters.SearchFilter]
-    search_fields = ['title', 'phone',]
+    search_fields = ['title', 'phone', ]
     filterset_fields = ['city']
     bbox_filter_field = 'location'
     bbox_filter_include_overlapping = True
@@ -34,7 +36,7 @@ class HelpRequestGeoViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = None
     serializer_class = HelpRequestGeoJSONSerializer
     bbox_filter_field = 'location'
-    filter_backends = (InBBoxFilter, )
+    filter_backends = (InBBoxFilter,)
     bbox_filter_include_overlapping = True
 
 
@@ -71,6 +73,10 @@ def request_form(request):
                 # ignore if we can't set the help_request_ownser
                 print(str(e))
 
+            new_help_request = form.save(commit=False)
+            new_help_request.slug = slugify(new_help_request.title)
+            new_help_request.save()
+            form.save_m2m()
             messages.success(request, "¡Se creó tu pedido exitosamente!")
             return redirect("pedidos-detail", id=new_help_request.id)
     else:
@@ -117,10 +123,16 @@ def view_faq(request):
 
 
 def list_requests(request):
+    list_help_requests = HelpRequest.objects.filter(active=True).order_by("-added")  # TODO limit this
+    cities = [(i['city'], i['city_code']) for i in
+              HelpRequest.objects.all().values('city', 'city_code').distinct().order_by('city_code')]
     list_help_requests = HelpRequest.objects.filter(active=True)
     cities = [(i['city'], i['city_code']) for i in HelpRequest.objects.all().values('city', 'city_code').distinct().order_by('city_code')]
     query = list_help_requests
     geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
+
+    # Show most common tags
+    common_tags = HelpRequest.tags.most_common()
 
     search = request.GET.get('q')
     if search:
@@ -141,7 +153,14 @@ def list_requests(request):
         list_help_requests_paginated = paginator.page(paginator.num_pages)
     # End Pagination
 
-    context = {"list_cities": cities, "list_help": list_help_requests, "geo": geo, "list_help_paginated": list_help_requests_paginated, "search": search}
+    context = {
+        "list_cities": cities,
+        "list_help": list_help_requests,
+        "geo": geo,
+        "list_help_paginated": list_help_requests_paginated,
+        "common_tags": common_tags,
+        "search": search
+    }
     return render(request, "list.html", context)
 
 
@@ -151,8 +170,13 @@ def list_by_city(request, city):
     query = list_help_requests
     geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
 
-    page= request.GET.get('page', 1)
+    page = request.GET.get('page', 1)
     paginate_by = 25
+    paginator = Paginator(list_help_requests, paginate_by)
+
+    # Show most common tags
+    common_tags = HelpRequest.tags.most_common()
+
     paginator = Paginator(list_help_requests, paginate_by)
     try:
         list_help_requests_paginated = paginator.page(page)
@@ -161,5 +185,22 @@ def list_by_city(request, city):
     except EmptyPage:
         list_help_requests_paginated = paginator.page(paginator.num_pages)
 
-    context = {"list_help": list_help_requests, "geo": geo, "city": city, "list_help_paginated": list_help_requests_paginated}
+    context = {
+        "list_help": list_help_requests,
+        "geo": geo,
+        "city": city,
+        "list_help_paginated": list_help_requests_paginated,
+        "common_tags": common_tags
+    }
     return render(request, "list_by_city.html", context)
+
+
+def tagged(request, slug):
+    tag = get_object_or_404(Tag, slug=slug)
+    # Filter posts by tag name
+    posts = HelpRequest.objects.filter(tags=tag)
+    context = {
+        'tag': tag,
+        'posts': posts
+    }
+    return render(request, 'help_request_form.html', context)
