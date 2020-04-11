@@ -262,8 +262,8 @@
         var options = select.options;
 
         /* input.onchange is triggered when the user selects something from the datalist */
-        input = document.querySelector('input');
-
+        input = document.querySelector('input[name="cities"]');
+        
         input.addEventListener('change', function () {
           var selectedValue = input.value;
           var selectedIndex;
