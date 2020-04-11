@@ -9,6 +9,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.safestring import mark_safe
 from geopy.geocoders import Nominatim
+from taggit.managers import TaggableManager
 
 from core.utils import create_thumbnail, rename_img
 
@@ -91,6 +92,10 @@ class HelpRequest(models.Model):
     downvotes = models.IntegerField(default=0, blank=True)
     city = models.CharField(max_length=30, blank=True, default="", editable=False)
     city_code = models.CharField(max_length=30, blank=True, default="", editable=False)
+    tags = TaggableManager(
+        "Escribe tus necesidades",
+        help_text="Podes escribir todo lo que necesitas, Ej. leche, harina, arroz, pañal"
+    )
     search_vector = SearchVectorField()
     objects = HelpRequestQuerySet.as_manager()
 

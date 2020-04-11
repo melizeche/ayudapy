@@ -29,6 +29,32 @@
 </div>
     <div class="columns is-centered">
       <div class="column is-6">
+        <!-- Start Switch clustering -->
+        <div style="margin-bottom: .75em; ">
+          <div class="field">
+            <input id="switchNormal" type="checkbox" onclick="groupMarkerRequest()" name="switchNormal" class="switch">
+            <label for="switchNormal">Agrupar pedidos</label>
+          </div>
+        </div>
+        <!-- End Switch clustering -->
+        <div class="row">
+          {% leaflet_map "main" callback="main_map_init" %}
+        </div>
+        <button id="find-me" class="button is-success  is-outlined is-fullwidth"><span class="icon is-small">
+            <i class="fas fa-location-arrow"></i>
+          </span>
+          <span>Mi ubicación</span>
+        </button>
+        <p id="status"></p>
+        <p class="padding">
+          Necesidades mas comunes:
+          <br />
+          {% for mt in common_tags %}
+            <a href="#" class="tag is-link">{{mt}}</a>
+          {% endfor %}
+        </p>
+      </div>
+      <div class="column is-6">
         <div class="row is-centered cities-dropdown-wrapper">
           <div class="columns is-vcentered is-desktop">
             <div class="column">

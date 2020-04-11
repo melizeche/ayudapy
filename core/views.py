@@ -8,10 +8,16 @@ from django.shortcuts import (
 )
 
 from urllib.parse import quote_plus
+from rest_framework import viewsets
+from rest_framework import filters
+from rest_framework_gis.filters import InBBoxFilter
+from django_filters.rest_framework import DjangoFilterBackend
+from django.template.defaultfilters import slugify
 
 from .forms import HelpRequestForm
 from .models import HelpRequest, HelpRequestOwner, FrequentAskedQuestion
 from .utils import text_to_image, image_to_base64
+from taggit.models import Tag
 
 
 def home(request):
@@ -47,6 +53,10 @@ def request_form(request):
                 # ignore if we can't set the help_request_ownser
                 print(str(e))
 
+            new_help_request = form.save(commit=False)
+            new_help_request.slug = slugify(new_help_request.title)
+            new_help_request.save()
+            form.save_m2m()
             messages.success(request, "¡Se creó tu pedido exitosamente!")
             return redirect("pedidos-detail", id=new_help_request.id)
     else:
@@ -94,7 +104,12 @@ def view_faq(request):
 
 def list_requests(request):
     cities = [(i['city'], i['city_code']) for i in HelpRequest.objects.all().values('city', 'city_code').distinct().order_by('city_code')]
-    context = {"list_cities": cities}
+    # Show most common tags
+    common_tags = HelpRequest.tags.most_common()
+    context = {
+        "list_cities": cities,
+        "common_tags": common_tags
+    }
     return render(request, "list.html", context)
 
 
@@ -107,6 +122,11 @@ def list_by_city(request, city):
     page= request.GET.get('page', 1)
     paginate_by = 25
     paginator = Paginator(list_help_requests, paginate_by)
+
+    # Show most common tags
+    common_tags = HelpRequest.tags.most_common()
+
+    paginator = Paginator(list_help_requests, paginate_by)
     try:
         list_help_requests_paginated = paginator.page(page)
     except PageNotAnInteger:
@@ -114,5 +134,22 @@ def list_by_city(request, city):
     except EmptyPage:
         list_help_requests_paginated = paginator.page(paginator.num_pages)
 
-    context = {"list_help": list_help_requests, "geo": geo, "city": city, "list_help_paginated": list_help_requests_paginated}
+    context = {
+        "list_help": list_help_requests,
+        "geo": geo,
+        "city": city,
+        "list_help_paginated": list_help_requests_paginated,
+        "common_tags": common_tags
+    }
     return render(request, "list_by_city.html", context)
+
+
+def tagged(request, slug):
+    tag = get_object_or_404(Tag, slug=slug)
+    # Filter posts by tag name
+    posts = HelpRequest.objects.filter(tags=tag)
+    context = {
+        'tag': tag,
+        'posts': posts
+    }
+    return render(request, 'help_request_form.html', context)

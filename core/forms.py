@@ -11,6 +11,7 @@ class HelpRequestForm(forms.ModelForm):
         fields = (
             "title",
             "message",
+            "tags",
             "name",
             "phone",
             "location",
@@ -36,6 +37,7 @@ class HelpRequestForm(forms.ModelForm):
             "name": forms.TextInput(attrs={"class": "input"}),
             "phone": forms.TextInput(attrs={"class": "input", "type": "tel"}),
             "address": forms.TextInput(attrs={"class": "input"}),
+            "tags": forms.TextInput(attrs={"class": "input", "data-role": "tagsinput"})
         }
         error_messages = {
             NON_FIELD_ERRORS: {

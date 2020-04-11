@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load leaflet_tags %}
-{% load humanize %} 
+{% load humanize %}
 
 {% block bread %}
   <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
@@ -31,6 +31,16 @@
 {% endif %}
     <div class="columns is-centered">
       <div class="column is-6">
+        {% leaflet_map "main" callback="main_map_init" %}
+        <button class="button is-success  is-outlined is-fullwidth" onclick="locateUser()" disabled>Mi ubicacion</button>
+
+          <p class="padding">
+              Necesidades mas comunes:
+              <br/>
+              {% for mt in common_tags %}
+              <a href="#" class="tag is-link">{{mt}}</a>
+              {% endfor %}
+          </p>
         <!-- Start Switch clustering -->
         <div style="margin-bottom: .75em; ">
           <div class="field">
@@ -71,7 +81,7 @@
        {% include "nav_paginator_controls.html" %}
       </div>
     </div>
-    
+
     <script type="text/javascript">
       // start on load
       switchClusteringInit();
