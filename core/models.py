@@ -303,3 +303,12 @@ class User(models.Model):
         null=True
     )
 
+
+class HelpRequestOwner(models.Model):
+    help_request = models.OneToOneField(
+        HelpRequest,
+        on_delete=models.CASCADE,
+        primary_key=True
+    )
+    user_iid = models.ForeignKey(User, on_delete=models.CASCADE)
+
