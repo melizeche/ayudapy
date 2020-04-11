@@ -7,7 +7,6 @@ from os import path
 from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
 
-
 logger = logging.getLogger(__name__)
 
 if "core" in os.getcwd():
@@ -45,11 +44,11 @@ def rename_img(instance, filename):  # TODO: Use f'strings' instead of % format
         format = time.strftime("%Y%m%d%H%M", time.localtime()) + "-" + filename
     else:
         format = (
-            str(instance.phone)
-            + "_"
-            + time.strftime("%Y%m%d%H%M", time.localtime())
-            + "_"
-            + filename
+                str(instance.phone)
+                + "_"
+                + time.strftime("%Y%m%d%H%M", time.localtime())
+                + "_"
+                + filename
         )
     return os.path.join(path, format)
 
@@ -59,7 +58,7 @@ def text_to_image(text, width, height) -> Image:
     d = ImageDraw.Draw(img)
     fnt = ImageFont.truetype(FONT_PATH, 30)
     w, h = d.textsize(text, font=fnt)
-    d.text(((width-w)/2, (height-h)/2), text, font=fnt, align="center", fill=(255, 255, 255))
+    d.text(((width - w) / 2, (height - h) / 2), text, font=fnt, align="center", fill=(255, 255, 255))
     return img
 
 

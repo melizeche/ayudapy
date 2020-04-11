@@ -13,7 +13,6 @@ from taggit.managers import TaggableManager
 
 from core.utils import create_thumbnail, rename_img
 
-
 logger = logging.getLogger(__name__)
 THUMBNAIL_BASEWIDTH = 500
 
@@ -92,6 +91,7 @@ class HelpRequest(models.Model):
     downvotes = models.IntegerField(default=0, blank=True)
     city = models.CharField(max_length=30, blank=True, default="", editable=False)
     city_code = models.CharField(max_length=30, blank=True, default="", editable=False)
+    slug = models.SlugField(unique=True, max_length=100, null=True, blank=True)
     tags = TaggableManager(
         "Escribe tus necesidades",
         help_text="Podes escribir todo lo que necesitas, Ej. leche, harina, arroz, pañal"
