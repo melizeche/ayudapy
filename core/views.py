@@ -14,15 +14,21 @@ from rest_framework_gis.filters import InBBoxFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .forms import HelpRequestForm
-from .models import HelpRequest, HelpRequestOwner, FrequentAskedQuestion
+from .models import HelpRequest, HelpRequestOwner, FrequentAskedQuestion, HelpRequestQuerySet
 from .serializers import HelpRequestSerializer, HelpRequestGeoJSONSerializer
 from .utils import text_to_image, image_to_base64
 
+"""
+    API endpoints that allows search queries on HelpRequest
+"""
+class DynamicSearchFilter(filters.SearchFilter):
+    def get_search_fields(self, view, request):
+        return request.GET.getlist('search_fields', [])
 
 class HelpRequestViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = HelpRequest.objects.filter(active=True)
+    queryset = HelpRequest.objects.filter(active=True).order_by('-id')
     serializer_class = HelpRequestSerializer
-    filter_backends = [InBBoxFilter, DjangoFilterBackend, filters.SearchFilter]
+    filter_backends = [InBBoxFilter, DjangoFilterBackend, DynamicSearchFilter,]
     search_fields = ['title', 'phone',]
     filterset_fields = ['city']
     bbox_filter_field = 'location'
@@ -30,11 +36,11 @@ class HelpRequestViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class HelpRequestGeoViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = HelpRequest.objects.filter(active=True)
+    queryset = HelpRequest.objects.filter(active=True).order_by('-pk')
     pagination_class = None
     serializer_class = HelpRequestGeoJSONSerializer
     bbox_filter_field = 'location'
-    filter_backends = (InBBoxFilter, )
+    filter_backends = (InBBoxFilter, DynamicSearchFilter,)
     bbox_filter_include_overlapping = True
 
 
@@ -85,9 +91,9 @@ def view_request(request, id):
         "help_request": help_request,
         "thumbnail": help_request.thumb if help_request.picture else "/static/favicon.ico",
         "phone_number_img": image_to_base64(text_to_image(help_request.phone, 300, 50)),
-        "whatsapp": '595'+help_request.phone[1:]+'?text=Hola+'+help_request.name+
-                    ',+te+escribo+por+el+pedido+que+hiciste:+'+'+'
-                    +quote_plus(help_request.title)+'+https:'+'/'+'/'+'ayudapy.org/pedidos/'+help_request.id.__str__()
+        "whatsapp": '595'+help_request.phone[1:]+'?text=Hola+'+help_request.name
+                    +',+te+escribo+por+el+pedido+que+hiciste:+'+quote_plus(help_request.title)
+                    +'+https:'+'/'+'/'+'ayudapy.org/pedidos/'+help_request.id.__str__()
     }
     if request.POST:
         if request.POST['vote']:

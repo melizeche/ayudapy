@@ -11,3 +11,4 @@ django-filter==2.2.0
 djangorestframework-gis==0.15
 django-silk==4.0.1
 ua-parser~=0.10
+django-environ==0.4.5
