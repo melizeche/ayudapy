@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load leaflet_tags %}
 {% load humanize %}
+{% load static %}
 
 {% block bread %}
   <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
@@ -22,6 +23,9 @@
 {% block content%}
 <div class="title center">
   Pedidos cercanos {{help_request.id}}
+  <div id="loading-indicator" class="loader-wrapper">
+    <div class="loader is-loading"></div>
+  </div>
 </div>
 {% if not list_help %}
 <div class="notification is-warning center is-size-5">
@@ -29,25 +33,6 @@
 </div>
 {% endif %}
     <div class="columns is-centered">
-      <div class="column is-6">
-        <!-- Start Switch clustering -->
-        <div style="margin-bottom: .75em; ">
-          <div class="field">
-            <input id="switchNormal" type="checkbox" onclick="groupMarkerRequest()" name="switchNormal" class="switch">
-            <label for="switchNormal">Agrupar pedidos</label>
-          </div>
-        </div>
-        <!-- End Switch clustering -->
-        <div class="row">
-          {% leaflet_map "main" callback="main_map_init" %}
-        </div>
-        <button id="find-me" class="button is-success  is-outlined is-fullwidth"><span class="icon is-small">
-            <i class="fas fa-location-arrow"></i>
-          </span>
-          <span>Mi ubicación</span>
-        </button>
-        <p id="status"></p>
-      </div>
       <div class="column is-6">
         <div class="row is-centered cities-dropdown-wrapper">
           <div class="columns is-vcentered is-desktop">
@@ -79,25 +64,41 @@
           </div> 
         </div>
 
-      <div>  
-        <div class="field has-addons">
-          <div class="control is-expanded">
-            <input 
-              id="q" 
-              class="input is-small" 
-              type="text" 
-              name="q"
-              placeholder="Búsqueda por título o descripción, Ejemplo: Pañal" 
-              value="{% if search%}{{ search }}{% endif %}"
-            >
+
+	<div class="row">
+	  {% leaflet_map "main" callback="mainMapInit" %}
+	</div>
+	<button id="find-me" class="button is-success  is-outlined is-fullwidth"><span class="icon is-small">
+	    <i class="fas fa-location-arrow"></i>
+	  </span>
+	  <span>Mi ubicación</span>
+	</button>
+	<p id="status"></p>
+      </div>
+
+
+
+      <div class="column is-6">
+	<div class="columns is-vcentered is-desktop">
+	  <div class="column">
+	  <div class="field has-addons">
+	    <div class="control is-expanded">
+	      <input
+		id="search-text-field"
+		class="input is-small"
+		type="text"
+		name="search-text-field"
+		placeholder="Búsqueda por título o descripción, Ejemplo: Pañal"
+	      >
+	    </div>
+	    <div class="control" >
+	      <button class="button is-warning is-small" id="search-button">
+		Buscar
+	      </button>
+	    </div>
           </div>
-          <div class="control" >
-            <button class="button is-warning is-small" onclick="getQuery()">
-              Buscar
-            </button>
           </div>
         </div>
-      </div>
 
       <br>
 
@@ -106,209 +107,67 @@
             Últimos pedidos de ayuda
           </p>
           <div style="overflow-y:auto;max-height:75vh;padding:15px;">
-            {% for pedido in list_help_paginated %}
-            <div class="media">
-              <a href="/pedidos/{{pedido.id}}" class="has-text-grey-dark" title="{{pedido.added}}">
-                <div class="media-content">
-                  <div class="content">
-                    <p>
-                      <i class="fas fa-people-carry" aria-hidden="true"></i>
-                      <strong style="color:#363636;">#{{pedido.id}} | {{pedido.name}}</strong>
-                      <small>{{pedido.added|naturaltime}}</small>
-                      <br>
-                      {{pedido.title}}
-                    </p>
-                  </div>
-                </div>
-            </a>
+	    <div id="requests-table">
+	    </div>
           </div>
-            {% endfor %}
         </div>
-      </div>
-        {% include "nav_paginator_controls.html" %}
+	<div id="requests-table-paginator"></div>
       </div>
     </div>
+    <script type="text/javascript" src="{% static 'scripts/list.js' %}"></script>
+
     <script type="text/javascript">
-      //===== start onload
-      switchClusteringInit();
-
-      document.querySelector('#find-me').addEventListener('click', geoFindMe);
-
-      setupCitiesDropdown()
-      //===== end onload
-
-      document.getElementById('q').addEventListener('keypress', function(e) {
-        if (e.charCode == 13) getQuery();
-      });
-
-      function getQuery() {
-        const texto = document.getElementById('q').value.trim();
-        if (texto.length >= 3) location.href = `/pedidos?q=${texto}`;      
+      function mainMapInit(map, options) {
+	new ListRequestView(map, options);
       }
-
-      function switchClusteringInit() {
-        //We check if the browser support local Storage caching
-        //in case does not, we disable the switch
-        var switchElement = document.getElementById('switchNormal');
-
-        if (typeof (Storage) === "undefined") {
-          switchElement.disabled = true;
-        } else {
-          switchElement.checked = false;
-          var isGroupMarksActive = JSON.parse(localStorage.getItem("group_markers_setting"));
-          if (isGroupMarksActive != null) {
-            if (isGroupMarksActive) {
-              switchElement.checked = true;
-            }
-          }
-        }
-      }
-
-      function main_map_init(map, options) {
-          // Use Leaflet API here
-
-          var clusters;
-
-          map.setZoom(12);
-          //L.geoJson(data).addTo(map)
-
-          map.addControl(new L.Control.Fullscreen({
-            title: {
-              'false': 'Ver en Pantalla Completa',
-              'true': 'Salir de Pantalla Completa'
-            }
-          }));
-
-          map.on('moveend', function () {
-            requestGeoData();
-          });
-
-          function requestGeoData() {
-
-            const myRequest = new Request(`/api/v1/helprequestsgeo/?in_bbox=${map.getBounds().toBBoxString()}`);
-
-            fetch(myRequest)
-              .then(response => response.json())
-              .then(data => {
-                if (clusters) {
-                  map.removeLayer(clusters);
-                }
-
-                //We check the switch status
-                var isGroupMarksActive = JSON.parse(localStorage.getItem("group_markers_setting"));
-                if (!isGroupMarksActive) {
-                  clusters = loadMarkers(map, data);//load markers without clustering
-                } else {
-                  clusters = loadMarkersAndGroup(map, data);
-                }
-              });
-          }
-
-        }
-
-      function loadMarkersAndGroup(map, data) {
-        var markerClusters = L.markerClusterGroup();
-        var layerGroup = L.geoJSON(data, {
-          onEachFeature: function (feature, layer) {
-            var popup = '<a class="subtitle" href="/pedidos/' + feature.properties.pk + '"><h1>Pedido #' + feature.properties.pk +
-              '</h1></a><p class="has-text-weight-bold">Nombre: ' + feature.properties.name + '</p><p>' + feature.properties.title + '</p>' +
-              '<a class="is-size-6" href="/pedidos/' + feature.properties.pk + '">Ver Pedido</a>';
-            layer.bindPopup(popup);
-
-            markerClusters.addLayer(layer);
-          }
-        });
-        map.addLayer(markerClusters);
-
-        return markerClusters;
-      }
-
-      function loadMarkers(map, data) {
-        var layerGroup = L.geoJSON(data, {
-          onEachFeature: function (feature, layer) {
-            var popup = '<a class="subtitle" href="/pedidos/' + feature.properties.pk + '"><h1>Pedido #' + feature.properties.pk +
-              '</h1></a><p class="has-text-weight-bold">Nombre: ' + feature.properties.name + '</p><p>' + feature.properties.title + '</p>' +
-              '<a class="is-size-6" href="/pedidos/' + feature.properties.pk + '">Ver Pedido</a>';
-            layer.bindPopup(popup);
-          }
-        }).addTo(map);
-
-        return layerGroup;
-      }
-
-      function groupMarkerRequest() {
-        //Update cached status
-        var checkbox = document.getElementById('switchNormal');
-        if (checkbox.checked != true) {
-          localStorage.setItem('group_markers_setting', JSON.stringify(false));
-        } else {
-          localStorage.setItem('group_markers_setting', JSON.stringify(true));
-        }
-
-        location.reload(); //refresh the page with the new map display setting
-
-      }
-
-      function geoFindMe() {
-
-        const status = document.querySelector('#status');
-
-        function success(position) {
-          const latitude = position.coords.latitude;
-          const longitude = position.coords.longitude;
-
-          console.log('${latitude} ' + longitude);
-          you = L.marker([latitude, longitude], { opacity: 0.3, title: 'Tu ubicación' }).addTo(maps[0]);
-          you.bindPopup('Tu ubicación').openPopup();
-          maps[0].panTo(new L.LatLng(latitude, longitude), 14);
-          status.textContent = 'Mostrando tu localización actual';
-        }
-
-        function error() {
-          status.textContent = 'No puedo encontrarte, usá los botones del mapa';
-        }
-
-        if (!navigator.geolocation) {
-          status.textContent = 'Tu navegador no soporta la geolocalización';
-        } else {
-          status.textContent = 'Buscando tu ubicación…';
-          navigator.geolocation.getCurrentPosition(success, error);
-        }
-
-      }
-
-      function setupCitiesDropdown() {
-        // based on https://codepen.io/airen/pen/arGXvz
-        var datalist = document.querySelector('.cities-dropdown > datalist');
-        var select = document.querySelector('.cities-dropdown > datalist > select');
-        var options = select.options;
-
-        /* input.onchange is triggered when the user selects something from the datalist */
-        input = document.querySelector('input[name="cities"]');
-        
-        input.addEventListener('change', function () {
-          var selectedValue = input.value;
-          var selectedIndex;
-
-          for (var i = 0; i < options.length; i++) {
-            if (options[i].text == selectedValue) {
-              selectedIndex = i;
-              break;
-            }
-          }
-          if (selectedIndex == undefined) {
-            return;
-          }
-          var selectedOption = options[selectedIndex];
-          location.assign('/pedidos_ciudad/' + selectedOption.getAttribute('data-value'));
-        });
-
-        /* when user selects an option from the datalist, write it to text field */
-        select.addEventListener('change', function () {
-          input.value = options[this.selectedIndex].value;
-        });
-      }
-
     </script>
+
+    <script type="text/template" id="requests-table-template">
+      {% verbatim %}
+	<div class="media">
+	    <a href="/pedidos/{{id}}" class="has-text-grey-dark" title="{{added}}">
+	      <div class="media-content">
+		<div class="content">
+		  <p>
+		    <i class="fas fa-people-carry" aria-hidden="true"></i>
+		    <strong style="color:#363636;">#{{id}} | {{name}}</strong>
+		    <small>{{added}}</small>
+		    <br>
+		    {{title}}
+		  </p>
+		</div>
+	      </div>
+	  </a>
+	</div>
+      {% endverbatim %}
+    </script>
+
+    <script type="text/template" id="requests-table-empty-template">
+      {% verbatim %}
+	<div class="media">
+	    <h1>No se encuentran pedidos de ayuda en la ubicación actual.</h1>
+	</div>
+      {% endverbatim %}
+    </script>
+
+    <script type="text/template" id="requests-table-paginator-template">
+      {% verbatim %}
+	<div class="row requests-table-paginator">
+	    <div class="column is-5">
+		Mostrando &lt; Página {{currentPage}} de {{totalPages}} &gt;
+	    </div>
+	    <div class="column is-5 {{hasMultiplePages}}">
+		  <ul class="pagination">
+		      <li><a class="button is-link is-outlined first-button" {{hasFirst}}>&laquo; Primero</a></li>
+		      <li><a class="button is-link is-outlined prev-button" {{hasPrev}}>&lt; Prev</a></li>
+		      <li class=" button is-link">   {{currentPage}}   </li>
+		      <li><a class="button is-link is-outlined next-button" {{hasNext}}>Sig &gt;</a></li>
+		      <li><a class="button is-link is-outlined last-button" {{hasLast}}>Último &raquo;</a></li>
+		  </ul>
+	    </div>
+	</div>
+      {% endverbatim %}
+    </script>
+
 
 {% endblock %}
