@@ -242,6 +242,13 @@ class Device(models.Model):
         null=True,
         blank=True
     )
+    push_notification_token = models.CharField(
+        "Token de Notificación",
+        help_text="Token de Notificación para envíos tipo PUSH",
+        max_length=128,
+        null=True,
+        blank=True
+    )
 
 
 # User: to represent a user in ayudapy
