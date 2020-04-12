@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'leaflet',
     'django.contrib.gis',
     'core',
+    'org',
     'widget_tweaks',
     'rest_framework',
     'rest_framework_gis',

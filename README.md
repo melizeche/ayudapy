@@ -59,6 +59,7 @@ cp conf/.env.example conf/.env # you should edit this file with your configurati
 * Captcha
 * ~~Create models~~
 * Users(?)
+* Test
 
 More in [TODO.md](TODO.md)
 
