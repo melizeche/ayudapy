@@ -94,9 +94,9 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.contrib.gis.db.backends.postgis',
-            'NAME': 'ayudapy',
-            'USER': 'postgres',
-            'PASSWORD': 'postgres',
+            'NAME': 'covidhelp',
+            'USER': 'jonathanjojo',
+            'PASSWORD': 'justpass',
             'PORT': 5432,
             'HOST': 'localhost',
         }
