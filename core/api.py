@@ -7,7 +7,7 @@ from core.models import HelpRequest
 from core.serializers import HelpRequestSerializer, HelpRequestGeoJSONSerializer
 
 """
-    API endpoints that allows search queries on HelpRequest
+    API endpoints that allows search queries on HelpRequest 0
 """
 
 # SEARCH HELP REQUESTS
