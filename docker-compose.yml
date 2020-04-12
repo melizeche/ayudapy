@@ -1,6 +1,23 @@
 version: '3.5'
 
 services:
+  db:
+    image: postgis/postgis
+    env_file: conf/.env
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+    expose:
+      - 5432
+
   app:
     build:
-      context: app
+      context: .
+      dockerfile: docker/Dockerfile
+    volumes:
+      - .:/code
+    ports:
+      - 8000:8000
+    env_file: conf/.env
+    command: ["./docker/wait-for-db.sh", "db", "./manage.py", "runserver", "0.0.0.0:8000"]
+    depends_on:
+      - db
