@@ -54,15 +54,13 @@
             <div class="column">
               <div class="cities-dropdown" role="menu">
                 <div class="field is-horizontal">
-                  <div class="field-label is-normal">
-                    <label class="label" for="cities">Ciudades</label>
-                  </div>
                   <div class="field-body">
                     <div class="field">
                       <div class="control">
-                        <div class="select">
-                          <input name="cities" class="input" list="list_cities" placeholder="Seleccionar ciudad..." autocomplete="off">
+                        <div class="select is-small">
+                          <input name="cities" class="input is-small" list="list_cities" placeholder="Seleccionar ciudad..." autocomplete="off">
                         </div>
+                          <p class="help has-text-info"> Si no ves tu ciudad es porque no hay pedidos!</p>
                       </div>
                     </div>
                   </div>
@@ -78,15 +76,30 @@
                   </datalist>
               </div>
             </div>
-            <div class="column is-half-desktop">
-              <div style="margin-bottom: .75em;">
-                <h5 class="has-text-danger has-text-weight-light has-text-centered">
-                  Si no ves tu ciudad es porque no hay pedidos, volvé más tarde para ayudar!
-                </h5>
-              </div>
-            </div>
           </div> 
         </div>
+
+      <div>  
+        <div class="field has-addons">
+          <div class="control is-expanded">
+            <input 
+              id="q" 
+              class="input is-small" 
+              type="text" 
+              name="q"
+              placeholder="Búsqueda por título o descripción, Ejemplo: Pañal" 
+              value="{% if search%}{{ search }}{% endif %}"
+            >
+          </div>
+          <div class="control" >
+            <button class="button is-warning is-small" onclick="getQuery()">
+              Buscar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <br>
 
         <div class="panel is-info">
           <p class="panel-heading">
@@ -123,6 +136,15 @@
 
       setupCitiesDropdown()
       //===== end onload
+
+      document.getElementById('q').addEventListener('keypress', function(e) {
+        if (e.charCode == 13) getQuery();
+      });
+
+      function getQuery() {
+        const texto = document.getElementById('q').value.trim();
+        if (texto.length >= 3) location.href = `/pedidos?q=${texto}`;      
+      }
 
       function switchClusteringInit() {
         //We check if the browser support local Storage caching
@@ -262,8 +284,8 @@
         var options = select.options;
 
         /* input.onchange is triggered when the user selects something from the datalist */
-        input = document.querySelector('input');
-
+        input = document.querySelector('input[name="cities"]');
+        
         input.addEventListener('change', function () {
           var selectedValue = input.value;
           var selectedIndex;

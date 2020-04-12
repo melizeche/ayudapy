@@ -7,7 +7,7 @@ from .models import HelpRequest
 class HelpRequestSerializer(GeoModelSerializer):
     class Meta:
         model = HelpRequest
-        fields = ['id', 'title', 'message', 'name', 'phone', 'address', 'city', 'location', 'picture', 'active']
+        fields = ['id', 'title', 'message', 'name', 'phone', 'address', 'city', 'location', 'picture', 'active', 'added']
         geo_field = 'location'
 
 
