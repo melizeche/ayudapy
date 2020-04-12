@@ -26,7 +26,7 @@ class DynamicSearchFilter(filters.SearchFilter):
         return request.GET.getlist('search_fields', [])
 
 class HelpRequestViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = HelpRequest.objects.filter(active=True)
+    queryset = HelpRequest.objects.filter(active=True).order_by('-id')
     serializer_class = HelpRequestSerializer
     filter_backends = [InBBoxFilter, DjangoFilterBackend, DynamicSearchFilter,]
     search_fields = ['title', 'phone',]
@@ -36,7 +36,7 @@ class HelpRequestViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class HelpRequestGeoViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = HelpRequest.objects.filter(active=True)
+    queryset = HelpRequest.objects.filter(active=True).order_by('-pk')
     pagination_class = None
     serializer_class = HelpRequestGeoJSONSerializer
     bbox_filter_field = 'location'
