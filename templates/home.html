@@ -1,37 +1,43 @@
 {% extends 'base.html'%}
 
 {% block content %}
-<div class="tile center">
-     <div class="tile is-vertical is-8 is-ancestor">
-         <div class="tile is-parent">
-            <div class="tile is-parent is-vertical">
+<div class="is-fullhd">
+         <div class="columns">
+            <div class="column is-3 is-offset-3">
                 <a href="/recibir">
-                    <article class="tile is-child notification is-success">
-                        <p class="title ">¡Necesito ayuda!</p>
-                        <p class="subtitle">Publicá tu pedido para que la gente vea</p>
+                    <article class="tile is-child notification has-text-centered" style="background-color: #ffb852; color: white;">
+                        <p class="title is-4">¡Necesito ayuda!</p>
+                        <p class="subtitle is-size-7">Publicá tu pedido para que la gente vea</p>
                     </article>
                 </a>
             </div>
-            <div class="tile is-parent is-vertical">
+            <div class="column is-3">
                 <a href="/dar">
-                    <article class="tile is-child notification is-info">
-                        <p class="title">¡Quiero ayudar!</p>
-                        <p class="subtitle">Encontrá a alguien cerca tuyo para ayudar</p>
+                    <article class="tile is-child notification has-text-centered" style="background-color: #4cd36f; color: white;">
+                        <p class="title is-4">¡Quiero ayudar!</p>
+                        <p class="subtitle is-6 is-size-7">Encontrá a alguien cerca tuyo para ayudar</p>
                     </article>
                 </a>
             </div>
         </div>
-    </div>
+{#        <div class="columns">#}
+{#            <div class="column is-3 is-offset-3">#}
+{#                <a href="/recibir">#}
+{#                    <article class="tile is-child notification has-text-centered" style="background-color: #f95d82; color: white;">#}
+{#                        <p class="title is-4">¡Quiero ser voluntario!</p>#}
+{#                        <p class="subtitle is-size-7">Ayudanos a ayudar</p>#}
+{#                    </article>#}
+{#                </a>#}
+{#            </div>#}
+{#            <div class="column is-3">#}
+{#                <a href="/dar">#}
+{#                    <article class="tile is-child notification has-text-centered" style="background-color: #6e6bd1; color: white;">#}
+{#                        <p class="title is-4">¡Quiero donar!</p>#}
+{#                        <p class="subtitle is-6 is-size-7">Mirá lo que podés donar y dónde</p>#}
+{#                    </article>#}
+{#                </a>#}
+{#            </div>#}
+{#        </div>#}
 </div>
- <div class="tile is-vertical is-fullwidth center">
-        <div class="tile">
-            <div class="tile is-parent">
-                    <article class="tile is-child notification disabled">
-                        <p class="title ">Soy personal de blanco y necesito ayuda</p>
-                        <p class="subtitle">Próximamente, plataforma en construcción</p>
-                    </article>
-            </div>
-        </div>
-    </div>
 
 {% endblock %}

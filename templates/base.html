@@ -12,13 +12,13 @@
     <meta property="og:url" content="{% block fb-url %} {{ request.build_absolute_uri }} {% endblock %}">
     <meta property="og:title" content="{% block fb-title %} AyudaPy {% endblock %}">
     <meta property="og:description" content="{% block fb-description %} AyudaPy {% endblock %}">
-    <meta property="og:image" content="{% block fb-image %} {% static "favicon.ico" %} {% endblock %}">
+    <meta property="og:image" content="{% block fb-image %} {% static "favicon.svg" %} {% endblock %}">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     
 
-    <link  rel="icon"   href="{% static "favicon.ico" %}" type="image/ico" />
+    <link rel="icon" href="{% static "favicon.svg" %}" type="image/svg" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-switch@2.0.0/dist/css/bulma-switch.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
@@ -80,14 +80,11 @@
 </head>
 
 <body class="Site">
-    <section class="hero is-primary">
-        <div class="container">
-          <a href="/">
-            <h1 class="title center">AyudaPy<span class="icon is-large has-text-grey-dark"><i class="fas fa-hand-holding-heart"></i></span></h1>
-          </a>
-            <p class="subtitle center is-6">
-                Experimento para unir a gente que necesita con gente que quiere ayudar
-            </p>
+    <section class="is-fullwidth" style="background-color: #33CCCC; height: 10%;">
+        <div class="column is-8-mobile is-offset-2-mobile is-4-tablet is-offset-4-tablet is-2-desktop is-offset-5-desktop ">
+             <figure class="image is-16by1">
+                  <img src="../static/img/logo2.svg">
+             </figure>
         </div>
     </section>
 <main class="Site-content">
