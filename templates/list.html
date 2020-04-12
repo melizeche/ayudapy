@@ -150,16 +150,14 @@
         //We check if the browser support local Storage caching
         //in case does not, we disable the switch
         var switchElement = document.getElementById('switchNormal');
+        switchElement.checked = true;
 
         if (typeof (Storage) === "undefined") {
           switchElement.disabled = true;
         } else {
-          switchElement.checked = false;
           var isGroupMarksActive = JSON.parse(localStorage.getItem("group_markers_setting"));
-          if (isGroupMarksActive != null) {
-            if (isGroupMarksActive) {
-              switchElement.checked = true;
-            }
+          if (isGroupMarksActive !== null && !isGroupMarksActive) {
+            switchElement.checked = false;
           }
         }
       }
@@ -196,7 +194,7 @@
 
                 //We check the switch status
                 var isGroupMarksActive = JSON.parse(localStorage.getItem("group_markers_setting"));
-                if (!isGroupMarksActive) {
+                if (isGroupMarksActive !== null && !isGroupMarksActive) {
                   clusters = loadMarkers(map, data);//load markers without clustering
                 } else {
                   clusters = loadMarkersAndGroup(map, data);
