@@ -30,8 +30,22 @@
 {% endif %}
     <div class="columns is-centered">
       <div class="column is-6">
-        {% leaflet_map "main" callback="main_map_init" %}
-        <button id="find-me" class="button is-success  is-outlined is-fullwidth">Mi ubicación</button>
+        <!-- Start Switch clustering -->
+        <div style="margin-bottom: .75em; ">
+          <div class="field">
+            <input id="switchNormal" type="checkbox" onclick="groupMarkerRequest()" name="switchNormal" class="switch">
+            <label for="switchNormal">Agrupar pedidos</label>
+          </div>
+        </div>
+        <!-- End Switch clustering -->
+        <div class="row">
+          {% leaflet_map "main" callback="main_map_init" %}
+        </div>
+        <button id="find-me" class="button is-success  is-outlined is-fullwidth"><span class="icon is-small">
+            <i class="fas fa-location-arrow"></i>
+          </span>
+          <span>Mi ubicación</span>
+        </button>
         <p id="status"></p>
       </div>
       <div class="column is-6">
@@ -40,15 +54,13 @@
             <div class="column">
               <div class="cities-dropdown" role="menu">
                 <div class="field is-horizontal">
-                  <div class="field-label is-normal">
-                    <label class="label" for="cities">Ciudades</label>
-                  </div>
                   <div class="field-body">
                     <div class="field">
                       <div class="control">
-                        <div class="select">
-                          <input name="cities" class="input" list="list_cities" placeholder="Seleccionar ciudad..." autocomplete="off">
+                        <div class="select is-small">
+                          <input name="cities" class="input is-small" list="list_cities" placeholder="Seleccionar ciudad..." autocomplete="off">
                         </div>
+                          <p class="help has-text-info"> Si no ves tu ciudad es porque no hay pedidos!</p>
                       </div>
                     </div>
                   </div>
@@ -64,145 +76,226 @@
                   </datalist>
               </div>
             </div>
-            <div class="column is-half-desktop">
-              <div style="margin-bottom: .75em;">
-                <h5 class="has-text-danger has-text-weight-light has-text-centered">
-                  Si no ves tu ciudad es porque no hay pedidos, volvé más tarde para ayudar!
-                </h5>
-              </div>
-            </div>
           </div> 
         </div>
 
-        <article class="panel is-info">
+      <div>
+          <form method='get'>
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                <input class="input is-small" type="text" name="q"
+                       placeholder="Búsqueda por título o descripción, Ejemplo: Pañal" value="{% if search%}{{ search }}{% endif %}">
+              </div>
+              <div class="control">
+                <a class="button is-warning is-small">
+                  Buscar
+                </a>
+              </div>
+            </div>
+          </form>
+      </div>
+
+      <br>
+
+        <div class="panel is-info">
           <p class="panel-heading">
             Últimos pedidos de ayuda
           </p>
-          {% for pedido in list_help_paginated %}
-          <a href="/pedidos/{{pedido.id}}" class="panel-block is-success" title="{{pedido.added}}">
-            <span class="panel-icon">
-              <i class="fas fa-people-carry" aria-hidden="true"></i>
-            </span>
-            #{{pedido.id}} | {{pedido.title}} | {{pedido.added|naturaltime}}
-          </a>
-          {% endfor %}
-        </article>
+          <div style="overflow-y:auto;max-height:75vh;padding:15px;">
+            {% for pedido in list_help_paginated %}
+            <div class="media">
+              <a href="/pedidos/{{pedido.id}}" class="has-text-grey-dark" title="{{pedido.added}}">
+                <div class="media-content">
+                  <div class="content">
+                    <p>
+                      <i class="fas fa-people-carry" aria-hidden="true"></i>
+                      <strong style="color:#363636;">#{{pedido.id}} | {{pedido.name}}</strong>
+                      <small>{{pedido.added|naturaltime}}</small>
+                      <br>
+                      {{pedido.title}}
+                    </p>
+                  </div>
+                </div>
+            </a>
+          </div>
+            {% endfor %}
+        </div>
+      </div>
         {% include "nav_paginator_controls.html" %}
       </div>
     </div>
     <script type="text/javascript">
-        function main_map_init (map, options) {
-            // Use Leaflet API here
+      //===== start onload
+      switchClusteringInit();
 
-            var clusters;
-            
-            map.locate({setView : true});
-            map.setZoom(12);
-            //L.geoJson(data).addTo(map)
+      document.querySelector('#find-me').addEventListener('click', geoFindMe);
 
-            map.addControl(new L.Control.Fullscreen({
-                title: {
-                    'false': 'Ver en Pantalla Completa',
-                    'true': 'Salir de Pantalla Completa'
-                }
-            }));
-            
-            map.on('moveend', function() {
-              requestGeoData();
-            });
+      setupCitiesDropdown()
+      //===== end onload
 
-            function requestGeoData() {
-              
-              const myRequest = new Request(`https://ayudapy.org/api/v1/helprequestsgeo/?in_bbox=${map.getBounds().toBBoxString()}`);
-              
-              fetch(myRequest)
+      function switchClusteringInit() {
+        //We check if the browser support local Storage caching
+        //in case does not, we disable the switch
+        var switchElement = document.getElementById('switchNormal');
+
+        if (typeof (Storage) === "undefined") {
+          switchElement.disabled = true;
+        } else {
+          switchElement.checked = false;
+          var isGroupMarksActive = JSON.parse(localStorage.getItem("group_markers_setting"));
+          if (isGroupMarksActive != null) {
+            if (isGroupMarksActive) {
+              switchElement.checked = true;
+            }
+          }
+        }
+      }
+
+      function main_map_init(map, options) {
+          // Use Leaflet API here
+
+          var clusters;
+
+          map.setZoom(12);
+          //L.geoJson(data).addTo(map)
+
+          map.addControl(new L.Control.Fullscreen({
+            title: {
+              'false': 'Ver en Pantalla Completa',
+              'true': 'Salir de Pantalla Completa'
+            }
+          }));
+
+          map.on('moveend', function () {
+            requestGeoData();
+          });
+
+          function requestGeoData() {
+
+            const myRequest = new Request(`/api/v1/helprequestsgeo/?in_bbox=${map.getBounds().toBBoxString()}`);
+
+            fetch(myRequest)
               .then(response => response.json())
               .then(data => {
-                    if (clusters) {
-                      map.removeLayer(clusters);
-                    }
-                    var markerClusters = L.markerClusterGroup();
-                    var layerGroup = L.geoJSON(data, {
-                      onEachFeature: function (feature, layer) {
-                        var popup = '<a class="subtitle" href="/pedidos/'+feature.properties.pk+'"><h1>Pedido #'+feature.properties.pk+
-                          '</h1></a><p class="has-text-weight-bold">Nombre: '+feature.properties.name+'</p><p>'+feature.properties.title+'</p>'+
-                          '<a class="is-size-6" href="/pedidos/'+feature.properties.pk+'">Ver Pedido</a>';
-                        layer.bindPopup(popup);
-                       
-                        markerClusters.addLayer(layer);
-                        clusters = markerClusters;
-                      }
-                    });
-                    map.addLayer( markerClusters );
-                });
-            }
-            
-        }
+                if (clusters) {
+                  map.removeLayer(clusters);
+                }
 
-        function geoFindMe() {
-
-            const status = document.querySelector('#status');
-
-            function success(position) {
-              const latitude  = position.coords.latitude;
-              const longitude = position.coords.longitude;
-
-              console.log('${latitude} '+longitude);
-              you = L.marker([latitude, longitude], {opacity: 0.3, title:'Tu ubicación'}).addTo(maps[0]);
-              you.bindPopup('Tu ubicación').openPopup();
-              maps[0].panTo(new L.LatLng(latitude, longitude), 14);
-            }
-
-            function error() {
-              status.textContent = 'No puedo encontrarte, usá los botones del mapa';
-            }
-
-            if (!navigator.geolocation) {
-              status.textContent = 'Tu navegador no soporta la geolocalización';
-            } else {
-              status.textContent = 'Buscando tu ubicación…';
-              navigator.geolocation.getCurrentPosition(success, error);
-            }
+                //We check the switch status
+                var isGroupMarksActive = JSON.parse(localStorage.getItem("group_markers_setting"));
+                if (!isGroupMarksActive) {
+                  clusters = loadMarkers(map, data);//load markers without clustering
+                } else {
+                  clusters = loadMarkersAndGroup(map, data);
+                }
+              });
+          }
 
         }
 
-        document.querySelector('#find-me').addEventListener('click', geoFindMe);
+      function loadMarkersAndGroup(map, data) {
+        var markerClusters = L.markerClusterGroup();
+        var layerGroup = L.geoJSON(data, {
+          onEachFeature: function (feature, layer) {
+            var popup = '<a class="subtitle" href="/pedidos/' + feature.properties.pk + '"><h1>Pedido #' + feature.properties.pk +
+              '</h1></a><p class="has-text-weight-bold">Nombre: ' + feature.properties.name + '</p><p>' + feature.properties.title + '</p>' +
+              '<a class="is-size-6" href="/pedidos/' + feature.properties.pk + '">Ver Pedido</a>';
+            layer.bindPopup(popup);
 
+            markerClusters.addLayer(layer);
+          }
+        });
+        map.addLayer(markerClusters);
 
-        function setupCitiesDropdown() {
-          // based on https://codepen.io/airen/pen/arGXvz
-          var datalist = document.querySelector('.cities-dropdown > datalist');
-          var select = document.querySelector('.cities-dropdown > datalist > select');
-          var options = select.options;
+        return markerClusters;
+      }
 
-          /* input.onchange is triggered when the user selects something from the datalist */
-          input = document.querySelector('input');
+      function loadMarkers(map, data) {
+        var layerGroup = L.geoJSON(data, {
+          onEachFeature: function (feature, layer) {
+            var popup = '<a class="subtitle" href="/pedidos/' + feature.properties.pk + '"><h1>Pedido #' + feature.properties.pk +
+              '</h1></a><p class="has-text-weight-bold">Nombre: ' + feature.properties.name + '</p><p>' + feature.properties.title + '</p>' +
+              '<a class="is-size-6" href="/pedidos/' + feature.properties.pk + '">Ver Pedido</a>';
+            layer.bindPopup(popup);
+          }
+        }).addTo(map);
+
+        return layerGroup;
+      }
+
+      function groupMarkerRequest() {
+        //Update cached status
+        var checkbox = document.getElementById('switchNormal');
+        if (checkbox.checked != true) {
+          localStorage.setItem('group_markers_setting', JSON.stringify(false));
+        } else {
+          localStorage.setItem('group_markers_setting', JSON.stringify(true));
+        }
+
+        location.reload(); //refresh the page with the new map display setting
+
+      }
+
+      function geoFindMe() {
+
+        const status = document.querySelector('#status');
+
+        function success(position) {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+
+          console.log('${latitude} ' + longitude);
+          you = L.marker([latitude, longitude], { opacity: 0.3, title: 'Tu ubicación' }).addTo(maps[0]);
+          you.bindPopup('Tu ubicación').openPopup();
+          maps[0].panTo(new L.LatLng(latitude, longitude), 14);
+          status.textContent = 'Mostrando tu localización actual';
+        }
+
+        function error() {
+          status.textContent = 'No puedo encontrarte, usá los botones del mapa';
+        }
+
+        if (!navigator.geolocation) {
+          status.textContent = 'Tu navegador no soporta la geolocalización';
+        } else {
+          status.textContent = 'Buscando tu ubicación…';
+          navigator.geolocation.getCurrentPosition(success, error);
+        }
+
+      }
+
+      function setupCitiesDropdown() {
+        // based on https://codepen.io/airen/pen/arGXvz
+        var datalist = document.querySelector('.cities-dropdown > datalist');
+        var select = document.querySelector('.cities-dropdown > datalist > select');
+        var options = select.options;
+
+        /* input.onchange is triggered when the user selects something from the datalist */
+        input = document.querySelector('input[name="cities"]');
         
-          input.addEventListener('change', function() {
-            var selectedValue = input.value;
-            var selectedIndex;
-            
-            for(var i = 0; i < options.length; i++) {
-              if(options[i].text == selectedValue) {
-                selectedIndex = i;
-                break;
-              }
-            }
-            if(selectedIndex == undefined) {
-              return;
-            }
-            var selectedOption = options[selectedIndex];
-            location.assign('/pedidos_ciudad/' + selectedOption.getAttribute('data-value'));
-          });
+        input.addEventListener('change', function () {
+          var selectedValue = input.value;
+          var selectedIndex;
 
-          /* when user selects an option from the datalist, write it to text field */
-          select.addEventListener('change', function() {
-            input.value = options[this.selectedIndex].value;
-          });
-        }
+          for (var i = 0; i < options.length; i++) {
+            if (options[i].text == selectedValue) {
+              selectedIndex = i;
+              break;
+            }
+          }
+          if (selectedIndex == undefined) {
+            return;
+          }
+          var selectedOption = options[selectedIndex];
+          location.assign('/pedidos_ciudad/' + selectedOption.getAttribute('data-value'));
+        });
 
-        
-        setupCitiesDropdown()
+        /* when user selects an option from the datalist, write it to text field */
+        select.addEventListener('change', function () {
+          input.value = options[this.selectedIndex].value;
+        });
+      }
+
     </script>
 
 {% endblock %}

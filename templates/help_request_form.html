@@ -20,18 +20,25 @@
 {% block content%}
 <div class="columns is-centered"> 
     <div class="column is-half">
-     <button href="#" id="find-me" class="button is-success  is-outlined is-fullwidth">Apreta acá voy a tratar de encontrarte</button>
-                      <p id="status"></p>
-        <form id="form-help-request" enctype="multipart/form-data" method="post" action="/solicitar" onsubmit="return checkRequestForm(this);">
-            {% csrf_token %} 
-            {% include 'includes/bulma_form.html' with form=form %}
-            <div class="control">
-                <button id="submit" class="button is-success is-fullwidth">Enviar</button>
-            </div>
-        </form>
+      <button href="#" id="find-me" class="button is-success  is-outlined is-fullwidth">
+        <span class="icon is-small">
+          <i class="fas fa-location-arrow"></i>
+        </span>
+        <span>Apreta acá voy a tratar de
+          encontrarte</span>
+      </button>
+      <p id="status"></p>
+      <form enctype="multipart/form-data" method="post" action="/solicitar">
+        {% csrf_token %}
+        {% include 'includes/bulma_form.html' with form=form %}
+        <div class="control">
+          <button id="submit" class="button is-success is-fullwidth">Enviar</button>
+        </div>
+      </form>
+
 
 <div class="modal" id="myModal">
-  <<div class="modal-background"></div>
+  <div class="modal-background"></div>
     <div class="modal-card">
         <header class="modal-card-head">
             <p class="modal-card-title">Ayuda con el mapa</p>
@@ -55,18 +62,33 @@ function geoFindMe() {
             const status = document.querySelector('#status');
             const boton = document.querySelector('#find-me');
 
+            function makePoint(longitude, latitude) {
+              return JSON.stringify({
+                type: 'Point',
+                coordinates: [longitude, latitude]
+              });
+            }
+
             function success(position) {
               const latitude  = position.coords.latitude;
               const longitude = position.coords.longitude;
 
-              boton.textContent = 'Encontré, seguí completando tus datos';
+              boton.textContent = 'Encontré, seguí completando tus datos !';
               boton.disabled = true;
               status.textContent = '';
+
+              document.getElementById('id_location').innerHTML = makePoint(longitude, latitude);
               
-              //you = L.marker([latitude, longitude], {opacity: 0.3, title:'Tu ubicación'}).addTo(maps[0]);
-              //you.bindPopup('Tu ubicación').openPopup();
-              L.circle(new L.LatLng(latitude, longitude), {radius: 10}).addTo(maps[0]);
-              maps[0].panTo(new L.LatLng(latitude, longitude), 16);
+              // No mostramos mas el circle, ya tenemos marker
+              //L.circle(new L.LatLng(latitude, longitude), {radius: 10}).addTo(maps[0]);
+              const you = L.marker([latitude, longitude], {draggable: true, opacity: 0.9, title:'Tu ubicación'}).addTo(maps[0]);
+              you.bindPopup('Moveme si queres !').openPopup();
+              
+              maps[0].setView([latitude, longitude], 16);
+
+              you.on('dragend', function (e) {
+                document.getElementById('id_location').innerHTML = makePoint(e.target._latlng.lng, e.target._latlng.lat);
+              });
             }
 
             function error() {
