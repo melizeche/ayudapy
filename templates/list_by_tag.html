@@ -24,7 +24,7 @@
 <div class="subtitle center">
     <a href="/pedidos"> (ver todos)</a>
 </div>
-{% if not list_help %}
+{% if not posts %}
 <div class="notification is-warning center is-size-5">
   Todavía no hay pedidos de ayuda, volvé en un rato
 </div>
@@ -38,7 +38,7 @@
               Necesidades mas comunes:
               <br/>
               {% for mt in common_tags %}
-              <a href="#" class="tag is-link">{{mt}}</a>
+              <a href="{% url 'tagged' mt %}" class="tag is-link">{{mt}}</a>
               {% endfor %}
           </p>
       </div>
@@ -47,7 +47,7 @@
             <p class="panel-heading">
               Últimos pedidos de ayuda en {{city}}
             </p>
-        {% for pedido in list_help_paginated %}
+        {% for pedido in posts %}
             <a href="/pedidos/{{pedido.id}}" class="panel-block is-success" title="{{pedido.added}}">
               <span class="panel-icon">
                 <i class="fas fa-people-carry" aria-hidden="true"></i>

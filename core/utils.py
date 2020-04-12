@@ -67,3 +67,11 @@ def image_to_base64(image):
     with BytesIO() as buffer:
         image.save(buffer, 'PNG')
         return base64.b64encode(buffer.getvalue()).decode()
+
+
+def comma_splitter(tag_string):
+    return [t.strip() for t in tag_string.split(",") if t.strip()]
+
+
+def comma_joiner(tags):
+    return ", ".join(t.name for t in tags)

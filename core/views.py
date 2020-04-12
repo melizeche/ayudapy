@@ -196,11 +196,21 @@ def list_by_city(request, city):
 
 
 def tagged(request, slug):
+    list_help_requests = HelpRequest.objects.filter(active=True).order_by("-added")  # TODO limit this
+    query = list_help_requests
+    geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
+
     tag = get_object_or_404(Tag, slug=slug)
     # Filter posts by tag name
     posts = HelpRequest.objects.filter(tags=tag)
+
+    # Show most common tags
+    common_tags = HelpRequest.tags.most_common()
+
     context = {
         'tag': tag,
-        'posts': posts
+        'posts': posts,
+        "common_tags": common_tags,
+        "geo": geo
     }
-    return render(request, 'help_request_form.html', context)
+    return render(request, 'list_by_tag.html', context)
