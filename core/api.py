@@ -1,10 +1,14 @@
-from rest_framework import viewsets
+from django.http import Http404
+from rest_framework import viewsets, status, mixins
 from rest_framework import filters
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_gis.filters import InBBoxFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
-from core.models import HelpRequest
-from core.serializers import HelpRequestSerializer, HelpRequestGeoJSONSerializer
+from core.models import HelpRequest, Device
+from core.serializers import HelpRequestSerializer, HelpRequestGeoJSONSerializer, DeviceSerializer
 
 """
     API endpoints that allows search queries on HelpRequest 0
@@ -33,4 +37,19 @@ class HelpRequestGeoViewSet(viewsets.ReadOnlyModelViewSet):
     filter_backends = (InBBoxFilter, DynamicSearchFilter,)
     bbox_filter_include_overlapping = True
 
-# DEVICES
+"""
+API to create/update/remove devices.
+Will be used by the Mobile Client
+"""
+
+
+class DeviceViewSet(mixins.CreateModelMixin,
+                    mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    mixins.DestroyModelMixin,
+                    viewsets.GenericViewSet):
+
+    serializer_class = DeviceSerializer
+    queryset = Device.objects.all()
+    lookup_field = "device_id"
+

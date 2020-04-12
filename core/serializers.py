@@ -1,8 +1,6 @@
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer, GeoModelSerializer
 
-from .models import HelpRequest
-
 
 class HelpRequestSerializer(GeoModelSerializer):
     class Meta:
@@ -16,3 +14,20 @@ class HelpRequestGeoJSONSerializer(GeoFeatureModelSerializer):
         model = HelpRequest
         fields = ['pk', 'title', 'message', 'name','active', 'added']
         geo_field = 'location'
+
+
+class DeviceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Device
+        fields = (
+            'device_id',
+            'ua_string',
+            'status',
+            'dev_brand',
+            'dev_family',
+            'dev_model',
+            'os_family',
+            'os_version',
+            'browser_family',
+            'browser_version'
+        )
