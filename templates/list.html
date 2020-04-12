@@ -50,7 +50,7 @@
           Necesidades mas comunes:
           <br />
           {% for mt in common_tags %}
-            <a href="{% url 'tagged' mt %}" class="tag is-link">{{mt}}</a>
+            <a href="{% url 'tagged' mt|slugify %}" class="tag is-link">{{mt}}</a>
           {% endfor %}
         </p>
       </div>
