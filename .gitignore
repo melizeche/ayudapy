@@ -56,10 +56,10 @@ docs/_build/
 # PyBuilder
 target/
 
-#IDEs
+# IDEs
 .idea
 .vscode
-#mine
+# mine
 db.sqlite3
 listahu/settings.py
 media/
@@ -69,3 +69,6 @@ gunicorn_start.sh
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+# Staticfiles
+static/
