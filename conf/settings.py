@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_gis',
     'django_filters',
+    'taggit'
 ]
 
 MIDDLEWARE = [
@@ -160,3 +161,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
+
+TAGGIT_TAGS_FROM_STRING = 'core.utils.comma_splitter'
+TAGGIT_STRING_FROM_TAGS = 'core.utils.comma_joiner'
+TAGGIT_CASE_INSENSITIVE=True
