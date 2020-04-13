@@ -42,6 +42,7 @@ def set_owner_and_update_values(request, new_help_request):
             user.location = help_request_owner.help_request.location
             user.save()
 
+
 def request_form(request):
     if request.method == "POST":
         form = HelpRequestForm(request.POST, request.FILES)
@@ -71,9 +72,9 @@ def view_request(request, id):
         "help_request": help_request,
         "thumbnail": help_request.thumb if help_request.picture else "/static/favicon.ico",
         "phone_number_img": image_to_base64(text_to_image(help_request.phone, 300, 50)),
-        "whatsapp": '595'+help_request.phone[1:]+'?text=Hola+'+help_request.name
-                    +',+te+escribo+por+el+pedido+que+hiciste:+'+quote_plus(help_request.title)
-                    +'+https:'+'/'+'/'+'ayudapy.org/pedidos/'+help_request.id.__str__()
+        "whatsapp": '595' + help_request.phone[1:] + '?text=Hola+' + help_request.name
+                    + ',+te+escribo+por+el+pedido+que+hiciste:+' + quote_plus(help_request.title)
+                    + '+https:' + '/' + '/' + 'ayudapy.org/pedidos/' + help_request.id.__str__()
     }
     if request.POST:
         if request.POST['vote']:
@@ -103,7 +104,8 @@ def view_faq(request):
 
 
 def list_requests(request):
-    cities = [(i['city'], i['city_code']) for i in HelpRequest.objects.all().values('city', 'city_code').distinct().order_by('city_code')]
+    cities = [(i['city'], i['city_code']) for i in
+              HelpRequest.objects.all().values('city', 'city_code').distinct().order_by('city_code')]
     # Show most common tags
     common_tags = HelpRequest.tags.most_common()
     context = {
@@ -119,7 +121,7 @@ def list_by_city(request, city):
     query = list_help_requests
     geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
 
-    page= request.GET.get('page', 1)
+    page = request.GET.get('page', 1)
     paginate_by = 25
     paginator = Paginator(list_help_requests, paginate_by)
 
@@ -145,21 +147,41 @@ def list_by_city(request, city):
 
 
 def tagged(request, slug):
-    list_help_requests = HelpRequest.objects.filter(active=True).order_by("-added")  # TODO limit this
-    query = list_help_requests
-    geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
-
-    tag = get_object_or_404(Tag, slug=slug)
     # Filter posts by tag name
+    tag = get_object_or_404(Tag, slug=slug)
     posts = HelpRequest.objects.filter(tags=tag)
 
     # Show most common tags
     common_tags = HelpRequest.tags.most_common()
+    query = posts
+    geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
 
     context = {
         'tag': tag,
         'posts': posts,
         "common_tags": common_tags,
         "geo": geo
+    }
+    return render(request, 'list_by_tag.html', context)
+
+
+def tagged_with_city(request, slug, city):
+    tag = get_object_or_404(Tag, slug=slug)
+    # Filter posts by tag name
+    city_code = city.title().replace('-', '_')
+    posts = HelpRequest.objects.filter(tags=tag, city_code=city_code)
+    city = posts[0].city
+
+    # Show most common tags
+    common_tags = HelpRequest.tags.most_common()
+    query = posts
+    geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
+
+    context = {
+        'tag': tag,
+        'posts': posts,
+        "common_tags": common_tags,
+        "geo": geo,
+        "city": city
     }
     return render(request, 'list_by_tag.html', context)

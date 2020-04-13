@@ -24,7 +24,8 @@ urlpatterns = [
     path('pedidos', core_views.list_requests),
     path('preguntas_frecuentes', core_views.view_faq, name='general_faq'),
     path('contacto', TemplateView.as_view(template_name="contact_us.html"), name='contact_us'),
-    path('tag/<slug:slug>/', core_views.tagged, name="tagged")
+    path('tag/<slug:slug>', core_views.tagged, name="tagged"),
+    path('tag/<slug:slug>/pedidos_ciudad/<slug:city>', core_views.tagged_with_city, name="tagged_with_city")
 ]
 urlpatterns += api_urls.urlpatterns
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
