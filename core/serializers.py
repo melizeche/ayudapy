@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer, GeoModelSerializer
 
+from core.models import Device, HelpRequest
+
 
 class HelpRequestSerializer(GeoModelSerializer):
     class Meta:
