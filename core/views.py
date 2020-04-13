@@ -8,36 +8,18 @@ from django.shortcuts import (
 )
 
 from urllib.parse import quote_plus
+
 from rest_framework import viewsets
 from rest_framework import filters
 from rest_framework_gis.filters import InBBoxFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from django.template.defaultfilters import slugify
 
+
 from .forms import HelpRequestForm
 from .models import HelpRequest, HelpRequestOwner, FrequentAskedQuestion
-from .serializers import HelpRequestSerializer, HelpRequestGeoJSONSerializer
 from .utils import text_to_image, image_to_base64
 from taggit.models import Tag
-
-
-class HelpRequestViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = HelpRequest.objects.filter(active=True)
-    serializer_class = HelpRequestSerializer
-    filter_backends = [InBBoxFilter, DjangoFilterBackend, filters.SearchFilter]
-    search_fields = ['title', 'phone', ]
-    filterset_fields = ['city']
-    bbox_filter_field = 'location'
-    bbox_filter_include_overlapping = True
-
-
-class HelpRequestGeoViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = HelpRequest.objects.filter(active=True)
-    pagination_class = None
-    serializer_class = HelpRequestGeoJSONSerializer
-    bbox_filter_field = 'location'
-    filter_backends = (InBBoxFilter,)
-    bbox_filter_include_overlapping = True
 
 
 def home(request):

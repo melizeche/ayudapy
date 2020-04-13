@@ -118,12 +118,12 @@ class HelpRequest(models.Model):
                 city = location.raw['address']['locality']
         return city
 
-    def save(self):
+    def save(self, *args, **kwargs):
         from unidecode import unidecode
         city = self._get_city()
         self.city = city
         self.city_code = unidecode(city).replace(" ", "_")
-        return super(HelpRequest, self).save()
+        return super(HelpRequest, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"<Pedido #{self.id} - {self.name}>"
@@ -244,6 +244,13 @@ class Device(models.Model):
         "IP de creación",
         help_text="Dirección IP desde la que fue creado",
         max_length=32,
+        null=True,
+        blank=True
+    )
+    push_notification_token = models.CharField(
+        "Token de Notificación",
+        help_text="Token de Notificación para envíos tipo PUSH",
+        max_length=128,
         null=True,
         blank=True
     )

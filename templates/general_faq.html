@@ -1,9 +1,20 @@
 {% extends 'base.html' %}
-
-{% block content %}
+{% block bread %}
+<nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <span class="icon is-small">
+        <i class="fas fa-home" aria-hidden="true"></i>
+      </span>
+      <a href="/">Inicio</a></li>
+    <li class="is-active"><a href="#" aria-current="page">Preguntas frecuentes</a></li>
+  </ul>
+</nav>
+{% endblock bread %}
+{% block content%}
 
 	<div class="content">
-	<h1>PREGUNTAS FRECUENTES</h1>
+{#	<h2>Preguntas Frecuentes</h2>#}
 		<div class="bd-post-container">
 			<div class="bd-post content is-medium">
 
@@ -23,7 +34,19 @@
 
 					<hr class="hr" style="margin-bottom: 0;">
 				{% empty %}
-					<p> Esta sección se encuentra vacía...</p>
+                    <section class="hero is-info is-medium">
+                      <div class="hero-body">
+                        <div class="container">
+                          <h1 class="title is-3">
+                            En desarrollo
+                          </h1>
+                          <h2 class="subtitle is-5">
+                            Esta sección se encuentra en desarrollo, cualquier consulta vaya a
+                              <a class="has-text-warning" href="{% url 'contact_us' %}" class="">Contacto</a>
+                          </h2>
+                        </div>
+                      </div>
+                    </section>
 				{% endfor %}
 
 			</div>

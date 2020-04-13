@@ -43,19 +43,30 @@
           </p>
       </div>
       <div class="column is-6">
-          <article class="panel is-info">
-            <p class="panel-heading">
-              Últimos pedidos de ayuda en {{city}}
-            </p>
-        {% for pedido in list_help_paginated %}
-            <a href="/pedidos/{{pedido.id}}" class="panel-block is-success" title="{{pedido.added}}">
-              <span class="panel-icon">
-                <i class="fas fa-people-carry" aria-hidden="true"></i>
-              </span>
-              #{{pedido.id}} | {{pedido.title}} | {{pedido.added|naturaltime}}
-            </a>
-        {% endfor %}
-          </article>
+        <div class="panel is-info">
+          <p class="panel-heading">
+            Últimos pedidos de ayuda en {{city}}
+          </p>
+          <div style="overflow-y:auto;max-height:75vh;padding:15px;">
+            {% for pedido in list_help_paginated %}
+              <div class="media">
+                <a href="/pedidos/{{pedido.id}}" class="has-text-grey-dark" title="{{pedido.added}}">
+                  <div class="media-content">
+                    <div class="content">
+                      <p>
+                        <i class="fas fa-people-carry" aria-hidden="true"></i>
+                        <strong style="color:#363636;">#{{pedido.id}} | {{pedido.name}}</strong>
+                        <small>{{pedido.added|naturaltime}}</small>
+                        <br>
+                        {{pedido.title}}
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
        {% include "nav_paginator_controls.html" %}
       </div>
     </div>
