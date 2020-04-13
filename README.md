@@ -51,6 +51,7 @@ cp conf/.env.example conf/.env # you should edit this file with your configurati
 * Leonardo Carreras https://github.com/leocarreras
 * Manuel Nuñez https://github.com/manununhez
 * Osbarge https://github.com/osbarge
+* Pablo Santa Cruz https://github.com/pablo
 
 ## TODO
 
