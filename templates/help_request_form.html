@@ -57,6 +57,21 @@
 
 <script>
 
+function getDireccion(longitude, latitude) {
+  return new Promise(function(resolve, reject){
+    fetch(`https://geo.cabu.dev/v1/geoinversa/${latitude}/${longitude}`)
+      .then((response) => response.json())
+      .then((data) => {
+        const direccion = data.data;
+        document.getElementById('id_address').value = `${direccion.direccion || ''} ${direccion.localidad || '' } ${direccion.distrito || ''} ${direccion.departamento || ''}`;
+        resolve(true)
+      })
+      .catch((error) => {
+        resolve(true)
+      })
+  })
+}
+
 function geoFindMe() {
 
             const status = document.querySelector('#status');
@@ -69,24 +84,25 @@ function geoFindMe() {
               });
             }
 
-            function success(position) {
+            async function success(position) {
               const latitude  = position.coords.latitude;
               const longitude = position.coords.longitude;
 
-              boton.textContent = 'Encontré, seguí completando tus datos !';
+              boton.textContent = 'Te encontré, seguí completando y verifica tu dirección !';
               boton.disabled = true;
               status.textContent = '';
 
               document.getElementById('id_location').innerHTML = makePoint(longitude, latitude);
               
-              // No mostramos mas el circle, ya tenemos marker
-              //L.circle(new L.LatLng(latitude, longitude), {radius: 10}).addTo(maps[0]);
+              await getDireccion(longitude, latitude);
+          
               const you = L.marker([latitude, longitude], {draggable: true, opacity: 0.9, title:'Tu ubicación'}).addTo(maps[0]);
               you.bindPopup('Moveme si queres !').openPopup();
               
               maps[0].setView([latitude, longitude], 16);
 
-              you.on('dragend', function (e) {
+              you.on('dragend', async function (e) {
+                await getDireccion(e.target._latlng.lng, e.target._latlng.lat);
                 document.getElementById('id_location').innerHTML = makePoint(e.target._latlng.lng, e.target._latlng.lat);
               });
             }
