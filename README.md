@@ -19,7 +19,7 @@ cd ayudapy
 python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt
-cp conf/settings.py.example conf/settings.py # you should edit this file with your configuration
+cp conf/.env.example conf/.env # you should edit this file with your configuration
 ./manage.py migrate
 ./manage.py runserver
 ```
@@ -40,7 +40,9 @@ cp conf/settings.py.example conf/settings.py # you should edit this file with yo
 
 * Agustín Gómez https://github.com/gomezag
 * Cabu Vallejos  https://github.com/cabupy
+* Diego Allen https://github.com/dalleng
 * Diosnel Velázquez https://github.com/diosnelv
+* Diego Allen https://github.com/dalleng
 * Félix Pedrozo https://github.com/X1lef
 * Guillermo Caballero https://github.com/Guillecaba
 * Jean Claude Adams https://github.com/jcroot
@@ -51,6 +53,7 @@ cp conf/settings.py.example conf/settings.py # you should edit this file with yo
 * Leonardo Carreras https://github.com/leocarreras
 * Manuel Nuñez https://github.com/manununhez
 * Osbarge https://github.com/osbarge
+* Pablo Santa Cruz https://github.com/pablo
 
 ## TODO
 
@@ -59,6 +62,7 @@ cp conf/settings.py.example conf/settings.py # you should edit this file with yo
 * Captcha
 * ~~Create models~~
 * Users(?)
+* Test
 
 More in [TODO.md](TODO.md)
 

@@ -12,13 +12,13 @@
     <meta property="og:url" content="{% block fb-url %} {{ request.build_absolute_uri }} {% endblock %}">
     <meta property="og:title" content="{% block fb-title %} AyudaPy {% endblock %}">
     <meta property="og:description" content="{% block fb-description %} AyudaPy {% endblock %}">
-    <meta property="og:image" content="{% block fb-image %} {% static "favicon.ico" %} {% endblock %}">
+    <meta property="og:image" content="{% block fb-image %} {% static "favicon.svg" %} {% endblock %}">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     
 
-    <link  rel="icon"   href="{% static "favicon.ico" %}" type="image/ico" />
+    <link rel="icon" href="{% static "favicon.svg" %}" type="image/svg" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-switch@2.0.0/dist/css/bulma-switch.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
@@ -72,22 +72,63 @@
         .cities-dropdown .select {
             width: 100%;
         }
+
+
+	.requests-table-paginator > .has-multiple-pages-true,
+	.request-table-paginator > .has-next-true,
+	.request-table-paginator > .has-prev-true {
+	    display: block;
+	}
+
+	.requests-table-paginator > .has-multiple-pages-false,
+	.request-table-paginator > .has-next-false,
+	.request-table-paginator > .has-prev-false {
+	    display: none;
+	}
+
+
+	.loader-wrapper {
+	    position: absolute;
+	    top: 0;
+	    left: 0;
+	    height: 100%;
+	    width: 100%;
+	    background: transparent;
+	    opacity: 0;
+	    z-index: -1;
+	    transition: opacity .3s;
+	    display: flex;
+	    justify-content: center;
+	    align-items: center;
+	    border-radius: 10px;
+	}
+
+	.loader-wrapper.is-active {
+	    opacity: 1;
+	    z-index: 10;
+	}
+
+	.loader-wrapper > .loader {
+	    height: 100px;
+	    width: 100px;
+	    border-width: 5px;
+	}
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@vizuaalog/bulmajs@0.10.3/dist/file.js" integrity="sha256-9BDCQ1iKLp8eEXxQD6U8StZ4V2On9KFEHDeHeXLZ/aE=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@vizuaalog/bulmajs@0.10.3/dist/modal.js" integrity="sha256-HDcVnTQ5+DdyigrR4Xge4rxqguBi19XI7vNDhTDr+hs=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/combine/npm/moment@2.24.0/min/moment.min.js,npm/moment@2.24.0/locale/es.js"></script>
     {% leaflet_js plugins="ALL" %}
     {% leaflet_css plugins="ALL" %}
 </head>
 
 <body class="Site">
-    <section class="hero is-primary">
-        <div class="container">
+    <section class="is-fullwidth" style="background-color: #33CCCC; height: 10%;">
+        <div class="column is-8-mobile is-offset-2-mobile is-4-tablet is-offset-4-tablet is-2-desktop is-offset-5-desktop ">
           <a href="/">
-            <h1 class="title center">AyudaPy<span class="icon is-large has-text-grey-dark"><i class="fas fa-hand-holding-heart"></i></span></h1>
+             <figure class="image is-16by1">
+                  <img src="../static/img/logo2.svg">
+             </figure>
           </a>
-            <p class="subtitle center is-6">
-                Experimento para unir a gente que necesita con gente que quiere ayudar
-            </p>
         </div>
     </section>
 <main class="Site-content">

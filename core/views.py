@@ -8,34 +8,10 @@ from django.shortcuts import (
 )
 
 from urllib.parse import quote_plus
-from rest_framework import viewsets
-from rest_framework import filters
-from rest_framework_gis.filters import InBBoxFilter
-from django_filters.rest_framework import DjangoFilterBackend
 
 from .forms import HelpRequestForm
 from .models import HelpRequest, HelpRequestOwner, FrequentAskedQuestion
-from .serializers import HelpRequestSerializer, HelpRequestGeoJSONSerializer
 from .utils import text_to_image, image_to_base64
-
-
-class HelpRequestViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = HelpRequest.objects.filter(active=True)
-    serializer_class = HelpRequestSerializer
-    filter_backends = [InBBoxFilter, DjangoFilterBackend, filters.SearchFilter]
-    search_fields = ['title', 'phone',]
-    filterset_fields = ['city']
-    bbox_filter_field = 'location'
-    bbox_filter_include_overlapping = True
-
-
-class HelpRequestGeoViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = HelpRequest.objects.filter(active=True)
-    pagination_class = None
-    serializer_class = HelpRequestGeoJSONSerializer
-    bbox_filter_field = 'location'
-    filter_backends = (InBBoxFilter, )
-    bbox_filter_include_overlapping = True
 
 
 def home(request):
@@ -117,31 +93,8 @@ def view_faq(request):
 
 
 def list_requests(request):
-    list_help_requests = HelpRequest.objects.filter(active=True)
     cities = [(i['city'], i['city_code']) for i in HelpRequest.objects.all().values('city', 'city_code').distinct().order_by('city_code')]
-    query = list_help_requests
-    geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
-
-    search = request.GET.get('q')
-    if search:
-        list_help_requests = list_help_requests.filter_by_search_query(search)
-
-    list_help_requests = list_help_requests.order_by("-added")
-
-    # Start Pagination
-    page = request.GET.get('page', 1)
-    paginate_by = 25
-    paginator = Paginator(list_help_requests, paginate_by)
-
-    try:
-        list_help_requests_paginated = paginator.page(page)
-    except PageNotAnInteger:
-        list_help_requests_paginated = paginator.page(1)
-    except EmptyPage:
-        list_help_requests_paginated = paginator.page(paginator.num_pages)
-    # End Pagination
-
-    context = {"list_cities": cities, "list_help": list_help_requests, "geo": geo, "list_help_paginated": list_help_requests_paginated, "search": search}
+    context = {"list_cities": cities}
     return render(request, "list.html", context)
 
 
