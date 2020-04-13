@@ -113,12 +113,12 @@ class HelpRequest(models.Model):
                 city = location.raw['address']['locality']
         return city
 
-    def save(self):
+    def save(self, *args, **kwargs):
         from unidecode import unidecode
         city = self._get_city()
         self.city = city
         self.city_code = unidecode(city).replace(" ", "_")
-        return super(HelpRequest, self).save()
+        return super(HelpRequest, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"<Pedido #{self.id} - {self.name}>"
