@@ -40,6 +40,7 @@ cp conf/.env.example conf/.env # you should edit this file with your configurati
 
 * Agustín Gómez https://github.com/gomezag
 * Cabu Vallejos  https://github.com/cabupy
+* Diego Allen https://github.com/dalleng
 * Diosnel Velázquez https://github.com/diosnelv
 * Félix Pedrozo https://github.com/X1lef
 * Guillermo Caballero https://github.com/Guillecaba
@@ -51,6 +52,7 @@ cp conf/.env.example conf/.env # you should edit this file with your configurati
 * Leonardo Carreras https://github.com/leocarreras
 * Manuel Nuñez https://github.com/manununhez
 * Osbarge https://github.com/osbarge
+* Pablo Santa Cruz https://github.com/pablo
 
 ## TODO
 
