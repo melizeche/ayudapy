@@ -177,8 +177,6 @@
 	  '</h1></a><p class="has-text-weight-bold">Nombre: ' +
 	  feature.properties.name +
 	  '</p><p>' +
-	  feature.properties.title +
-	  '</p>' +
 	  '<a class="is-size-6" href="/donaciones/' +
 	  feature.properties.pk +
 	  '">Ver Donación</a>';
@@ -203,8 +201,6 @@
 	  '</h1></a><p class="has-text-weight-bold">Nombre: ' +
 	  feature.properties.name +
 	  '</p><p>' +
-	  feature.properties.title +
-	  '</p>' +
 	  '<a class="is-size-6" href="/donaciones/' +
 	  feature.properties.pk +
 	  '">Ver Donación</a>';

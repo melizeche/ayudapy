@@ -127,7 +127,7 @@
         var layerGroup = L.geoJSON(data, {
           onEachFeature: function (feature, layer) {
             var popup = '<a class="subtitle" href="/donaciones/' + feature.properties.pk + '"><h1>Donación #' + feature.properties.pk +
-              '</h1></a><p class="has-text-weight-bold">Nombre: ' + feature.properties.name + '</p><p>' + feature.properties.title + '</p>' +
+              '</h1></a><p class="has-text-weight-bold">Nombre: ' + feature.properties.name + '</p>' +
               '<a class="is-size-6" href="/donaciones/' + feature.properties.pk + '">Ver Donación</a>';
             layer.bindPopup(popup);
 
@@ -143,7 +143,7 @@
         var layerGroup = L.geoJSON(data, {
           onEachFeature: function (feature, layer) {
             var popup = '<a class="subtitle" href="/donaciones/' + feature.properties.pk + '"><h1>Donación #' + feature.properties.pk +
-              '</h1></a><p class="has-text-weight-bold">Nombre: ' + feature.properties.name + '</p><p>' + feature.properties.title + '</p>' +
+              '</h1></a><p class="has-text-weight-bold">Nombre: ' + feature.properties.name + '</p><p>' +
               '<a class="is-size-6" href="/donaciones/' + feature.properties.pk + '">Ver Donación</a>';
             layer.bindPopup(popup);
           }
