@@ -42,6 +42,7 @@ cp conf/.env.example conf/.env # you should edit this file with your configurati
 * Cabu Vallejos  https://github.com/cabupy
 * Diego Allen https://github.com/dalleng
 * Diosnel Velázquez https://github.com/diosnelv
+* Diego Allen https://github.com/dalleng
 * Félix Pedrozo https://github.com/X1lef
 * Guillermo Caballero https://github.com/Guillecaba
 * Jean Claude Adams https://github.com/jcroot
