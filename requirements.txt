@@ -12,3 +12,4 @@ djangorestframework-gis==0.15
 django-silk==4.0.1
 ua-parser~=0.10
 django-environ==0.4.5
+django-taggit==1.2.0
