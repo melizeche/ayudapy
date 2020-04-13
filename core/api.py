@@ -2,7 +2,6 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework import viewsets, status, mixins
 from rest_framework.response import Response
-from rest_framework.settings import api_settings
 from rest_framework_gis.filters import InBBoxFilter
 
 from core.middleware import USER_TYPE_DEVICE
@@ -13,12 +12,14 @@ from core.serializers import HelpRequestSerializer, HelpRequestGeoJSONSerializer
     API endpoints that allows search queries on HelpRequest 0
 """
 
+
 # SEARCH HELP REQUESTS
 class DynamicSearchFilter(filters.SearchFilter):
     def get_search_fields(self, view, request):
         return request.GET.getlist('search_fields', [])
 
-class HelpRequestViewSet(viewsets.ReadOnlyModelViewSet):
+
+class HelpRequestViewSet(viewsets.ModelViewSet):
     queryset = HelpRequest.objects.filter(active=True).order_by('-id')
     serializer_class = HelpRequestSerializer
     filter_backends = [InBBoxFilter, DjangoFilterBackend, DynamicSearchFilter,]

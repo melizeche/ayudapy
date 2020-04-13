@@ -14,7 +14,7 @@ class HelpRequestSerializer(GeoModelSerializer):
 class HelpRequestGeoJSONSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = HelpRequest
-        fields = ['pk', 'title', 'message', 'name','active', 'added']
+        fields = ['pk', 'title', 'message', 'name','phone', 'address', 'city', 'location', 'picture', 'active', 'added']
         geo_field = 'location'
 
 
