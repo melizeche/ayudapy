@@ -8,8 +8,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
-from rest_framework import routers
 
+from conf import api_urls
 from core import views as core_views
 from core import api as core_api
 from django_otp.admin import OTPAdminSite
@@ -20,13 +20,9 @@ environ.Env.read_env()
 if env('ADMIN_2FA_ENABLED'):
     admin.site.__class__ = OTPAdminSite
 
-router = routers.DefaultRouter()
-router.register(r'helprequests', core_api.HelpRequestViewSet)
-router.register(r'helprequestsgeo', core_api.HelpRequestGeoViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/', include(router.urls)),
     path('', core_views.home, name='home'),
     path('recibir', TemplateView.as_view(template_name="info_request.html")),
     path('solicitar', core_views.request_form, name="request-form"),
@@ -38,6 +34,7 @@ urlpatterns = [
     path('preguntas_frecuentes', core_views.view_faq, name='general_faq'),
     path('contacto', TemplateView.as_view(template_name="contact_us.html"), name='contact_us')
 ]
+urlpatterns += api_urls.urlpatterns
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 #urlpatterns += [path('silk/', include('silk.urls', namespace='silk'))]
