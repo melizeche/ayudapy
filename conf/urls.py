@@ -12,6 +12,13 @@ from rest_framework import routers
 
 from core import views as core_views
 from core import api as core_api
+from django_otp.admin import OTPAdminSite
+
+import environ
+env = environ.Env(ADMIN_2FA_ENABLED=(bool, False))
+environ.Env.read_env()
+if env('ADMIN_2FA_ENABLED'):
+    admin.site.__class__ = OTPAdminSite
 
 router = routers.DefaultRouter()
 router.register(r'helprequests', core_api.HelpRequestViewSet)
