@@ -19,7 +19,7 @@ urlpatterns = [
     path('recibir', TemplateView.as_view(template_name="info_request.html")),
     path('solicitar', core_views.request_form, name="request-form"),
     path('dar', TemplateView.as_view(template_name="info_give.html")),
-    path('legal', TemplateView.as_view(template_name="legal.html")),
+    path('legal', TemplateView.as_view(template_name="legal.html"), name='legal'),
     path('pedidos/<int:id>', core_views.view_request, name='pedidos-detail'),
     path('pedidos_ciudad/<slug:city>', core_views.list_by_city, name='pedidos-by-city'),
     path('pedidos', core_views.list_requests),
