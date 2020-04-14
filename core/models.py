@@ -90,7 +90,7 @@ class HelpRequest(models.Model):
     upvotes = models.IntegerField(default=0, blank=True)
     downvotes = models.IntegerField(default=0, blank=True)
     city = models.CharField(max_length=30, blank=True, default="", editable=False)
-    city_code = models.CharField(max_length=30, blank=True, default="", editable=False)
+    city_code = models.CharField(max_length=50, blank=True, default="", editable=False)
     search_vector = SearchVectorField()
     objects = HelpRequestQuerySet.as_manager()
 
@@ -320,7 +320,7 @@ class User(models.Model):
     )
     city_code = models.CharField(
         "Código Ciudad",
-        max_length=30,
+        max_length=50,
         help_text="Código de Ciudad por Defecto del Usuario",
         blank=True,
         null=True
