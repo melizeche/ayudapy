@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% load leaflet_tags %}
+{% load humanize %}
+{% load static %}
+
+{% block bread %}
+<nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
+    <ul>
+        <li>
+            <a href="/">
+                <span class="icon is-small">
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                </span>
+                <span>Inicio</span>
+            </a>
+        </li>
+        <li><a href="/donar">Info donar</a></li>
+        <li class="is-active"><a href="#" aria-current="page">Centros de donación</a></li>
+    </ul>
+</nav>
+{% endblock bread %}
+
+{% block content%}
+<div class="title center">
+    Centros de donación cercanos {{donation_center.id}}
+    <div id="loading-indicator" class="loader-wrapper">
+        <div class="loader is-loading"></div>
+    </div>
+</div>
+<div class="columns is-centered">
+    <div class="column is-6">
+        <div class="row is-centered cities-dropdown-wrapper">
+            <div class="columns is-vcentered is-desktop">
+                <div class="column">
+                    <div class="cities-dropdown" role="menu">
+                        <div class="field is-horizontal">
+                            <div class="field-body">
+                                <div class="field">
+                                    <div class="control">
+                                        <div class="select is-small">
+                                            <input name="cities" class="input is-small" list="list_donation_cities"
+                                                placeholder="Seleccionar ciudad..." autocomplete="off">
+                                        </div>
+                                        <p class="help has-text-info"> Si no ves tu ciudad es porque no hay centros de donación</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <datalist id="list_donation_cities">
+                            <select size=10>
+                                {% for city, code in list_donation_cities %}
+                                <option data-value="{{code}}">
+                                    {{city}}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </datalist>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            {% leaflet_map "main" callback="mainMapInit" %}
+        </div>
+        <button id="find-me" class="button is-success  is-outlined is-fullwidth"><span class="icon is-small">
+                <i class="fas fa-location-arrow"></i>
+            </span>
+            <span>Mi ubicación</span>
+        </button>
+        <p id="status"></p>
+    </div>
+
+
+
+    <div class="column is-6">
+        <div class="columns is-vcentered is-desktop">
+            <div class="column">
+                <div class="field has-addons">
+                    <div class="control is-expanded">
+                        <input id="search-text-field" class="input is-small" type="text" name="search-text-field"
+                            placeholder="Búsqueda por título o descripción, Ejemplo: Pañal">
+                    </div>
+                    <div class="control">
+                        <button class="button is-warning is-small" id="search-button">
+                            Buscar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="panel is-info">
+            <p class="panel-heading">
+                Últimos centros de donación
+            </p>
+            <div style="overflow-y:auto;max-height:75vh;padding:15px;">
+                <div id="requests-table">
+                </div>
+            </div>
+        </div>
+        <div id="requests-table-paginator"></div>
+    </div>
+</div>
+<script type="text/javascript" src="{% static 'scripts/list-donation.js' %}"></script>
+
+<script type="text/javascript">
+    function mainMapInit(map, options) {
+        new ListRequestView(map, options);
+    }
+</script>
+
+<script type="text/template" id="requests-table-template">
+      {% verbatim %}
+	<div class="media">
+	    <a href="/donaciones/{{id}}" class="has-text-grey-dark" title="{{added}}">
+	      <div class="media-content">
+		<div class="content">
+		  <p>
+		    <i class="fas fa-people-carry" aria-hidden="true"></i>
+		    <strong style="color:#363636;">#{{id}} | {{name}}</strong>
+		    <small>{{added}}</small>
+		    <br>
+		    {{name}}
+		  </p>
+		</div>
+	      </div>
+	  </a>
+	</div>
+      {% endverbatim %}
+    </script>
+
+<script type="text/template" id="requests-table-empty-template">
+      {% verbatim %}
+	<div class="media">
+	    <h1>No se encuentran centros de donación en la ubicación actual.</h1>
+	</div>
+      {% endverbatim %}
+    </script>
+
+<script type="text/template" id="requests-table-paginator-template">
+      {% verbatim %}
+	<div class="row requests-table-paginator">
+	    <div class="column is-5">
+		Mostrando &lt; Página {{currentPage}} de {{totalPages}} &gt;
+	    </div>
+	    <div class="column is-5 {{hasMultiplePages}}">
+		  <ul class="pagination">
+		      <li><a class="button is-link is-outlined first-button" {{hasFirst}}>&laquo; Primero</a></li>
+		      <li><a class="button is-link is-outlined prev-button" {{hasPrev}}>&lt; Prev</a></li>
+		      <li class=" button is-link">   {{currentPage}}   </li>
+		      <li><a class="button is-link is-outlined next-button" {{hasNext}}>Sig &gt;</a></li>
+		      <li><a class="button is-link is-outlined last-button" {{hasLast}}>Último &raquo;</a></li>
+		  </ul>
+	    </div>
+	</div>
+      {% endverbatim %}
+    </script>
+
+
+{% endblock %}
