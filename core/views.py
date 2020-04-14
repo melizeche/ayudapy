@@ -14,6 +14,10 @@ from rest_framework_gis.filters import InBBoxFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from django.template.defaultfilters import slugify
 
+import json
+import datetime
+import base64
+
 from .forms import HelpRequestForm
 from .models import HelpRequest, HelpRequestOwner, FrequentAskedQuestion
 from .utils import text_to_image, image_to_base64
@@ -67,6 +71,10 @@ def request_form(request):
 
 def view_request(request, id):
     help_request = get_object_or_404(HelpRequest, pk=id)
+    vote_ctrl = {}
+    vote_ctrl_cookie_key = 'votectrl'
+    # cookie expiration 
+    dt = datetime.datetime(year=2067,month=12,day=31)
 
     context = {
         "help_request": help_request,
@@ -78,12 +86,42 @@ def view_request(request, id):
     }
     if request.POST:
         if request.POST['vote']:
-            if request.POST['vote'] == 'up':
-                help_request.upvotes += 1
-            elif request.POST['vote'] == 'down':
-                help_request.downvotes += 1
-            help_request.save()
-    return render(request, "request.html", context)
+            if vote_ctrl_cookie_key in request.COOKIES:
+                try:
+                    vote_ctrl = json.loads(base64.b64decode(request.COOKIES[vote_ctrl_cookie_key]))
+                except:
+                    pass 
+
+                try:
+                    voteFlag = vote_ctrl["{id}".format(id=help_request.id)]
+                except KeyError:
+                    voteFlag = None
+
+                if voteFlag is None:
+                    if request.POST['vote'] == 'up':
+                        help_request.upvotes += 1
+                    elif request.POST['vote'] == 'down':
+                        help_request.downvotes += 1
+                    help_request.save()
+                    vote_ctrl["{id}".format(id=help_request.id)] = True
+                    
+
+    response = render(request, "request.html", context)
+
+    if vote_ctrl_cookie_key not in request.COOKIES:
+        # initialize control cookie
+        b = json.dumps({"{id}".format(id=help_request.id): True}).encode('utf-8')
+        value = base64.b64encode(b).decode('utf-8')
+        response.set_cookie(vote_ctrl_cookie_key, value,
+                            expires=dt)
+    else:
+        if request.POST:
+            # update control cookie
+            b = json.dumps(vote_ctrl).encode('utf-8')
+            value = base64.b64encode(b).decode('utf-8')
+            response.set_cookie(vote_ctrl_cookie_key, value,
+                                expires=dt)
+    return response
 
 
 def view_faq(request):

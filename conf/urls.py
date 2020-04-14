@@ -11,6 +11,7 @@ from django.views.generic import TemplateView
 
 from conf import api_urls
 from core import views as core_views
+from org import views as org_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,6 +27,9 @@ urlpatterns = [
     path('contacto', TemplateView.as_view(template_name="contact_us.html"), name='contact_us'),
     path('tag/<slug:slug>', core_views.tagged, name="tagged"),
     path('tag/<slug:slug>/pedidos_ciudad/<slug:city>', core_views.tagged_with_city, name="tagged_with_city")
+    path('donaciones', org_views.list_donation),
+    path('donaciones_ciudad/<slug:city>', org_views.list_donation_by_city, name='donation-by-city'),
+    path('donaciones/<int:id>', org_views.view_donation_center, name='donaciones-detail'),
 ]
 urlpatterns += api_urls.urlpatterns
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
