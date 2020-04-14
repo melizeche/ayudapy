@@ -1,0 +1,39 @@
+<!-- start pagination nav buttons -->
+<div class="row">
+    <div class="column is-5">
+        Mostrando &lt; Página {{ list_donations_paginated.number }} de {{ list_donations_paginated.paginator.num_pages }} &gt;
+    </div>
+    <div class="column is-5">
+        {% if list_donations_paginated.has_other_pages %}
+            <ul class="pagination">
+                <!-- previous (<<) nav button -->
+                {% if list_donations_paginated.has_previous %}
+                    <li><a href="?page={{ 1 }}{% if search %}&q={{ search }}{% endif %}" class="button is-link is-outlined">&laquo; Primero</a></li>
+
+                    <li><a href="?page={{ list_donations_paginated.previous_page_number }}{% if search %}&q={{ search }}{% endif %}"
+                           class="button is-link is-outlined">&lt; Prev</a></li>
+                {% else %}
+                    <li class="button is-link is-outlined" disabled>&lt; Prev</li>
+                {% endif %}
+
+                <!-- current number page button -->
+                <li class=" button is-link">   {{ list_donations_paginated.number }}   </li> <!-- active  -->
+
+                <!-- next (>>) nav button -->
+                {% if list_donations_paginated.has_next %}
+                    <span>
+                <li><a href="?page={{ list_donations_paginated.next_page_number }}{% if search %}&q={{ search }}{% endif %}" class="button is-link is-outlined">Sig &gt;</a>
+                </li>
+              </span> <!-- active  -->
+                    <span>
+                <li><a href="?page={{ list_donations_paginated.paginator.num_pages }}{% if search %}&q={{ search }}{% endif %}" class="button is-link is-outlined">Último &raquo;</a>
+                </li>
+              </span> <!-- active  -->
+                {% else %}
+                    <li class="button is-link is-outlined" disabled>Sig &gt;</li>
+                {% endif %}
+            </ul>
+        {% endif %}
+    </div>
+</div>
+<!-- end pagination nav buttons -->

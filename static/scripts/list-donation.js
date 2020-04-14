@@ -22,10 +22,10 @@
 
     map.addControl(
       new L.Control.Fullscreen({
-	title: {
-	  false: 'Ver en Pantalla Completa',
-	  true: 'Salir de Pantalla Completa',
-	},
+        title: {
+          false: 'Ver en Pantalla Completa',
+          true: 'Salir de Pantalla Completa',
+        },
       })
     );
     this.setupViewListeners();
@@ -64,9 +64,9 @@
     document
       .getElementById('search-text-field')
       .addEventListener('keypress', function (e) {
-	if (e.charCode == 13) {
-	  vm.getQuery();
-	}
+        if (e.charCode == 13) {
+          vm.getQuery();
+        }
       });
 
     document
@@ -88,12 +88,12 @@
     } else {
       switchElement.checked = false;
       var isGroupMarksActive = JSON.parse(
-	localStorage.getItem('group_markers_setting')
+        localStorage.getItem('group_markers_setting')
       );
       if (isGroupMarksActive != null) {
-	if (isGroupMarksActive) {
-	  switchElement.checked = true;
-	}
+        if (isGroupMarksActive) {
+          switchElement.checked = true;
+        }
       }
     }
   }
@@ -107,8 +107,8 @@
 
       console.log('${latitude} ' + longitude);
       you = L.marker([latitude, longitude], {
-	opacity: 0.3,
-	title: 'Tu ubicación',
+        opacity: 0.3,
+        title: 'Tu ubicación',
       }).addTo(maps[0]);
       you.bindPopup('Tu ubicación').openPopup();
       maps[0].panTo(new L.LatLng(latitude, longitude), 14);
@@ -148,20 +148,20 @@
     fetch(searchUrl)
       .then((response) => response.json())
       .then((data) => {
-	vm.loadingIndicator.hide();
+        vm.loadingIndicator.hide();
 
-	if (vm.clusters) {
-	  map.removeLayer(vm.clusters);
-	}
+        if (vm.clusters) {
+          map.removeLayer(vm.clusters);
+        }
 
-	if (map.getZoom() >= 13) {
-	  vm.clusters = vm.loadMarkers(map, data); //load markers without clustering
-	} else {
-	  vm.clusters = vm.loadMarkersAndGroup(map, data);
-	}
+        if (map.getZoom() >= 13) {
+          vm.clusters = vm.loadMarkers(map, data); //load markers without clustering
+        } else {
+          vm.clusters = vm.loadMarkersAndGroup(map, data);
+        }
 
-	vm.requestTableView.setData(data.features);
-	vm.requestTableView.render();
+        vm.requestTableView.setData(data.features);
+        vm.requestTableView.render();
       });
   }
 
@@ -169,20 +169,20 @@
     var markerClusters = L.markerClusterGroup();
     var layerGroup = L.geoJSON(data, {
       onEachFeature: function (feature, layer) {
-	var popup =
-	  '<a class="subtitle" href="/donaciones/' +
-	  feature.properties.pk +
-	  '"><h1>Donación #' +
-	  feature.properties.pk +
-	  '</h1></a><p class="has-text-weight-bold">Nombre: ' +
-	  feature.properties.name +
-	  '</p><p>' +
-	  '<a class="is-size-6" href="/donaciones/' +
-	  feature.properties.pk +
-	  '">Ver Donación</a>';
-	layer.bindPopup(popup);
+        var popup =
+          '<a class="subtitle" href="/donaciones/' +
+          feature.properties.pk +
+          '"><h1>Donación #' +
+          feature.properties.pk +
+          '</h1></a><p class="has-text-weight-bold">Nombre: ' +
+          feature.properties.name +
+          '</p><p>' +
+          '<a class="is-size-6" href="/donaciones/' +
+          feature.properties.pk +
+          '">Ver Donación</a>';
+        layer.bindPopup(popup);
 
-	markerClusters.addLayer(layer);
+        markerClusters.addLayer(layer);
       },
     });
     map.addLayer(markerClusters);
@@ -193,18 +193,18 @@
   function loadMarkers(map, data) {
     var layerGroup = L.geoJSON(data, {
       onEachFeature: function (feature, layer) {
-	var popup =
-	  '<a class="subtitle" href="/donaciones/' +
-	  feature.properties.pk +
-	  '"><h1>Donación #' +
-	  feature.properties.pk +
-	  '</h1></a><p class="has-text-weight-bold">Nombre: ' +
-	  feature.properties.name +
-	  '</p><p>' +
-	  '<a class="is-size-6" href="/donaciones/' +
-	  feature.properties.pk +
-	  '">Ver Donación</a>';
-	layer.bindPopup(popup);
+        var popup =
+          '<a class="subtitle" href="/donaciones/' +
+          feature.properties.pk +
+          '"><h1>Donación #' +
+          feature.properties.pk +
+          '</h1></a><p class="has-text-weight-bold">Nombre: ' +
+          feature.properties.name +
+          '</p><p>' +
+          '<a class="is-size-6" href="/donaciones/' +
+          feature.properties.pk +
+          '">Ver Donación</a>';
+        layer.bindPopup(popup);
       },
     }).addTo(map);
 
@@ -238,17 +238,17 @@
       var selectedIndex;
 
       for (var i = 0; i < options.length; i++) {
-	if (options[i].text == selectedValue) {
-	  selectedIndex = i;
-	  break;
-	}
+        if (options[i].text == selectedValue) {
+          selectedIndex = i;
+          break;
+        }
       }
       if (selectedIndex == undefined) {
-	return;
+        return;
       }
       var selectedOption = options[selectedIndex];
       location.assign(
-	'/donaciones_ciudad/' + selectedOption.getAttribute('data-value')
+        '/donaciones_ciudad/' + selectedOption.getAttribute('data-value')
       );
     });
 
@@ -304,10 +304,9 @@
       req = data[i].properties;
 
       tableHtml += this.tpl
-	.replace(/{{id}}/g, req.pk)
-	.replace(/{{added}}/g, moment(req.added).from(now))
-	.replace(/{{name}}/g, req.name)
-	.replace(/{{title}}/g, req.title);
+        .replace(/{{id}}/g, req.pk)
+        .replace(/{{added}}/g, moment(req.added).from(now))
+        .replace(/{{name}}/g, req.name);
     }
 
     requestAnimationFrame(function () {
@@ -357,8 +356,8 @@
       .replace(/{{currentPage}}/g, this.currentPage + 1)
       .replace(/{{totalPages}}/g, this.totalPages)
       .replace(
-	/{{hasMultiplePages}}/g,
-	'has-multiple-pages-' + this.hasMultiplePages
+        /{{hasMultiplePages}}/g,
+        'has-multiple-pages-' + this.hasMultiplePages
       );
 
     if (!this.hasNext) {
@@ -405,8 +404,8 @@
       page.push(dataSource[i]);
 
       if (page.length == this.pageSize) {
-	this.pages.push(page);
-	page = [];
+        this.pages.push(page);
+        page = [];
       }
     }
 

@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.serializers import serialize
 from django.shortcuts import (
@@ -5,9 +6,27 @@ from django.shortcuts import (
     render,
     get_object_or_404,
 )
+from django.contrib.auth.decorators import login_required
 
+from .forms import DonationForm
 from .models import DonationCenter
 from core.utils import text_to_image, image_to_base64
+
+
+@login_required
+def donation_form(request):
+    if request.method == "POST":
+        form = DonationForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_donation = form.save()
+
+            messages.success(request, "¡Tu donación se agregó exitosamente!")
+            return redirect("donaciones-detail", id=new_donation.id)
+    else:
+        form = DonationForm()
+    return render(request, "donation_form.html", {"form": form})
+
+
 
 def view_donation_center(request, id):
     donation_center = get_object_or_404(DonationCenter, pk=id)
