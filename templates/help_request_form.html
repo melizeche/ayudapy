@@ -20,12 +20,11 @@
 {% block content%}
 <div class="columns is-centered"> 
     <div class="column is-half">
-      <button href="#" id="find-me" class="button is-success  is-outlined is-fullwidth">
+      <button href="#" id="find-me" class="button is-success  is-outlined is-fullwidth" style="margin-bottom: 10px;">
         <span class="icon is-small">
           <i class="fas fa-location-arrow"></i>
         </span>
-        <span>Apreta acá voy a tratar de
-          encontrarte</span>
+        <span>Apreta acá voy a tratar de encontrarte</span>
       </button>
       <p id="status"></p>
       <form enctype="multipart/form-data" method="post" action="/solicitar">
@@ -63,6 +62,11 @@ function getDireccion(longitude, latitude) {
       .then((response) => response.json())
       .then((data) => {
         const direccion = data.data;
+
+        document.getElementById('div_direccion').innerHTML = `
+        <span><b>Calles</b>:${direccion.direccion || ''}</span><br /> 
+        <span><b>Barrio</b>:${direccion.localidad || '' }</span><br /> 
+        <span><b>Ciudad</b>:${direccion.distrito || ''} <span> <span><b>Departamento</b>:${direccion.departamento || ''}</span>`;
         document.getElementById('id_address').value = `${direccion.direccion || ''} ${direccion.localidad || '' } ${direccion.distrito || ''} ${direccion.departamento || ''}`;
         resolve(true)
       })
@@ -88,7 +92,7 @@ function geoFindMe() {
               const latitude  = position.coords.latitude;
               const longitude = position.coords.longitude;
 
-              boton.textContent = 'Te encontré, seguí completando y verifica tu dirección !';
+              boton.textContent = 'Te encontré, seguí completando !';
               boton.disabled = true;
               status.textContent = '';
 
