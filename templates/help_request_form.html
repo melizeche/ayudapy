@@ -55,7 +55,6 @@
 </div>
 
 <script>
-
 function getDireccion(longitude, latitude) {
   return new Promise(function(resolve, reject){
     fetch(`https://geo.cabu.dev/v1/geoinversa/${latitude}/${longitude}`)
@@ -125,42 +124,5 @@ function geoFindMe() {
           }
 
           document.querySelector('#find-me').addEventListener('click', geoFindMe);
-
-</script>
-<script>
-
-function checkRequestForm() {
-    fields = ['id_title', 'id_message','id_name','id_phone','id_location','id_address']
-    var valid = true;
-    for (field in fields) {
-        if (!document.getElementById(fields[field]).checkValidity()) {
-        valid = false
-      }
-    }
-
-    if (valid) {
-      document.querySelector('#submit').textContent="Enviando..."
-      document.querySelector('#submit').disabled="disabled";
-      return true;
-    }
-}
-
-document.querySelectorAll('.modal-button').forEach(function(el) {
-  el.addEventListener('click', function() {
-    var target = document.querySelector(el.getAttribute('data-target'));
-    //map.invalidateSize();
-    target.classList.add('is-active');
-
-    target.querySelector('.close').addEventListener('click',   function() {
-        target.classList.remove('is-active');
-     });
-     target.querySelector('.delete').addEventListener('click',   function() {
-        target.classList.remove('is-active');
-     });
-     target.querySelector('.modal-background').addEventListener('click',   function() {
-        target.classList.remove('is-active');
-     });
-  });
-});
 </script>
 {% endblock %}
