@@ -20,12 +20,11 @@
 {% block content%}
 <div class="columns is-centered"> 
     <div class="column is-half">
-      <button href="#" id="find-me" class="button is-success  is-outlined is-fullwidth">
+      <button href="#" id="find-me" class="button is-success  is-outlined is-fullwidth" style="margin-bottom: 10px;">
         <span class="icon is-small">
           <i class="fas fa-location-arrow"></i>
         </span>
-        <span>Apreta acá voy a tratar de
-          encontrarte</span>
+        <span>Apreta acá voy a tratar de encontrarte</span>
       </button>
       <p id="status"></p>
       <form enctype="multipart/form-data" method="post" action="/solicitar">
@@ -56,104 +55,74 @@
 </div>
 
 <script>
+function getDireccion(longitude, latitude) {
+  return new Promise(function(resolve, reject){
+    fetch(`https://geo.cabu.dev/v1/geoinversa/${latitude}/${longitude}`)
+      .then((response) => response.json())
+      .then((data) => {
+        const direccion = data.data;
 
-  function geoFindMe() {
+        document.getElementById('div_direccion').innerHTML = `
+        <span><b>Calles</b>:${direccion.direccion || ''}</span><br /> 
+        <span><b>Barrio</b>:${direccion.localidad || '' }</span><br /> 
+        <span><b>Ciudad</b>:${direccion.distrito || ''} <span> <span><b>Departamento</b>:${direccion.departamento || ''}</span>`;
+        document.getElementById('id_address').value = `${direccion.direccion || ''} ${direccion.localidad || '' } ${direccion.distrito || ''} ${direccion.departamento || ''}`;
+        resolve(true)
+      })
+      .catch((error) => {
+        resolve(true)
+      })
+  })
+}
 
-    const status = document.querySelector('#status');
-    const boton = document.querySelector('#find-me');
+function geoFindMe() {
 
-    function makePoint(longitude, latitude) {
-      return JSON.stringify({
-        type: 'Point',
-        coordinates: [longitude, latitude]
-      });
-    }
+            const status = document.querySelector('#status');
+            const boton = document.querySelector('#find-me');
 
-    function success(position) {
-      const latitude  = position.coords.latitude;
-      const longitude = position.coords.longitude;
+            function makePoint(longitude, latitude) {
+              return JSON.stringify({
+                type: 'Point',
+                coordinates: [longitude, latitude]
+              });
+            }
 
-      boton.textContent = 'Encontré, seguí completando tus datos !';
-      boton.disabled = true;
-      status.textContent = '';
+            async function success(position) {
+              const latitude  = position.coords.latitude;
+              const longitude = position.coords.longitude;
 
-      document.getElementById('id_location').innerHTML = makePoint(longitude, latitude);
+              boton.textContent = 'Te encontré, seguí completando !';
+              boton.disabled = true;
+              status.textContent = '';
 
-      maps[0].addControl(
-        new L.Control.Fullscreen({
-          title: {
-            false: 'Ver en Pantalla Completa',
-            true: 'Salir de Pantalla Completa',
-          },
-        })
-      );
+              document.getElementById('id_location').innerHTML = makePoint(longitude, latitude);
+              
+              await getDireccion(longitude, latitude);
+          
+              const you = L.marker([latitude, longitude], {draggable: true, opacity: 0.9, title:'Tu ubicación'}).addTo(maps[0]);
+              you.bindPopup('Moveme si queres !').openPopup();
+              
+              maps[0].setView([latitude, longitude], 16);
 
-      const you = L.marker([latitude, longitude],
-        {
-          draggable: true,
-          opacity: 0.9,
-          title:'Tu ubicación'
-        }
-      ).addTo(maps[0]);
+              you.on('dragend', async function (e) {
+                await getDireccion(e.target._latlng.lng, e.target._latlng.lat);
+                document.getElementById('id_location').innerHTML = makePoint(e.target._latlng.lng, e.target._latlng.lat);
+              });
+            }
 
-      you.bindPopup('<b>Moveme si queres !</b>').openPopup();
+            function error() {
+              status.textContent = 'No puedo encontrarte, usá los botones del mapa más abajo';
+            }
 
-      maps[0].setView([latitude, longitude], 16);
+            if (!navigator.geolocation) {
+              status.textContent = 'Tu navegador no soporta la geolocalización';
+            } else {
+              status.textContent = 'Buscando tu ubicación…';
+              navigator.geolocation.getCurrentPosition(success, error);
+            }
 
-      you.on('dragend', function (e) {
-        document.getElementById('id_location').innerHTML = makePoint(e.target._latlng.lng, e.target._latlng.lat);
-      });
+          }
 
-    }
-
-    function error() {
-      status.textContent = 'No puedo encontrarte, usá los botones del mapa más abajo';
-    }
-
-    if (!navigator.geolocation) {
-      status.textContent = 'Tu navegador no soporta la geolocalización';
-    } else {
-      status.textContent = 'Buscando tu ubicación…';
-      navigator.geolocation.getCurrentPosition(success, error);
-    }
-
-  }
-
-  function checkRequestForm() {
-      fields = ['id_title', 'id_message','id_name','id_phone','id_location','id_address']
-      var valid = true;
-      for (field in fields) {
-          if (!document.getElementById(fields[field]).checkValidity()) {
-          valid = false
-        }
-      }
-
-      if (valid) {
-        document.querySelector('#submit').textContent="Enviando..."
-        document.querySelector('#submit').disabled="disabled";
-        return true;
-      }
-  }
-
-  document.querySelectorAll('.modal-button').forEach(function(el) {
-    el.addEventListener('click', function() {
-      var target = document.querySelector(el.getAttribute('data-target'));
-      //map.invalidateSize();
-      target.classList.add('is-active');
-
-      target.querySelector('.close').addEventListener('click',   function() {
-          target.classList.remove('is-active');
-      });
-      target.querySelector('.delete').addEventListener('click',   function() {
-          target.classList.remove('is-active');
-      });
-      target.querySelector('.modal-background').addEventListener('click',   function() {
-          target.classList.remove('is-active');
-      });
-    });
-  });
-
-  document.querySelector('#find-me').addEventListener('click', geoFindMe);
-
+          document.querySelector('#find-me').addEventListener('click', geoFindMe);
 </script>
 {% endblock %}
