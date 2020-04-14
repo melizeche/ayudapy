@@ -155,7 +155,7 @@
           map.removeLayer(vm.clusters);
         }
 
-        if (map.getZoom() >= 14) {
+        if (map.getZoom() >= 17) {
           vm.clusters = vm.loadMarkers(map, data); //load markers without clustering
         } else {
           vm.clusters = vm.loadMarkersAndGroup(map, data);
