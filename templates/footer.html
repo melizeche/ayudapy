@@ -1,11 +1,12 @@
+{% load static %}
 <footer class="footer">
 <nav class="columns is-vcentered">
   <!-- Left side -->
   <div class="column is-one-fifth">
 	  <p class="level-item">
 	      <ul class="list is-fullwidth-mobile has-text-left-desktop has-text-centered-mobile">
-	        <li class="list-item"><a href="/legal">Términos de uso</a></li>
-	        <li class="list-item"><a href="{% url  'general_faq' %}">Preguntas frecuentes</a></li>
+	        <li class="list-item"><a href="{% url 'legal' %}">Términos de uso</a></li>
+	        <li class="list-item"><a href="{% url 'general_faq' %}">Preguntas frecuentes</a></li>
             <li class="list-item"><a href="{% url 'contact_us' %}">Contacto</a></li>
 	      </ul>
   </div>
@@ -16,7 +17,7 @@
             <figure class="image is-96x96">
               <a href="/">
 {#                <h6 class="is-full subtitle is-4 has-text-centered is-marginless">Apoya</h6>#}
-                <img class="is-rounded" src="../static/img/icono.svg">
+                <img class="is-rounded" src="{% static 'img/icono.svg' %}">
               </a>
             </figure>
         </div>
