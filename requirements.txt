@@ -1,6 +1,6 @@
 django~=2.2
 Pillow==7.0.0
-psycopg2-binary==2.8.4 
+psycopg2-binary==2.8.4
 django-leaflet==0.26.0
 black
 django-widget-tweaks==1.4.8
@@ -12,3 +12,5 @@ djangorestframework-gis==0.15
 django-silk==4.0.1
 ua-parser~=0.10
 django-environ==0.4.5
+django-otp==0.8.1
+qrcode==6.1

@@ -11,6 +11,15 @@ from django.views.generic import TemplateView
 
 from conf import api_urls
 from core import views as core_views
+from core import api as core_api
+from django_otp.admin import OTPAdminSite
+
+import environ
+env = environ.Env(ADMIN_2FA_ENABLED=(bool, False))
+environ.Env.read_env()
+if env('ADMIN_2FA_ENABLED'):
+    admin.site.__class__ = OTPAdminSite
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
