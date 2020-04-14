@@ -1,11 +1,12 @@
+{% load static %}
 <footer class="footer">
 <nav class="columns is-vcentered">
   <!-- Left side -->
   <div class="column is-one-fifth">
 	  <p class="level-item">
-	      <ul class="list is-fullwidth-mobile">
-	        <li class="list-item"><a href="/legal">Términos de uso</a></li>
-	        <li class="list-item"><a href="{% url  'general_faq' %}">Preguntas frecuentes</a></li>
+	      <ul class="list is-fullwidth-mobile has-text-left-desktop has-text-centered-mobile">
+	        <li class="list-item"><a href="{% url 'legal' %}">Términos de uso</a></li>
+	        <li class="list-item"><a href="{% url 'general_faq' %}">Preguntas frecuentes</a></li>
             <li class="list-item"><a href="{% url 'contact_us' %}">Contacto</a></li>
 	      </ul>
   </div>
@@ -13,40 +14,12 @@
 
     <div class="column is-three-fifth">
         <div class="columns is-mobile is-centered">
-            <!-- <div class="column"> -->
-                 <a href="https://www.twitter.com/ayudapyorg" target="_blank" style="margin-left: .5em;">
-                    <button class="button is-medium">
-                      <span class="icon">
-                        <i class="fab fa-twitter has-text-info"></i>
-                      </span>
-                      <!-- <span>@ayuda_py</span> -->
-                    </button>
-                  </a>
-                  <a href="https://instagram.com/ayudapyorg" target="_blank" style="margin-left: .5em;">
-                    <button class="button is-medium">
-                      <span class="icon">
-                        <i class="fab fa-instagram has-text-danger"></i>
-                      </span>
-                      <!-- <span>@ayuda.py</span> -->
-                    </button>
-                  </a>
-                  <a href="https://www.facebook.com/ayudapyorg/" target="_blank" style="margin-left: .5em;">
-                    <button class="button is-medium">
-                      <span class="icon">
-                        <i class="fab fa-facebook has-text-link"></i>
-                      </span>
-                      <!-- <span>@ayudapy</span> -->
-                    </button>
-                  </a>
-                  <a href="https://www.youtube.com/channel/UCtRcDRTKA2uQCzfvlPNvbNQ" target="_blank" style="margin-left: .5em;">
-                    <button class="button is-medium">
-                      <span class="icon">
-                        <i class="fab fa-youtube has-text-danger"></i>
-                      </span>
-                      <!-- <span>@ayudapy</span> -->
-                    </button>
-                  </a>
-            <!-- </div> -->
+            <figure class="image is-96x96">
+              <a href="/">
+{#                <h6 class="is-full subtitle is-4 has-text-centered is-marginless">Apoya</h6>#}
+                <img class="is-rounded" src="{% static 'img/icono.svg' %}">
+              </a>
+            </figure>
         </div>
     </div>
 
@@ -54,9 +27,9 @@
   <div class="column is-one-fifth">
     <!-- <div class="level-item"> -->
         <p class="column is-size-7 has-text-centered has-text-right-desktop is-family-monospace">
-            Desarrollado por <a href="https://melizeche.com">Marcelo Elizeche Landó</a>.
-            <br> Código fuente liberado bajo la licencia <a href="https://opensource.org/licenses/GPL-3.0">GPLv3</a>.
-            <br><a href="https://github.com/melizeche/ayudapy" target="_blank"><span class="icon"><i class="fab fa-github" title="logo Github"></i></span>Revisá el código en GitHub</a>.
+            Desarrollado por <a href="https://melizeche.com">Marcelo Elizeche</a>
+            <br> Código fuente libre bajo licencia <a href="https://opensource.org/licenses/GPL-3.0">GPLv3</a>
+            <br><a href="https://github.com/melizeche/ayudapy" target="_blank">Revisá el código <span class="icon"><i class="fab fa-github" title="logo Github"></i></span></a>
         </p>
     <!-- </div> -->
    </div>
