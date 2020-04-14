@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load leaflet_tags %}
+{% load humanize %} 
+
+{% block bread %}
+  <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
+    <ul>
+        <li>
+            <span class="icon is-small">
+            <i class="fas fa-home" aria-hidden="true"></i>
+            </span>
+            <a href="/">Inicio</a>
+        </li>
+        <li><a href="/donar">Info donar</a></li>
+        <li class="is-active"><a href="#" aria-current="page">Centros de donación</a></li>
+      </ul>
+  </nav>
+{% endblock bread %}
+
+{% block content%}
+<div class="title center">
+  Donaciones en {{city}}
+</div>
+<div class="subtitle center">
+    <a href="/donaciones"> (ver todos)</a>
+</div>
+{% if not list_donations %}
+<div class="notification is-warning center is-size-5">
+  Todavía no hay centros de donación, volvé en un rato
+</div>
+{% endif %}
+    <div class="columns is-centered">
+      <div class="column is-6">
+        <!-- Start Switch clustering -->
+        <div style="margin-bottom: .75em; ">
+          <div class="field">
+            <input id="switchNormal" type="checkbox" onclick="groupMarkerRequest()" name="switchNormal" class="switch">
+            <label for="switchNormal">Agrupar donaciones</label>
+          </div>
+        </div>
+        <!-- End Switch clustering -->
+        <div class="row">
+          {% leaflet_map "main" callback="main_map_init" %}
+        </div>
+      </div>
+      <div class="column is-6">
+        <div class="panel is-info">
+          <p class="panel-heading">
+            Últimos centros de donación en {{city}}
+          </p>
+          <div style="overflow-y:auto;max-height:75vh;padding:15px;">
+            {% for donation in list_donations_paginated %}
+              <div class="media">
+                <a href="/donaciones/{{donation.id}}" class="has-text-grey-dark" title="{{donation.added}}">
+                  <div class="media-content">
+                    <div class="content">
+                      <p>
+                        <i class="fas fa-people-carry" aria-hidden="true"></i>
+                        <strong style="color:#363636;">#{{donation.id}} | {{donation.name}}</strong>
+                        <small>{{donation.added|naturaltime}}</small>
+                        <br>
+                        {{donation.title}}
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+       {% include "nav_paginator_controls.html" %}
+      </div>
+    </div>
+    
+    <script type="text/javascript">
+      // start on load
+      switchClusteringInit();
+
+      var map = null
+      // end on load
+
+      function switchClusteringInit() {
+        //We check if the browser support local Storage caching
+        //in case does not, we disable the switch
+        var switchElement = document.getElementById('switchNormal');
+
+        if (typeof (Storage) === "undefined") {
+          switchElement.disabled = true;
+        } else {
+          switchElement.checked = false;
+          var isGroupMarksActive = JSON.parse(localStorage.getItem("group_markers_setting"));
+          if (isGroupMarksActive != null) {
+            if (isGroupMarksActive) {
+              switchElement.checked = true;
+            }
+          }
+        }
+      }
+
+      function main_map_init(map, options) {
+            // Use Leaflet API here
+            this.map = map
+            {% autoescape off %}
+            data = {{ geo }}
+          {% endautoescape %}
+
+          map.setMaxZoom(17)
+          map.addControl(new L.Control.Fullscreen({
+            title: {
+              'false': 'Ver en Pantalla Completa',
+              'true': 'Salir de Pantalla Completa'
+            }
+          }));
+
+          //We check the switch status
+          var isGroupMarksActive = JSON.parse(localStorage.getItem("group_markers_setting"));
+          if (!isGroupMarksActive) {
+            loadMarkers(map, data);//load markers without clustering
+          } else {
+            loadMarkersAndGroup(map, data);
+          }
+      }
+
+      function loadMarkersAndGroup(map, data) {
+        console.log("loadMarkersAndGroup");
+        var markerClusters = L.markerClusterGroup();
+        var layerGroup = L.geoJSON(data, {
+          onEachFeature: function (feature, layer) {
+            var popup = '<a class="subtitle" href="/donaciones/' + feature.properties.pk + '"><h1>Donación #' + feature.properties.pk +
+              '</h1></a><p class="has-text-weight-bold">Nombre: ' + feature.properties.name + '</p>' +
+              '<a class="is-size-6" href="/donaciones/' + feature.properties.pk + '">Ver Donación</a>';
+            layer.bindPopup(popup);
+
+            markerClusters.addLayer(layer);
+          }
+        });
+        map.addLayer(markerClusters);
+        map.fitBounds(layerGroup.getBounds(), { padding: [50, 50] });
+      }
+
+      function loadMarkers(map, data) {
+        console.log("loadMarkers");
+        var layerGroup = L.geoJSON(data, {
+          onEachFeature: function (feature, layer) {
+            var popup = '<a class="subtitle" href="/donaciones/' + feature.properties.pk + '"><h1>Donación #' + feature.properties.pk +
+              '</h1></a><p class="has-text-weight-bold">Nombre: ' + feature.properties.name + '</p><p>' +
+              '<a class="is-size-6" href="/donaciones/' + feature.properties.pk + '">Ver Donación</a>';
+            layer.bindPopup(popup);
+          }
+        }).addTo(map);
+        map.fitBounds(layerGroup.getBounds(), { padding: [50, 50] });
+      }
+
+      function groupMarkerRequest() {
+        //Update cached status
+        var checkbox = document.getElementById('switchNormal');
+        if (checkbox.checked != true) {
+          localStorage.setItem('group_markers_setting', JSON.stringify(false));
+        } else {
+          localStorage.setItem('group_markers_setting', JSON.stringify(true));
+        }
+
+        location.reload(); //refresh the page with the new map display setting
+
+      }
+
+    </script>
+
+</div>
+{% endblock %}
