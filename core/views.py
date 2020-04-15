@@ -91,24 +91,29 @@ def view_request(request, id):
                     elif request.POST['vote'] == 'down':
                         help_request.downvotes += 1
                     help_request.save()
-                    vote_ctrl["{id}".format(id=help_request.id)] = True
-                    
+                    vote_ctrl["{id}".format(id=help_request.id)] = True                    
 
     response = render(request, "request.html", context)
 
     if vote_ctrl_cookie_key not in request.COOKIES:
         # initialize control cookie
-        b = json.dumps({"{id}".format(id=help_request.id): True}).encode('utf-8')
+        if request.POST and request.POST['vote']:
+            # set value in POST request if cookie not exists 
+            b = json.dumps({"{id}".format(id=help_request.id): True}).encode('utf-8')
+        else:
+            # set empty value in others requests
+            b = json.dumps({}).encode('utf-8')
         value = base64.b64encode(b).decode('utf-8')
         response.set_cookie(vote_ctrl_cookie_key, value,
                             expires=dt)
     else:
         if request.POST:
-            # update control cookie
-            b = json.dumps(vote_ctrl).encode('utf-8')
-            value = base64.b64encode(b).decode('utf-8')
-            response.set_cookie(vote_ctrl_cookie_key, value,
-                                expires=dt)
+            if request.POST['vote']:
+                # update control cookie only in POST request
+                b = json.dumps(vote_ctrl).encode('utf-8')
+                value = base64.b64encode(b).decode('utf-8')
+                response.set_cookie(vote_ctrl_cookie_key, value,
+                                    expires=dt)
     return response
 
 
