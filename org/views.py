@@ -68,11 +68,11 @@ def list_donation_by_city(request, city):
     paginate_by = 25
     paginator = Paginator(list_donations, paginate_by)
     try:
-        list_donations_paginated = paginator.page(page)
+        list_paginated = paginator.page(page)
     except PageNotAnInteger:
-        list_donations_paginated = paginator.page(1)
+        list_paginated = paginator.page(1)
     except EmptyPage:
-        list_donations_paginated = paginator.page(paginator.num_pages)
+        list_paginated = paginator.page(paginator.num_pages)
 
-    context = {"list_donations": list_donations, "geo": geo, "city": city, "list_donations_paginated": list_donations_paginated}
+    context = {"list_donations": list_donations, "geo": geo, "city": city, "list_paginated": list_paginated}
     return render(request, "list_donation_by_city.html", context)
