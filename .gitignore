@@ -61,7 +61,9 @@ target/
 .vscode
 #mine
 db.sqlite3
-listahu/settings.py
 media/
 gunicorn_start.sh
 conf/.env
+
+# Docker bind mounts
+db-data
