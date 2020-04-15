@@ -6,14 +6,24 @@ from django.shortcuts import (
     render,
     get_object_or_404,
 )
-from django.contrib.auth.decorators import login_required
+# from django.contrib.auth.decorators import login_required
 
 from .forms import DonationForm
 from .models import DonationCenter
 from core.utils import text_to_image, image_to_base64
 
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
 
-@login_required
+from django.views.generic import TemplateView
+
+
+@method_decorator(permission_required("auth.add_donationcenter"), name="dispatch")
+class RestrictedView(TemplateView):
+    template_name = "info_donation.html"
+
+
+@permission_required('auth.add_donationcenter')
 def donation_form(request):
     if request.method == "POST":
         form = DonationForm(request.POST, request.FILES)

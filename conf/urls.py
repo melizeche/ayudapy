@@ -12,6 +12,7 @@ from django.views.generic import TemplateView
 from conf import api_urls
 from core import views as core_views
 from org import views as org_views
+from org.views import RestrictedView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,7 +27,7 @@ urlpatterns = [
     path('preguntas_frecuentes', core_views.view_faq, name='general_faq'),
     path('contacto', TemplateView.as_view(template_name="contact_us.html"), name='contact_us'),
     path('ceder', org_views.donation_form, name="donation-form"),
-    path('donar', TemplateView.as_view(template_name="info_donation.html")),
+    path('donar', RestrictedView.as_view()),
     path('donaciones', org_views.list_donation),
     path('donaciones_ciudad/<slug:city>', org_views.list_donation_by_city, name='donation-by-city'),
     path('donaciones/<int:id>', org_views.view_donation_center, name='donaciones-detail'),

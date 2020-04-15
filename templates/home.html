@@ -2,42 +2,55 @@
 
 {% block content %}
 <div class="is-fullhd">
-         <div class="columns is-centered">
-            <div class="column is-3">
-                <a href="/recibir">
-                    <article class="tile is-child notification has-text-centered" style="background-color: #ffb852; color: white;">
-                        <p class="title is-4">¡Necesito ayuda!</p>
-                        <p class="subtitle is-size-7">Publicá tu pedido para que la gente vea</p>
-                    </article>
-                </a>
-            </div>
-            <div class="column is-3">
-                <a href="/dar">
-                    <article class="tile is-child notification has-text-centered" style="background-color: #4cd36f; color: white;">
-                        <p class="title is-4">¡Quiero ayudar!</p>
-                        <p class="subtitle is-6 is-size-7">Encontrá a alguien cerca tuyo para ayudar</p>
-                    </article>
-                </a>
-            </div>
+    <div class="columns is-centered">
+        <div class="column is-3">
+            <a href="/recibir">
+                <article class="tile is-child notification has-text-centered"
+                    style="background-color: #ffb852; color: white;">
+                    <p class="title is-4">¡Necesito ayuda!</p>
+                    <p class="subtitle is-size-7">Publicá tu pedido para que la gente vea</p>
+                </article>
+            </a>
         </div>
-        <div class="columns is-centered">
-{#            <div class="column is-3 is-offset-3">#}
-{#                <a href="/recibir">#}
-{#                    <article class="tile is-child notification has-text-centered" style="background-color: #f95d82; color: white;">#}
-{#                        <p class="title is-4">¡Quiero ser voluntario!</p>#}
-{#                        <p class="subtitle is-size-7">Ayudanos a ayudar</p>#}
-{#                    </article>#}
-{#                </a>#}
-{#            </div>#}
-            <div class="column is-3">
-                <a href="/ceder">
+        <div class="column is-3">
+            <a href="/dar">
+                <article class="tile is-child notification has-text-centered"
+                    style="background-color: #4cd36f; color: white;">
+                    <p class="title is-4">¡Quiero ayudar!</p>
+                    <p class="subtitle is-6 is-size-7">Encontrá a alguien cerca tuyo para ayudar</p>
+                </article>
+            </a>
+        </div>
+    </div>
+    <div class="columns is-centered">
+        <!-- <div class="column is-3 is-offset-3">
+                <a href="/recibir">
+                    <article class="tile is-child notification has-text-centered" style="background-color: #f95d82; color: white;">
+                        <p class="title is-4">¡Quiero ser voluntario!</p>
+                        <p class="subtitle is-size-7">Ayudanos a ayudar</p>
+                    </article>
+                </a>
+            </div> -->
+        <!-- <div class="column is-3">
+                <a href="#">
                     <article class="tile is-child notification has-text-centered" style="background-color: #6e6bd1; color: white;">
                         <p class="title is-4">¡Quiero donar!</p>
                         <p class="subtitle is-6 is-size-7">Mirá lo que podés donar y dónde</p>
                     </article>
                 </a>
-            </div>
+            </div> -->
+        {% if perms.auth.add_donationcenter %}
+        <div class="column is-3">
+            <a href="/donar">
+                <article class="tile is-child notification has-text-centered"
+                    style="background-color: #2cceb8; color: white;">
+                    <p class="title is-4">Registrar Centro de Donación</p>
+                    <p class="subtitle is-6 is-size-7">Mirá lo que podés donar y dónde</p>
+                </article>
+            </a>
         </div>
+        {% endif %}
+    </div>
 </div>
 
 {% endblock %}

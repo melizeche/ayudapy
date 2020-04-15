@@ -4,7 +4,6 @@ from django.core.exceptions import NON_FIELD_ERRORS
 
 from .models import DonationCenter
 
-
 class DonationForm(forms.ModelForm):
     class Meta:
         model = DonationCenter
