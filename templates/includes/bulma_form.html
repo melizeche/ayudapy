@@ -30,7 +30,9 @@
     {% if field.field.required %}
     <label class="label" for="{{ field.name }}">{{ field.label }}*</label>
     {%else%}
-    <label class="label has-text-weight-normal" for="{{ field.name }}">{{ field.label }}</label>
+        {% if field.name != 'categories' %}
+            <label class="label has-text-weight-normal" for="{{ field.name }}">{{ field.label }}</label>
+        {% endif %}
     {%endif%}
     {% if field.help_text|safe %}
     <p class="help text-muted">{{ field.help_text }}</p>
