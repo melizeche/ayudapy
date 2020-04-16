@@ -40,29 +40,30 @@
         <div class="columns is-centered is-mobile is-multiline">
           <div class="column is-3-desktop is-3-mobile ">
             <div class="field">
-              <p><i class="fas fa-coffee fa-2x {% if form.viveres.checked %} has-text-info{% endif %}"></i></p>
+{#              <p onclick="changeViveres()"><i class="fas fa-coffee fa-2x {% if form.viveres.checked %} has-text-info{% endif %}"></i></p>#}
+              <p onclick="changeSwitch('viveres')"><i id="viveresIcon" class="fas fa-coffee fa-2x"></i></p>
 {#              <p class="is-size-7"> {{ field.0 }}</p>#}
-              <p class="is-size-7"> Víveres</p>
-              <input type="checkbox" value="viveres" id="viveres" name="categories" class="switch is-info">
+              <p onclick="changeSwitch('viveres')" class="is-size-7"> Víveres</p>
+              <input type="checkbox" value="viveres"  onclick="changeIconClass('viveres')" id="viveres" name="categories" class="switch is-info">
               <label for="viveres"></label>
             </div>
           </div>
              <div class="column is-3-desktop is-3-mobile">
-                    <p><i class="fas fa-child fa-2x"></i></p>
-                   <p class="is-size-7">Bebés</p>
-                    <input id="bebes" value="bebes" type="checkbox" name="categories" class="switch is-info">
+                    <p onclick="changeSwitch('bebes')"><i id="bebesIcon" class="fas fa-child fa-2x"></i></p>
+                   <p onclick="changeSwitch('bebes')" class="is-size-7">Bebés</p>
+                    <input id="bebes" value="bebes"  onclick="changeIconClass('bebes')" type="checkbox" name="categories" class="switch is-info">
                   <label for="bebes"></label>
               </div>
             <div class="column is-3-desktop is-3-mobile">
-                <p><i class="fas fa-medkit fa-2x"></i></p>
-               <p class="is-size-7"> Remedios</p>
-           <input id="medicamentos" value="medicamentos" type="checkbox" name="categories" class="switch is-info">
+                <p onclick="changeSwitch('medicamentos')"><i id="medicamentosIcon" class="fas fa-medkit fa-2x"></i></p>
+               <p onclick="changeSwitch('medicamentos')" class="is-size-7"> Remedios</p>
+           <input id="medicamentos" value="medicamentos" onclick="changeIconClass('medicamentos')" type="checkbox" name="categories" class="switch is-info">
               <label for="medicamentos"></label>
           </div>
            <div class="column is-3-desktop is-3-mobile">
-                <p><i class="fas fa-shower fa-2x"></i></p>
-               <p class="is-size-7"> Limpieza</p>
-             <input  value="limpieza" id="limpieza" type="checkbox" name="categories" class="switch is-info">
+                <p onclick="changeSwitch('limpieza')"><i id="limpiezaIcon" class="fas fa-shower fa-2x"></i></p>
+               <p onclick="changeSwitch('limpieza')" class="is-size-7"> Limpieza</p>
+             <input  value="limpieza" id="limpieza" onclick="changeIconClass('limpieza')" type="checkbox" name="categories" class="switch is-info">
               <label for="limpieza"></label>
           </div>
 
@@ -116,3 +117,36 @@
     {% endif %}
 </div>
 {% endfor %}
+
+<script type="text/javascript">
+
+      function changeViveres() {
+
+        var elemento = document.getElementById('viveres');
+
+        elemento.checked = !elemento.checked;
+
+        if(elemento){
+           document.getElementById('viveresIcon').classList.add("has-text-info");
+        }else{
+           document.getElementById('viveresIcon').classList.remove("has-text-info");
+
+        }
+      }
+
+      function changeSwitch(name){
+        var elemento = document.getElementById(name);
+        elemento.checked = !elemento.checked;
+        changeIconClass(name);
+      }
+
+      function changeIconClass(name) {
+          var elemento = document.getElementById(name);
+          if (elemento.checked) {
+              document.getElementById(name+'Icon').classList.add("has-text-info");
+          } else {
+              document.getElementById(name+'Icon').classList.remove("has-text-info");
+          }
+      }
+
+</script>
