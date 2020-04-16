@@ -37,9 +37,10 @@
         <div class="columns is-centered is-mobile is-multiline">
           <div class="column is-3-desktop is-3-mobile ">
             <div class="field">
-              <p><i class="fas fa-coffee fa-2x is-success"></i></p>
+              <p><i class="fas fa-coffee fa-2x {% if form.viveres.checked %} has-text-info{% endif %}"></i></p>
+{#              <p class="is-size-7"> {{ field.0 }}</p>#}
               <p class="is-size-7"> Víveres</p>
-              <input type="checkbox" onclick="clickViveres()" value="viveres" id="viveres" name="categories" class="switch is-info">
+              <input type="checkbox" value="viveres" id="viveres" name="categories" class="switch is-info">
               <label for="viveres"></label>
             </div>
           </div>
@@ -56,7 +57,7 @@
               <label for="medicamentos"></label>
           </div>
            <div class="column is-3-desktop is-3-mobile">
-                <p><i class="fas fa-child fa-2x {% if form.switchExample.checked %} has-text-info {% endif %}"></i></p>
+                <p><i class="fas fa-child fa-2x"></i></p>
                <p class="is-size-7">Bebés</p>
                 <input id="bebes" value="bebes" type="checkbox" name="categories" class="switch is-info">
               <label for="bebes"></label>
