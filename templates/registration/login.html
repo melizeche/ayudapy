@@ -4,22 +4,22 @@
 
 <div class="is-fullhd">
   <div class="columns is-centered">
-      {% if form.errors %}
-      <p class="help is-danger">
-        Su nombre de usuario y contraseña no coinciden.
-        Por favor inténtelo de vuelta.
-      </p>
-      {% endif %}
-    </div>
-    <div class="columns is-centered">
-      {% if next %}
-      {% if user.is_authenticated %}
-      <p>Su cuenta no tiene acceso a esta página. Para proceder,
-         inicie sesión con una cuenta que tenga acceso.</p>
-      {% endif %} 
-      {% endif %}
-    </div>
-    <div class="columns is-centered">
+    {% if form.errors %}
+    <p class="help is-danger">
+      Su nombre de usuario y contraseña no coinciden.
+      Por favor inténtelo de vuelta.
+    </p>
+    {% endif %}
+  </div>
+  <div class="columns is-centered">
+    {% if next %}
+    {% if user.is_authenticated %}
+    <p>Su cuenta no tiene acceso a esta página. Para proceder,
+       inicie sesión con una cuenta que tenga acceso.</p>
+    {% endif %}
+    {% endif %}
+  </div>
+  <div class="columns is-centered">
     <div class="box">
       <form method="post" action="{% url 'login' %}">
         {% csrf_token %}

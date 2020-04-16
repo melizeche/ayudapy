@@ -1,16 +1,19 @@
 # ayudaPy
+
 Platform to help people help people
+
 #### URL
 
 https://ayudapy.org
 
 ## Requirements
 
-* Python 3.6+
-* Django 2.2+
-* PostGIS 3.0+
+- Python 3.6+
+- Django 2.2+
+- PostGIS 3.0+
 
 ## Install
+
 GeoDjango https://kitcharoenp.github.io/gis/2018/06/12/geodjango_installation.html
 
 ```
@@ -25,6 +28,15 @@ cp conf/.env.example conf/.env # you should edit this file with your configurati
 ./manage.py runserver
 ```
 
+## Install using docker-compose
+
+```
+git clone git@github.com:melizeche/ayudapy.git && cd ayudapy
+cp conf/.env.example conf/.env # you should edit this file with your configuration
+docker-compose up -d --build
+docker-compose exec app ./manage.py migrate
+```
+
 ## Contributing
 
 1. Fork it!
@@ -35,39 +47,38 @@ cp conf/.env.example conf/.env # you should edit this file with your configurati
 
 ## Author
 
-* Marcelo Elizeche Landó https://github.com/melizeche
+- Marcelo Elizeche Landó https://github.com/melizeche
 
 ## Contributors / Thanks
 
-* Agustín Gómez https://github.com/gomezag
-* Cabu Vallejos  https://github.com/cabupy
-* Diego Allen https://github.com/dalleng
-* Diosnel Velázquez https://github.com/diosnelv
-* Diego Allen https://github.com/dalleng
-* Félix Pedrozo https://github.com/X1lef
-* Guillermo Caballero https://github.com/Guillecaba
-* Jean Claude Adams https://github.com/jcroot
-* Jesus Alderete https://github.com/jesus-bucksapp
-* Joaquín Olivera https://github.com/joaquinolivera
-* Jorge Ramírez https://github.com/jorgeramirez
-* Juan Hüttemann https://github.com/juanhuttemann
-* Leonardo Carreras https://github.com/leocarreras
-* Manuel Nuñez https://github.com/manununhez
-* Osbarge https://github.com/osbarge
-* Pablo Santa Cruz https://github.com/pablo
+- Agustín Gómez https://github.com/gomezag
+- Cabu Vallejos https://github.com/cabupy
+- Diego Allen https://github.com/dalleng
+- Diosnel Velázquez https://github.com/diosnelv
+- Diego Allen https://github.com/dalleng
+- Félix Pedrozo https://github.com/X1lef
+- Guillermo Caballero https://github.com/Guillecaba
+- Jean Claude Adams https://github.com/jcroot
+- Jesus Alderete https://github.com/jesus-bucksapp
+- Joaquín Olivera https://github.com/joaquinolivera
+- Jorge Ramírez https://github.com/jorgeramirez
+- Juan Hüttemann https://github.com/juanhuttemann
+- Leonardo Carreras https://github.com/leocarreras
+- Manuel Nuñez https://github.com/manununhez
+- Osbarge https://github.com/osbarge
+- Pablo Santa Cruz https://github.com/pablo
 
 ## TODO
 
-* Documentation
-* Support geolocation
-* Captcha
-* ~~Create models~~
-* Users(?)
-* Test
+- Documentation
+- Support geolocation
+- Captcha
+- ~~Create models~~
+- Users(?)
+- Test
 
 More in [TODO.md](TODO.md)
 
 ## License
 
 This project is licensed under the terms of the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details
-
