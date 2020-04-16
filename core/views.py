@@ -150,11 +150,11 @@ def list_by_city(request, city):
     paginate_by = 25
     paginator = Paginator(list_help_requests, paginate_by)
     try:
-        list_help_requests_paginated = paginator.page(page)
+        list_paginated = paginator.page(page)
     except PageNotAnInteger:
-        list_help_requests_paginated = paginator.page(1)
+        list_paginated = paginator.page(1)
     except EmptyPage:
-        list_help_requests_paginated = paginator.page(paginator.num_pages)
+        list_paginated = paginator.page(paginator.num_pages)
 
-    context = {"list_help": list_help_requests, "geo": geo, "city": city, "list_help_paginated": list_help_requests_paginated}
+    context = {"list_help": list_help_requests, "geo": geo, "city": city, "list_paginated": list_paginated}
     return render(request, "list_by_city.html", context)

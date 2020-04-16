@@ -362,6 +362,8 @@
     }
     var html = this.tpl
       .replace(/{{currentPage}}/g, this.currentPage + 1)
+      .replace(/{{nextPage}}/g, this.currentPage + 2)
+      .replace(/{{previousPage}}/g, this.currentPage)
       .replace(/{{totalPages}}/g, this.totalPages)
       .replace(
         /{{hasMultiplePages}}/g,
@@ -372,14 +374,29 @@
       html = html.replace(/{{hasNext}}/g, 'disabled');
     }
 
+    if (!this.showNext) {
+      html = html.replace(/{{showNext}}/g, 'is-hidden');
+    }
+
     if (!this.hasPrev) {
       html = html.replace(/{{hasPrev}}/g, 'disabled');
     }
 
+    if (!this.showPrev) {
+      html = html.replace(/{{showPrev}}/g, 'is-hidden');
+    }
+
     if (this.currentPage === 0) {
       html = html.replace(/{{hasFirst}}/g, 'disabled');
+      html = html.replace(/{{showFirst}}/g, 'is-hidden');
     } else if (this.currentPage === this.totalPages - 1) {
       html = html.replace(/{{hasLast}}/g, 'disabled');
+      html = html.replace(/{{showLast}}/g, 'is-hidden');
+    }
+
+    if(this.totalPages == 1){ //show only current
+      html = html.replace(/{{showFirst}}/g, 'is-hidden');
+      html = html.replace(/{{showLast}}/g, 'is-hidden');
     }
 
     this.el.innerHTML = html;
@@ -396,6 +413,8 @@
     this.count = dataSource.length;
     this.pages = [];
     this.currentPage = 0;
+    this.nextPage = 0;
+    this.previousPage = 0;
 
     if (dataSource.length == 0) {
       return;
@@ -426,20 +445,30 @@
     this.hasMultiplePages = true;
     this.hasNext = false;
     this.hasPrev = false;
+    this.showPrev = false;
+    this.showNext = false;
 
     if (this.totalPages == 1) {
       this.hasMultiplePages = false;
       this.hasNext = false;
       this.hasPrev = false;
+      this.showPrev = false;
+      this.showNext = false;
       return;
     }
 
     if (this.currentPage < this.totalPages - 1) {
       this.hasNext = true;
+      if ((this.currentPage + 2) != this.totalPages) {
+        this.showNext = true;
+      }
     }
 
     if (this.currentPage > 0) {
       this.hasPrev = true;
+      if (this.currentPage != 1) {
+        this.showPrev = true;
+      }
     }
   }
 
@@ -457,6 +486,12 @@
     this.el
       .querySelector('.first-button')
       .addEventListener('click', vm.firstPage.bind(this));
+      this.el
+      .querySelector('.current-plus-button')
+      .addEventListener('click', vm.next.bind(this));
+      this.el
+      .querySelector('.current-minus-button')
+      .addEventListener('click', vm.prev.bind(this));
     this.el
       .querySelector('.last-button')
       .addEventListener('click', vm.lastPage.bind(this));

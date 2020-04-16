@@ -49,7 +49,7 @@
             Últimos pedidos de ayuda en {{city}}
           </p>
           <div style="overflow-y:auto;max-height:75vh;padding:15px;">
-            {% for pedido in list_help_paginated %}
+            {% for pedido in list_paginated %}
               <div class="media">
                 <a href="/pedidos/{{pedido.id}}" class="has-text-grey-dark" title="{{pedido.added}}">
                   <div class="media-content">
