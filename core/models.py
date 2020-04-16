@@ -162,13 +162,13 @@ class Device(models.Model):
     device_id = models.CharField(
         "Id Dispositivo",
         max_length=128,
-        help_text= "Identificador del Dispositivo",
+        help_text="Identificador del Dispositivo",
         unique=True
     )
     ua_string = models.CharField(
         "User Agent",
         max_length=512,
-        help_text = "User Agent",
+        help_text="User Agent",
         null=True,
         blank=True
     )
@@ -272,7 +272,7 @@ class User(models.Model):
     name = models.CharField(
         "Nombre Completo",
         max_length=512,
-        help_text = "Nombre Completo del Usuario",
+        help_text="Nombre Completo del Usuario",
         null=True,
         blank=True
     )
@@ -358,4 +358,3 @@ class HelpRequestOwner(models.Model):
         primary_key=True
     )
     user_iid = models.ForeignKey(User, on_delete=models.CASCADE)
-

@@ -37,7 +37,6 @@ def donation_form(request):
     return render(request, "donation_form.html", {"form": form})
 
 
-
 def view_donation_center(request, id):
     donation_center = get_object_or_404(DonationCenter, pk=id)
 
@@ -45,11 +44,12 @@ def view_donation_center(request, id):
         "donation_center": donation_center,
         "phone_number_img": image_to_base64(text_to_image(donation_center.phone, 300, 50)) if donation_center.phone else None,
         "whatsapp": '595'+donation_center.phone[1:]+'?text=Hola+'+donation_center.name
-                    +',+te+escribo+por+el+anuncio+de+donación+que+hiciste:+'
-                    +'+https:'+'/'+'/'+'ayudapy.org/donaciones/'+donation_center.id.__str__() if donation_center.phone else None,
+                    + ',+te+escribo+por+el+anuncio+de+donación+que+hiciste:+'
+                    + '+https:'+'/'+'/'+'ayudapy.org/donaciones/'+donation_center.id.__str__() if donation_center.phone else None,
     }
 
     return render(request, "donation.html", context)
+
 
 # Create your views here.
 def list_donation(request):
@@ -64,7 +64,7 @@ def list_donation_by_city(request, city):
     query = list_donations
     geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
 
-    page= request.GET.get('page', 1)
+    page = request.GET.get('page', 1)
     paginate_by = 25
     paginator = Paginator(list_donations, paginate_by)
     try:
