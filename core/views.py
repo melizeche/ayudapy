@@ -39,6 +39,7 @@ def set_owner_and_update_values(request, new_help_request):
             user.location = help_request_owner.help_request.location
             user.save()
 
+
 def request_form(request):
     if request.method == "POST":
         form = HelpRequestForm(request.POST, request.FILES)
@@ -61,16 +62,16 @@ def view_request(request, id):
     help_request = get_object_or_404(HelpRequest, pk=id)
     vote_ctrl = {}
     vote_ctrl_cookie_key = 'votectrl'
-    # cookie expiration 
-    dt = datetime.datetime(year=2067,month=12,day=31)
+    # cookie expiration
+    dt = datetime.datetime(year=2067, month=12, day=31)
 
     context = {
         "help_request": help_request,
         "thumbnail": help_request.thumb if help_request.picture else "/static/favicon.ico",
         "phone_number_img": image_to_base64(text_to_image(help_request.phone, 300, 50)),
         "whatsapp": '595'+help_request.phone[1:]+'?text=Hola+'+help_request.name
-                    +',+te+escribo+por+el+pedido+que+hiciste:+'+quote_plus(help_request.title)
-                    +'+https:'+'/'+'/'+'ayudapy.org/pedidos/'+help_request.id.__str__()
+                    + ',+te+escribo+por+el+pedido+que+hiciste:+'+quote_plus(help_request.title)
+                    + '+https:'+'/'+'/'+'ayudapy.org/pedidos/'+help_request.id.__str__()
     }
     if request.POST:
         if request.POST['vote']:
@@ -78,7 +79,7 @@ def view_request(request, id):
                 try:
                     vote_ctrl = json.loads(base64.b64decode(request.COOKIES[vote_ctrl_cookie_key]))
                 except:
-                    pass 
+                    pass
 
                 try:
                     voteFlag = vote_ctrl["{id}".format(id=help_request.id)]
@@ -91,14 +92,14 @@ def view_request(request, id):
                     elif request.POST['vote'] == 'down':
                         help_request.downvotes += 1
                     help_request.save()
-                    vote_ctrl["{id}".format(id=help_request.id)] = True                    
+                    vote_ctrl["{id}".format(id=help_request.id)] = True
 
     response = render(request, "request.html", context)
 
     if vote_ctrl_cookie_key not in request.COOKIES:
         # initialize control cookie
         if request.POST and request.POST['vote']:
-            # set value in POST request if cookie not exists 
+            # set value in POST request if cookie not exists
             b = json.dumps({"{id}".format(id=help_request.id): True}).encode('utf-8')
         else:
             # set empty value in others requests
@@ -146,7 +147,7 @@ def list_by_city(request, city):
     query = list_help_requests
     geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
 
-    page= request.GET.get('page', 1)
+    page = request.GET.get('page', 1)
     paginate_by = 25
     paginator = Paginator(list_help_requests, paginate_by)
     try:

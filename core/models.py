@@ -25,6 +25,17 @@ class HelpRequestQuerySet(models.QuerySet):
         return self.filter(search_vector=query).annotate(rank=rank).order_by("-rank")
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=30)
+    code = models.CharField(max_length=30, primary_key=True)
+    color = models.CharField(max_length=10, default="#000000")
+    icon = models.CharField(max_length=30, null=True, blank=True)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+
+
 class FrequentAskedQuestion(models.Model):
     """
     Frequent asked question model.
@@ -92,6 +103,7 @@ class HelpRequest(models.Model):
     downvotes = models.IntegerField(default=0, blank=True)
     city = models.CharField(max_length=30, blank=True, default="", editable=False)
     city_code = models.CharField(max_length=30, blank=True, default="", editable=False)
+    categories = models.ManyToManyField(Category, blank=True)
     search_vector = SearchVectorField()
     history = HistoricalRecords()
     objects = HelpRequestQuerySet.as_manager()
@@ -104,15 +116,18 @@ class HelpRequest(models.Model):
     def _get_city(self):
         geolocator = Nominatim(user_agent="ayudapy")
         cordstr = "%s, %s" % self.location.coords[::-1]
-        location = geolocator.reverse(cordstr, language='es')
         city = ''
-        if location.raw.get('address'):
-            if location.raw['address'].get('city'):
-                city = location.raw['address']['city']
-            elif location.raw['address'].get('town'):
-                city = location.raw['address']['town']
-            elif location.raw['address'].get('locality'):
-                city = location.raw['address']['locality']
+        try:
+            location = geolocator.reverse(cordstr, language='es')
+            if location.raw.get('address'):
+                if location.raw['address'].get('city'):
+                    city = location.raw['address']['city']
+                elif location.raw['address'].get('town'):
+                    city = location.raw['address']['town']
+                elif location.raw['address'].get('locality'):
+                    city = location.raw['address']['locality']
+        except Exception as e:
+            logger.error(f"Geolocator unavailable: {repr(e)}")
         return city
 
     def save(self, *args, **kwargs):
@@ -162,13 +177,13 @@ class Device(models.Model):
     device_id = models.CharField(
         "Id Dispositivo",
         max_length=128,
-        help_text= "Identificador del Dispositivo",
+        help_text="Identificador del Dispositivo",
         unique=True
     )
     ua_string = models.CharField(
         "User Agent",
         max_length=512,
-        help_text = "User Agent",
+        help_text="User Agent",
         null=True,
         blank=True
     )
@@ -272,7 +287,7 @@ class User(models.Model):
     name = models.CharField(
         "Nombre Completo",
         max_length=512,
-        help_text = "Nombre Completo del Usuario",
+        help_text="Nombre Completo del Usuario",
         null=True,
         blank=True
     )
@@ -358,4 +373,3 @@ class HelpRequestOwner(models.Model):
         primary_key=True
     )
     user_iid = models.ForeignKey(User, on_delete=models.CASCADE)
-
