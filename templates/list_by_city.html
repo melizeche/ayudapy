@@ -85,9 +85,9 @@
         var switchElement = document.getElementById('switchNormal');
 
         if (typeof (Storage) === "undefined") {
-          switchElement.disabled = true;
+          switchElement.disabled = false;
         } else {
-          switchElement.checked = false;
+          switchElement.checked = true;
           var isGroupMarksActive = JSON.parse(localStorage.getItem("group_markers_setting"));
           if (isGroupMarksActive != null) {
             if (isGroupMarksActive) {
