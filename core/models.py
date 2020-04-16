@@ -116,15 +116,18 @@ class HelpRequest(models.Model):
     def _get_city(self):
         geolocator = Nominatim(user_agent="ayudapy")
         cordstr = "%s, %s" % self.location.coords[::-1]
-        location = geolocator.reverse(cordstr, language='es')
         city = ''
-        if location.raw.get('address'):
-            if location.raw['address'].get('city'):
-                city = location.raw['address']['city']
-            elif location.raw['address'].get('town'):
-                city = location.raw['address']['town']
-            elif location.raw['address'].get('locality'):
-                city = location.raw['address']['locality']
+        try:
+            location = geolocator.reverse(cordstr, language='es')
+            if location.raw.get('address'):
+                if location.raw['address'].get('city'):
+                    city = location.raw['address']['city']
+                elif location.raw['address'].get('town'):
+                    city = location.raw['address']['town']
+                elif location.raw['address'].get('locality'):
+                    city = location.raw['address']['locality']
+        except Exception as e:
+            logger.error(f"Geolocator unavailable: {repr(e)}")
         return city
 
     def save(self, *args, **kwargs):
