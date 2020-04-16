@@ -7,7 +7,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0009_device_push_notification_token'),
+        ('core', '0011_historicaluser'),
     ]
 
     operations = [
