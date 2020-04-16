@@ -1,5 +1,4 @@
 from django import forms
-from leaflet.forms.widgets import LeafletWidget
 from leaflet.forms.fields import PointField
 from django.core.exceptions import NON_FIELD_ERRORS
 from django.utils.safestring import mark_safe
