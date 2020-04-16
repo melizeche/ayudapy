@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.serializers import serialize
 from django.shortcuts import (
@@ -5,9 +6,37 @@ from django.shortcuts import (
     render,
     get_object_or_404,
 )
+# from django.contrib.auth.decorators import login_required
 
+from .forms import DonationForm
 from .models import DonationCenter
 from core.utils import text_to_image, image_to_base64
+
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
+
+from django.views.generic import TemplateView
+
+
+@method_decorator(permission_required("auth.add_donationcenter"), name="dispatch")
+class RestrictedView(TemplateView):
+    template_name = "info_donation.html"
+
+
+@permission_required('auth.add_donationcenter')
+def donation_form(request):
+    if request.method == "POST":
+        form = DonationForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_donation = form.save()
+
+            messages.success(request, "¡Tu donación se agregó exitosamente!")
+            return redirect("donaciones-detail", id=new_donation.id)
+    else:
+        form = DonationForm()
+    return render(request, "donation_form.html", {"form": form})
+
+
 
 def view_donation_center(request, id):
     donation_center = get_object_or_404(DonationCenter, pk=id)
@@ -39,11 +68,11 @@ def list_donation_by_city(request, city):
     paginate_by = 25
     paginator = Paginator(list_donations, paginate_by)
     try:
-        list_donations_paginated = paginator.page(page)
+        list_paginated = paginator.page(page)
     except PageNotAnInteger:
-        list_donations_paginated = paginator.page(1)
+        list_paginated = paginator.page(1)
     except EmptyPage:
-        list_donations_paginated = paginator.page(paginator.num_pages)
+        list_paginated = paginator.page(paginator.num_pages)
 
-    context = {"list_donations": list_donations, "geo": geo, "city": city, "list_donations_paginated": list_donations_paginated}
+    context = {"list_donations": list_donations, "geo": geo, "city": city, "list_paginated": list_paginated}
     return render(request, "list_donation_by_city.html", context)
