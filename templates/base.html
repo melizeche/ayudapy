@@ -2,11 +2,12 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %} AyudaPy {% endblock %}</title>
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{% block fb-url %} {{ request.build_absolute_uri }} {% endblock %}">
@@ -16,7 +17,7 @@
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    
+
 
     <link rel="icon" href="{% static "favicon.svg" %}" type="image/svg" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
@@ -26,7 +27,7 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-162827339-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
         gtag('config', 'UA-162827339-1');
     </script>
@@ -38,23 +39,30 @@
             align-items: center;
             text-align: center;
         }
+
         .Site {
             display: flex;
             min-height: 100vh;
             flex-direction: column;
         }
+
         .Site-content {
             flex: 1;
         }
-        footer{
+
+        footer {
             padding: 1rem 1rem 1rem !important;
         }
-        .hero{
+
+        .hero {
             padding-bottom: 1rem;
         }
-        .leaflet-container {  /* all maps */
+
+        .leaflet-container {
+            /* all maps */
             z-index: 1;
         }
+
         ::placeholder {
             color: grey !important;
             opacity: 0.3 !important;
@@ -66,7 +74,7 @@
         }
 
         .cities-dropdown input::-webkit-calendar-picker-indicator {
-              opacity: 0;
+            opacity: 0;
         }
 
         .cities-dropdown .select {
@@ -74,74 +82,80 @@
         }
 
 
-	.requests-table-paginator > .has-multiple-pages-true,
-	.request-table-paginator > .has-next-true,
-	.request-table-paginator > .has-prev-true {
-	    display: block;
-	}
+        .requests-table-paginator>.has-multiple-pages-true,
+        .request-table-paginator>.has-next-true,
+        .request-table-paginator>.has-prev-true {
+            display: block;
+        }
 
-	.requests-table-paginator > .has-multiple-pages-false,
-	.request-table-paginator > .has-next-false,
-	.request-table-paginator > .has-prev-false {
-	    display: none;
-	}
+        .requests-table-paginator>.has-multiple-pages-false,
+        .request-table-paginator>.has-next-false,
+        .request-table-paginator>.has-prev-false {
+            display: none;
+        }
 
 
-	.loader-wrapper {
-	    position: absolute;
-	    top: 0;
-	    left: 0;
-	    height: 100%;
-	    width: 100%;
-	    background: transparent;
-	    opacity: 0;
-	    z-index: -1;
-	    transition: opacity .3s;
-	    display: flex;
-	    justify-content: center;
-	    align-items: center;
-	    border-radius: 10px;
-	}
+        .loader-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: transparent;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity .3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+        }
 
-	.loader-wrapper.is-active {
-	    opacity: 1;
-	    z-index: 10;
-	}
+        .loader-wrapper.is-active {
+            opacity: 1;
+            z-index: 10;
+        }
 
-	.loader-wrapper > .loader {
-	    height: 100px;
-	    width: 100px;
-	    border-width: 5px;
-	}
+        .loader-wrapper>.loader {
+            height: 100px;
+            width: 100px;
+            border-width: 5px;
+        }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/@vizuaalog/bulmajs@0.10.3/dist/file.js" integrity="sha256-9BDCQ1iKLp8eEXxQD6U8StZ4V2On9KFEHDeHeXLZ/aE=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@vizuaalog/bulmajs@0.10.3/dist/modal.js" integrity="sha256-HDcVnTQ5+DdyigrR4Xge4rxqguBi19XI7vNDhTDr+hs=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/combine/npm/moment@2.24.0/min/moment.min.js,npm/moment@2.24.0/locale/es.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@vizuaalog/bulmajs@0.10.3/dist/file.js"
+        integrity="sha256-9BDCQ1iKLp8eEXxQD6U8StZ4V2On9KFEHDeHeXLZ/aE=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@vizuaalog/bulmajs@0.10.3/dist/modal.js"
+        integrity="sha256-HDcVnTQ5+DdyigrR4Xge4rxqguBi19XI7vNDhTDr+hs=" crossorigin="anonymous"></script>
+    <script
+        src="https://cdn.jsdelivr.net/combine/npm/moment@2.24.0/min/moment.min.js,npm/moment@2.24.0/locale/es.js"></script>
     {% leaflet_js plugins="ALL" %}
     {% leaflet_css plugins="ALL" %}
 </head>
 
 <body class="Site">
     <section class="is-fullwidth" style="background-color: #33CCCC; height: 10%;">
-        <div class="column is-8-mobile is-offset-2-mobile is-4-tablet is-offset-4-tablet is-2-desktop is-offset-5-desktop ">
-          <a href="/">
-             <figure class="image is-16by1">
-                  <img src="{% static 'img/logo2.svg' %}">
-             </figure>
-          </a>
+        <div
+            class="column is-8-mobile is-offset-2-mobile is-4-tablet is-offset-4-tablet is-2-desktop is-offset-5-desktop ">
+            <a href="/">
+                <figure class="image is-16by1">
+                    <img src="{% static "img/logo2.svg" %}">
+                </figure>
+            </a>
+        </div>
+        <!-- TODO - to improve styling LOGIN/LOGOUT buttons -->
         </div>
     </section>
-<main class="Site-content">
-    <section class="section">
-        <div class="container">
-          {% block bread %}
-          {% endblock bread %}
-          {% block content %}
-          {% endblock content %}
-        </div>
-    </section>
-</main>
-{% include 'footer.html' %}
+    <main class="Site-content">
+        <section class="section">
+            <div class="container">
+                {% block bread %}
+                {% endblock bread %}
+                {% block content %}
+                {% endblock content %}
+            </div>
+        </section>
+    </main>
+    {% include 'footer.html' %}
 </body>
 
 </html>

@@ -60,7 +60,7 @@
         </div>
 
 
-	<div class="row">
+	<div class="row" style="margin-bottom: 5px;border: 1px green solid; border-radius: 2px;">
 	  {% leaflet_map "main" callback="mainMapInit" %}
 	</div>
 	<button id="find-me" class="button is-success  is-outlined is-fullwidth"><span class="icon is-small">
@@ -146,23 +146,28 @@
     </script>
 
     <script type="text/template" id="requests-table-paginator-template">
-      {% verbatim %}
-	<div class="row requests-table-paginator">
-	    <div class="column is-5">
-		Mostrando &lt; Página {{currentPage}} de {{totalPages}} &gt;
-	    </div>
-	    <div class="column is-5 {{hasMultiplePages}}">
-		  <ul class="pagination">
-		      <li><a class="button is-link is-outlined first-button" {{hasFirst}}>&laquo; Primero</a></li>
-		      <li><a class="button is-link is-outlined prev-button" {{hasPrev}}>&lt; Prev</a></li>
-		      <li class=" button is-link">   {{currentPage}}   </li>
-		      <li><a class="button is-link is-outlined next-button" {{hasNext}}>Sig &gt;</a></li>
-		      <li><a class="button is-link is-outlined last-button" {{hasLast}}>Último &raquo;</a></li>
-		  </ul>
-	    </div>
-	</div>
-      {% endverbatim %}
-    </script>
+          {% verbatim %}
+        	<div class="row requests-table-paginator">
+        	    <div class="column is-5">
+        		  Mostrando &lt; Página {{currentPage}} de {{totalPages}} &gt;
+              </div>
+              <nav class="pagination is-right" role="navigation" aria-label="pagination">
+                  <button class="pagination-previous prev-button" {{hasPrev}}>Previo</button>
+                  <button class="pagination-next next-button" {{hasNext}}>Siguiente</button>
+
+                  <ul class="pagination-list">
+                      <li><button class="pagination-link first-button {{showFirst}}" {{hasFirst}}>1</button></li>
+                      <li><span class="pagination-ellipsis {{showPrev}}">&hellip;</span></li>
+                      <li><button class="pagination-link current-minus-button {{showPrev}}">{{previousPage}} </button></li>
+                      <li><button class="pagination-link is-current">{{currentPage}} </button></li>
+                      <li><button class="pagination-link current-plus-button {{showNext}}">{{nextPage}} </button></li>
+                      <li><span class="pagination-ellipsis {{showNext}}">&hellip;</span></li>
+                      <li><button class="pagination-link last-button {{showLast}}" {{hasLast}}>{{totalPages}}</button></li>
+                  </ul>
+            </nav>
+        	</div>
+          {% endverbatim %}
+      </script>
 
 
 {% endblock %}

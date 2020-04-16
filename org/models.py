@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib.gis.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from simple_history.models import HistoricalRecords
 
 from geopy.geocoders import Nominatim
 
@@ -55,6 +56,8 @@ class DonationCenter(models.Model):
     added = models.DateTimeField(
         "Agregado", auto_now_add=True, null=True, blank=True, db_index=True
     )
+    history = HistoricalRecords()
+
 
     def _get_city(self):
         geolocator = Nominatim(user_agent="ayudapy")

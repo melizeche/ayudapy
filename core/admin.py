@@ -1,7 +1,11 @@
 from django.contrib import admin
 from leaflet.admin import LeafletGeoAdmin
 
-from .models import HelpRequest, FrequentAskedQuestion
+from .models import (
+    Category,
+    HelpRequest,
+    FrequentAskedQuestion,
+)
 
 
 def deactivate(modeladmin, request, queryset):
@@ -43,5 +47,7 @@ class FrequentAskedQuestionAdmin(admin.ModelAdmin):
     search_fields = ['question']
     list_filter = ['active']
 
+
 # FAQ model registration & applied customization
 admin.site.register(FrequentAskedQuestion, FrequentAskedQuestionAdmin)
+admin.site.register(Category)
