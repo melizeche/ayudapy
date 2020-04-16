@@ -25,6 +25,17 @@ class HelpRequestQuerySet(models.QuerySet):
         return self.filter(search_vector=query).annotate(rank=rank).order_by("-rank")
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=30)
+    code = models.CharField(max_length=30, primary_key=True)
+    color = models.CharField(max_length=10, default="#000000")
+    icon = models.CharField(max_length=30, null=True, blank=True)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+
+
 class FrequentAskedQuestion(models.Model):
     """
     Frequent asked question model.
@@ -92,6 +103,7 @@ class HelpRequest(models.Model):
     downvotes = models.IntegerField(default=0, blank=True)
     city = models.CharField(max_length=30, blank=True, default="", editable=False)
     city_code = models.CharField(max_length=30, blank=True, default="", editable=False)
+    categories = models.ManyToManyField(Category, blank=True)
     search_vector = SearchVectorField()
     history = HistoricalRecords()
     objects = HelpRequestQuerySet.as_manager()
@@ -162,13 +174,13 @@ class Device(models.Model):
     device_id = models.CharField(
         "Id Dispositivo",
         max_length=128,
-        help_text= "Identificador del Dispositivo",
+        help_text="Identificador del Dispositivo",
         unique=True
     )
     ua_string = models.CharField(
         "User Agent",
         max_length=512,
-        help_text = "User Agent",
+        help_text="User Agent",
         null=True,
         blank=True
     )
@@ -272,7 +284,7 @@ class User(models.Model):
     name = models.CharField(
         "Nombre Completo",
         max_length=512,
-        help_text = "Nombre Completo del Usuario",
+        help_text="Nombre Completo del Usuario",
         null=True,
         blank=True
     )
@@ -358,4 +370,3 @@ class HelpRequestOwner(models.Model):
         primary_key=True
     )
     user_iid = models.ForeignKey(User, on_delete=models.CASCADE)
-
