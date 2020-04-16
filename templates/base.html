@@ -134,24 +134,22 @@
 
 <body class="Site">
     <section class="is-fullwidth" style="background-color: #33CCCC; height: 10%;">
-            <div class="column is-8-mobile is-offset-2-mobile is-4-tablet is-offset-4-tablet is-2-desktop is-offset-5-desktop ">
-                <a href="/">
-                    <figure class="image is-16by1">
-                        <img src="{% static "img/logo2.svg" %}">
-                    </figure>
-                </a>
-            </div>
-            <!-- TODO - to improve styling LOGIN/LOGOUT buttons -->
-            <div class="column is-8-mobile is-offset-2-mobile is-4-tablet is-offset-4-tablet is-2-desktop is-offset-5-desktop ">
-                <ul class="sidebar-nav">
-                    {% if user.is_authenticated %}
-                    <li>User: {{ user.get_username }}</li>
-                    <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
-                    {% else %}
-                    <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
-                    {% endif %}
-                </ul>
-            </div>
+        <div
+            class="column is-8-mobile is-offset-2-mobile is-4-tablet is-offset-4-tablet is-2-desktop is-offset-5-desktop ">
+            <a href="/">
+                <figure class="image is-16by1">
+                    <img src="{% static "img/logo2.svg" %}">
+                </figure>
+            </a>
+        </div>
+        <!-- TODO - to improve styling LOGIN/LOGOUT buttons -->
+        <div class="column">
+            <ul class="sidebar-nav">
+                {% if user.is_authenticated %}
+                <li>Usuario: {{ user.get_username }}</li>
+                {% endif %}
+            </ul>
+        </div>
     </section>
     <main class="Site-content">
         <section class="section">
