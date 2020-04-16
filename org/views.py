@@ -18,12 +18,12 @@ from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
 
-@method_decorator(permission_required("auth.add_donationcenter"), name="dispatch")
+@method_decorator(permission_required("org.add_donationcenter"), name="dispatch")
 class RestrictedView(TemplateView):
     template_name = "info_donation.html"
 
 
-@permission_required('auth.add_donationcenter')
+@permission_required('org.add_donationcenter')
 def donation_form(request):
     if request.method == "POST":
         form = DonationForm(request.POST, request.FILES)
