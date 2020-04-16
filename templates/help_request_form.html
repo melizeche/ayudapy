@@ -29,35 +29,6 @@
       <p id="status"></p>
       <form enctype="multipart/form-data" method="post" action="/solicitar">
         {% csrf_token %}
-          <br>
-        <div class="columns is-centered is-mobile is-multiline">
-          <div class="column is-3-desktop is-3-mobile ">
-            <div class="field">
-              <p><i class="fas fa-coffee fa-2x is-success"></i></p>
-              <p class="is-size-7"> Víveres</p>
-              <input id="switchViveres" type="checkbox" name="switchViveres" class="switch is-info">
-              <label for="switchViveres"></label>
-            </div>
-          </div>
-           <div class="column is-3-desktop is-3-mobile">
-                <p><i class="fas fa-shower fa-2x"></i></p>
-               <p class="is-size-7"> Limpieza</p>
-             <input id="switchLimpieza" type="checkbox" name="switchLimpieza" class="switch is-info">
-              <label for="switchLimpieza"></label>
-          </div>
-           <div class="column is-3-desktop is-3-mobile">
-                <p><i class="fas fa-medkit fa-2x"></i></p>
-               <p class="is-size-7"> Remedios</p>
-           <input id="switchRemedios" type="checkbox" name="switchRemedios" class="switch is-info">
-              <label for="switchRemedios"></label>
-          </div>
-           <div class="column is-3-desktop is-3-mobile">
-                <p><i class="fas fa-child fa-2x {% if form.switchExample.checked %} has-text-info {% endif %}"></i></p>
-               <p class="is-size-7">Bebés</p>
-                <input id="switchBebes" type="checkbox" name="switchBebes" class="switch is-info">
-              <label for="switchBebes"></label>
-          </div>
-        </div>
         {% include 'includes/bulma_form.html' with form=form %}
         <div class="control">
           <button id="submit" class="button is-success is-fullwidth">Enviar</button>
