@@ -6,19 +6,17 @@
   <div class="columns is-centered">
       {% if form.errors %}
       <p class="help is-danger">
-        Your username and password didn't match.
-        Please try again.
+        Su nombre de usuario y contraseña no coinciden.
+        Por favor inténtelo de vuelta.
       </p>
       {% endif %}
     </div>
     <div class="columns is-centered">
       {% if next %}
       {% if user.is_authenticated %}
-      <p>Your account doesn't have access to this page. To proceed,
-        please login with an account that has access.</p>
-      {% else %}
-      <p>Please login to see this page.</p>
-      {% endif %}
+      <p>Su cuenta no tiene acceso a esta página. Para proceder,
+         inicie sesión con una cuenta que tenga acceso.</p>
+      {% endif %} 
       {% endif %}
     </div>
     <div class="columns is-centered">
