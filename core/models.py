@@ -103,6 +103,7 @@ class HelpRequest(models.Model):
     downvotes = models.IntegerField(default=0, blank=True)
     city = models.CharField(max_length=30, blank=True, default="", editable=False)
     city_code = models.CharField(max_length=30, blank=True, default="", editable=False)
+    categories = models.ManyToManyField(Category, blank=True)
     search_vector = SearchVectorField()
     history = HistoricalRecords()
     objects = HelpRequestQuerySet.as_manager()
