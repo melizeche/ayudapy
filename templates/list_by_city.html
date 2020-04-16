@@ -87,12 +87,12 @@
         if (typeof (Storage) === "undefined") {
           switchElement.disabled = true;
         } else {
-          switchElement.checked = false;
+          switchElement.checked = true;
           var isGroupMarksActive = JSON.parse(localStorage.getItem("group_markers_setting"));
           if (isGroupMarksActive != null) {
-            if (isGroupMarksActive) {
-              switchElement.checked = true;
-            }
+            switchElement.checked = isGroupMarksActive;
+          } else {
+            localStorage.setItem('group_markers_setting', JSON.stringify(true));
           }
         }
       }
@@ -154,14 +154,8 @@
       function groupMarkerRequest() {
         //Update cached status
         var checkbox = document.getElementById('switchNormal');
-        if (checkbox.checked != true) {
-          localStorage.setItem('group_markers_setting', JSON.stringify(false));
-        } else {
-          localStorage.setItem('group_markers_setting', JSON.stringify(true));
-        }
-
+        localStorage.setItem('group_markers_setting', JSON.stringify(checkbox.checked));
         location.reload(); //refresh the page with the new map display setting
-
       }
 
     </script>
