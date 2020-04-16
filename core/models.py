@@ -25,6 +25,17 @@ class HelpRequestQuerySet(models.QuerySet):
         return self.filter(search_vector=query).annotate(rank=rank).order_by("-rank")
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=30)
+    code = models.CharField(max_length=30, primary_key=True)
+    color = models.CharField(max_length=10, default="#000000")
+    icon = models.CharField(max_length=30, null=True, blank=True)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+
+
 class FrequentAskedQuestion(models.Model):
     """
     Frequent asked question model.
