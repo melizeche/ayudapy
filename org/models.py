@@ -124,7 +124,7 @@ class Profile(models.Model):
                 city = location.raw["address"]["locality"]
         return city
 
-    def save(self):
+    def save(self, **kwargs):
         from unidecode import unidecode
 
         city = self._get_city()
@@ -139,10 +139,10 @@ class Profile(models.Model):
         verbose_name = "Voluntario"
 
 
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
+# @receiver(post_save, sender=User)
+# def create_user_profile(sender, instance, created, **kwargs):
+#     if created:
+#         Profile.objects.create(user=instance)
 
 
 # @receiver(post_save, sender=User)
