@@ -20,15 +20,15 @@
             </a>
         </li>
         <li><a href="/donar">Info donar</a></li>
-        <li><a href="/donaciones">Donaciones</a></li>
-        <li class="is-active"><a href="#" aria-current="page">Donación #{{donation_center.id}}</a></li>
+        <li><a href="/donaciones">Centros de donación</a></li>
+        <li class="is-active"><a href="#" aria-current="page">Centro de donación #{{donation_center.id}}</a></li>
     </ul>
 </nav>
 {% endblock bread %}
 {% block content%}
 <div class="columns is-centered">
     <div class="subtitle center is-3">
-        <a class="has-text-primary" href="/donaciones/{{donation_center.id}}">Donación #{{donation_center.id}}</a>
+        <a class="has-text-primary" href="/donaciones/{{donation_center.id}}">Centro de donación #{{donation_center.id}}</a>
     </div>
 </div>
 <div class="columns is-centered">
@@ -45,20 +45,21 @@
                 <hr>
                 <p class="subtitle">Nombre:</p>
                 <p class="title is-4">{{ donation_center.name}}</p>
-                <p class="subtitle">Contacto:</p>
-                <p class="title is-4">
-                    <a href="tel:{{donation_center.phone}}">
-                        <img src="data:image/jpeg;base64,{{phone_number_img}}">
-                    </a>
-                    &nbsp;
-                    <a href="https://wa.me/{{ whatsapp }}" target="_blank"
-                        class="button is-medium is-success is-outlined">
-                        <span class="icon is-small">
-                            <i class="fab fa-whatsapp"></i>
-                        </span>
-                        <span>Contactar vía WhatsApp</span>
-                    </a>
-                </p>
+                {% if donation_center.phone %}
+                    <p class="subtitle">Contacto:</p>
+                    <p class="title is-4">
+                        <a href="tel:{{donation_center.phone}}">
+                        </a>
+                        &nbsp;
+                        <a href="https://wa.me/{{ whatsapp }}" target="_blank"
+                            class="button is-medium is-success is-outlined">
+                            <span class="icon is-small">
+                                <i class="fab fa-whatsapp"></i>
+                            </span>
+                            <span>Contactar vía WhatsApp</span>
+                        </a>
+                    </p>
+                {% endif %}
                 {% if donation_center.address %}
                 <p class="subtitle">Dirección:</p>
                 <p class="title is-4">{{donation_center.address}}</p>
