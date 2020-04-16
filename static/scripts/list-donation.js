@@ -22,10 +22,10 @@
 
     map.addControl(
       new L.Control.Fullscreen({
-	title: {
-	  false: 'Ver en Pantalla Completa',
-	  true: 'Salir de Pantalla Completa',
-	},
+        title: {
+          false: 'Ver en Pantalla Completa',
+          true: 'Salir de Pantalla Completa',
+        },
       })
     );
     this.setupViewListeners();
@@ -64,9 +64,9 @@
     document
       .getElementById('search-text-field')
       .addEventListener('keypress', function (e) {
-	if (e.charCode == 13) {
-	  vm.getQuery();
-	}
+        if (e.charCode == 13) {
+          vm.getQuery();
+        }
       });
 
     document
@@ -88,12 +88,12 @@
     } else {
       switchElement.checked = false;
       var isGroupMarksActive = JSON.parse(
-	localStorage.getItem('group_markers_setting')
+        localStorage.getItem('group_markers_setting')
       );
       if (isGroupMarksActive != null) {
-	if (isGroupMarksActive) {
-	  switchElement.checked = true;
-	}
+        if (isGroupMarksActive) {
+          switchElement.checked = true;
+        }
       }
     }
   }
@@ -107,8 +107,8 @@
 
       console.log('${latitude} ' + longitude);
       you = L.marker([latitude, longitude], {
-	opacity: 0.3,
-	title: 'Tu ubicación',
+        opacity: 0.3,
+        title: 'Tu ubicación',
       }).addTo(maps[0]);
       you.bindPopup('Tu ubicación').openPopup();
       maps[0].panTo(new L.LatLng(latitude, longitude), 14);
@@ -148,20 +148,20 @@
     fetch(searchUrl)
       .then((response) => response.json())
       .then((data) => {
-	vm.loadingIndicator.hide();
+        vm.loadingIndicator.hide();
 
-	if (vm.clusters) {
-	  map.removeLayer(vm.clusters);
-	}
+        if (vm.clusters) {
+          map.removeLayer(vm.clusters);
+        }
 
-	if (map.getZoom() >= 13) {
-	  vm.clusters = vm.loadMarkers(map, data); //load markers without clustering
-	} else {
-	  vm.clusters = vm.loadMarkersAndGroup(map, data);
-	}
+        if (map.getZoom() >= 13) {
+          vm.clusters = vm.loadMarkers(map, data); //load markers without clustering
+        } else {
+          vm.clusters = vm.loadMarkersAndGroup(map, data);
+        }
 
-	vm.requestTableView.setData(data.features);
-	vm.requestTableView.render();
+        vm.requestTableView.setData(data.features);
+        vm.requestTableView.render();
       });
   }
 
@@ -169,20 +169,20 @@
     var markerClusters = L.markerClusterGroup();
     var layerGroup = L.geoJSON(data, {
       onEachFeature: function (feature, layer) {
-	var popup =
-	  '<a class="subtitle" href="/donaciones/' +
-	  feature.properties.pk +
-	  '"><h1>Donación #' +
-	  feature.properties.pk +
-	  '</h1></a><p class="has-text-weight-bold">Nombre: ' +
-	  feature.properties.name +
-	  '</p><p>' +
-	  '<a class="is-size-6" href="/donaciones/' +
-	  feature.properties.pk +
-	  '">Ver Donación</a>';
-	layer.bindPopup(popup);
+        var popup =
+          '<a class="subtitle" href="/donaciones/' +
+          feature.properties.pk +
+          '"><h1>Donación #' +
+          feature.properties.pk +
+          '</h1></a><p class="has-text-weight-bold">Nombre: ' +
+          feature.properties.name +
+          '</p><p>' +
+          '<a class="is-size-6" href="/donaciones/' +
+          feature.properties.pk +
+          '">Ver Donación</a>';
+        layer.bindPopup(popup);
 
-	markerClusters.addLayer(layer);
+        markerClusters.addLayer(layer);
       },
     });
     map.addLayer(markerClusters);
@@ -193,18 +193,18 @@
   function loadMarkers(map, data) {
     var layerGroup = L.geoJSON(data, {
       onEachFeature: function (feature, layer) {
-	var popup =
-	  '<a class="subtitle" href="/donaciones/' +
-	  feature.properties.pk +
-	  '"><h1>Donación #' +
-	  feature.properties.pk +
-	  '</h1></a><p class="has-text-weight-bold">Nombre: ' +
-	  feature.properties.name +
-	  '</p><p>' +
-	  '<a class="is-size-6" href="/donaciones/' +
-	  feature.properties.pk +
-	  '">Ver Donación</a>';
-	layer.bindPopup(popup);
+        var popup =
+          '<a class="subtitle" href="/donaciones/' +
+          feature.properties.pk +
+          '"><h1>Donación #' +
+          feature.properties.pk +
+          '</h1></a><p class="has-text-weight-bold">Nombre: ' +
+          feature.properties.name +
+          '</p><p>' +
+          '<a class="is-size-6" href="/donaciones/' +
+          feature.properties.pk +
+          '">Ver Donación</a>';
+        layer.bindPopup(popup);
       },
     }).addTo(map);
 
@@ -238,17 +238,17 @@
       var selectedIndex;
 
       for (var i = 0; i < options.length; i++) {
-	if (options[i].text == selectedValue) {
-	  selectedIndex = i;
-	  break;
-	}
+        if (options[i].text == selectedValue) {
+          selectedIndex = i;
+          break;
+        }
       }
       if (selectedIndex == undefined) {
-	return;
+        return;
       }
       var selectedOption = options[selectedIndex];
       location.assign(
-	'/donaciones_ciudad/' + selectedOption.getAttribute('data-value')
+        '/donaciones_ciudad/' + selectedOption.getAttribute('data-value')
       );
     });
 
@@ -304,10 +304,9 @@
       req = data[i].properties;
 
       tableHtml += this.tpl
-	.replace(/{{id}}/g, req.pk)
-	.replace(/{{added}}/g, moment(req.added).from(now))
-	.replace(/{{name}}/g, req.name)
-	.replace(/{{title}}/g, req.title);
+        .replace(/{{id}}/g, req.pk)
+        .replace(/{{added}}/g, moment(req.added).from(now))
+        .replace(/{{name}}/g, req.name);
     }
 
     requestAnimationFrame(function () {
@@ -355,24 +354,41 @@
     }
     var html = this.tpl
       .replace(/{{currentPage}}/g, this.currentPage + 1)
+      .replace(/{{nextPage}}/g, this.currentPage + 2)
+      .replace(/{{previousPage}}/g, this.currentPage)
       .replace(/{{totalPages}}/g, this.totalPages)
       .replace(
-	/{{hasMultiplePages}}/g,
-	'has-multiple-pages-' + this.hasMultiplePages
+        /{{hasMultiplePages}}/g,
+        'has-multiple-pages-' + this.hasMultiplePages
       );
 
     if (!this.hasNext) {
       html = html.replace(/{{hasNext}}/g, 'disabled');
     }
 
+    if (!this.showNext) {
+      html = html.replace(/{{showNext}}/g, 'is-hidden');
+    }
+
     if (!this.hasPrev) {
       html = html.replace(/{{hasPrev}}/g, 'disabled');
     }
 
+    if (!this.showPrev) {
+      html = html.replace(/{{showPrev}}/g, 'is-hidden');
+    }
+
     if (this.currentPage === 0) {
       html = html.replace(/{{hasFirst}}/g, 'disabled');
+      html = html.replace(/{{showFirst}}/g, 'is-hidden');
     } else if (this.currentPage === this.totalPages - 1) {
       html = html.replace(/{{hasLast}}/g, 'disabled');
+      html = html.replace(/{{showLast}}/g, 'is-hidden');
+    }
+
+    if(this.totalPages == 1){ //show only current
+      html = html.replace(/{{showFirst}}/g, 'is-hidden');
+      html = html.replace(/{{showLast}}/g, 'is-hidden');
     }
 
     this.el.innerHTML = html;
@@ -389,6 +405,8 @@
     this.count = dataSource.length;
     this.pages = [];
     this.currentPage = 0;
+    this.nextPage = 0;
+    this.previousPage = 0;
 
     if (dataSource.length == 0) {
       return;
@@ -405,8 +423,8 @@
       page.push(dataSource[i]);
 
       if (page.length == this.pageSize) {
-	this.pages.push(page);
-	page = [];
+        this.pages.push(page);
+        page = [];
       }
     }
 
@@ -419,20 +437,30 @@
     this.hasMultiplePages = true;
     this.hasNext = false;
     this.hasPrev = false;
+    this.showPrev = false;
+    this.showNext = false;
 
     if (this.totalPages == 1) {
       this.hasMultiplePages = false;
       this.hasNext = false;
       this.hasPrev = false;
+      this.showPrev = false;
+      this.showNext = false;
       return;
     }
 
     if (this.currentPage < this.totalPages - 1) {
       this.hasNext = true;
+      if ((this.currentPage + 2) != this.totalPages) {
+        this.showNext = true;
+      }
     }
 
     if (this.currentPage > 0) {
       this.hasPrev = true;
+      if (this.currentPage != 1) {
+        this.showPrev = true;
+      }
     }
   }
 
@@ -453,6 +481,13 @@
     this.el
       .querySelector('.last-button')
       .addEventListener('click', vm.lastPage.bind(this));
+      this.el
+      .querySelector('.current-plus-button')
+      .addEventListener('click', vm.next.bind(this));
+      this.el
+      .querySelector('.current-minus-button')
+      .addEventListener('click', vm.prev.bind(this));
+
   }
 
   /**
