@@ -19,12 +19,12 @@ class HelpRequestForm(forms.ModelForm):
         fields = (
             "title",
             "message",
+            "categories",
             "name",
             "phone",
             "location",
             "address",
-            "picture",
-            "categories"
+            "picture"
         )
         widgets = {
             "title": forms.TextInput(
