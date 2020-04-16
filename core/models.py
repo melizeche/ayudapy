@@ -9,6 +9,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.safestring import mark_safe
 from geopy.geocoders import Nominatim
+from simple_history.models import HistoricalRecords
 
 from core.utils import create_thumbnail, rename_img
 
@@ -92,6 +93,7 @@ class HelpRequest(models.Model):
     city = models.CharField(max_length=30, blank=True, default="", editable=False)
     city_code = models.CharField(max_length=30, blank=True, default="", editable=False)
     search_vector = SearchVectorField()
+    history = HistoricalRecords()
     objects = HelpRequestQuerySet.as_manager()
 
     @property
@@ -346,6 +348,7 @@ class User(models.Model):
         blank=True,
         null=True
     )
+    history = HistoricalRecords()
 
 
 class HelpRequestOwner(models.Model):
