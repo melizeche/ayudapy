@@ -174,14 +174,14 @@
         var popup =
           '<a class="subtitle" href="/donaciones/' +
           feature.properties.pk +
-          '"><h1>Donación #' +
+          '"><h1>Centro #' +
           feature.properties.pk +
           '</h1></a><p class="has-text-weight-bold">Nombre: ' +
           feature.properties.name +
           '</p><p>' +
           '<a class="is-size-6" href="/donaciones/' +
           feature.properties.pk +
-          '">Ver Donación</a>';
+          '">Ver Centro</a>';
         layer.bindPopup(popup);
 
         markerClusters.addLayer(layer);
@@ -198,14 +198,14 @@
         var popup =
           '<a class="subtitle" href="/donaciones/' +
           feature.properties.pk +
-          '"><h1>Donación #' +
+          '"><h1>Centro #' +
           feature.properties.pk +
           '</h1></a><p class="has-text-weight-bold">Nombre: ' +
           feature.properties.name +
           '</p><p>' +
           '<a class="is-size-6" href="/donaciones/' +
           feature.properties.pk +
-          '">Ver Donación</a>';
+          '">Ver Centro</a>';
         layer.bindPopup(popup);
       },
     }).addTo(map);
