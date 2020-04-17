@@ -67,7 +67,7 @@ def view_request(request, id):
 
     context = {
         "help_request": help_request,
-        "thumbnail": help_request.thumb if help_request.picture else "/static/favicon.ico",
+        "thumbnail": help_request.thumb if help_request.picture else "/static/img/logo.jpg",
         "phone_number_img": image_to_base64(text_to_image(help_request.phone, 300, 50)),
         "whatsapp": '595'+help_request.phone[1:]+'?text=Hola+'+help_request.name
                     + ',+te+escribo+por+el+pedido+que+hiciste:+'+quote_plus(help_request.title)
