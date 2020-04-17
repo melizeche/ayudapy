@@ -1,5 +1,10 @@
-// script to support the templates/list.html file
+// script to support the templates/donation_center/list.html file
 (function () {
+  const GEO_URL = "/api/v1/donationcentersgeo/";
+  const LIST_URL = "/donaciones/";
+  const LIST_BY_CITY_URL = "/donaciones_ciudad/";
+  const TITLE = "Donación";
+
   /**
    * ListRequestView is the main component of the list.html page.
    *
@@ -12,7 +17,7 @@
     this.cluster = undefined;
     // current search string
     this.currentSearchString = undefined;
-    this.requestTableView = new RequestsTableView();
+    this.requestTableView = new TableView();
     this.loadingIndicator = new LoadingIndicatorView();
     // show the spinner while we bootstrap
     this.loadingIndicator.show();
@@ -110,7 +115,7 @@
         opacity: 0.3,
         title: 'Tu ubicación',
       }).addTo(maps[0]);
-      you.bindPopup('Tu ubicación').openPopup();
+      you.bindPopup('<b>Tu ubicación</b>').openPopup();
       maps[0].panTo(new L.LatLng(latitude, longitude), 14);
       status.textContent = 'Mostrando tu localización actual';
     }
@@ -138,8 +143,7 @@
     this.loadingIndicator.show();
     var vm = this;
     var map = this.map;
-    var searchUrl =
-      '/api/v1/donationcentersgeo/?in_bbox=' + map.getBounds().toBBoxString();
+    var searchUrl = GEO_URL+'?in_bbox=' + map.getBounds().toBBoxString();
 
     if (vm.currentSearchString && vm.currentSearchString.length >= 3) {
       searchUrl += '&search_fields=name&search=' + vm.currentSearchString;
@@ -172,16 +176,18 @@
     var layerGroup = L.geoJSON(data, {
       onEachFeature: function (feature, layer) {
         var popup =
-          '<a class="subtitle" href="/donaciones/' +
+          '<a class="subtitle" href="' + LIST_URL +
           feature.properties.pk +
-          '"><h1>Donación #' +
+          '"><h1>'+ TITLE +' #' +
           feature.properties.pk +
           '</h1></a><p class="has-text-weight-bold">Nombre: ' +
           feature.properties.name +
           '</p><p>' +
-          '<a class="is-size-6" href="/donaciones/' +
+          feature.properties.title +
+          '</p>' +
+          '<a class="is-size-6" href="' + LIST_URL +
           feature.properties.pk +
-          '">Ver Donación</a>';
+          '">Ver '+ TITLE +'</a>';
         layer.bindPopup(popup);
 
         markerClusters.addLayer(layer);
@@ -196,16 +202,18 @@
     var layerGroup = L.geoJSON(data, {
       onEachFeature: function (feature, layer) {
         var popup =
-          '<a class="subtitle" href="/donaciones/' +
+          '<a class="subtitle" href="' + LIST_URL +
           feature.properties.pk +
-          '"><h1>Donación #' +
+          '"><h1>'+ TITLE +' #' +
           feature.properties.pk +
           '</h1></a><p class="has-text-weight-bold">Nombre: ' +
           feature.properties.name +
           '</p><p>' +
-          '<a class="is-size-6" href="/donaciones/' +
+          feature.properties.title +
+          '</p>' +
+          '<a class="is-size-6" href="' + LIST_URL +
           feature.properties.pk +
-          '">Ver Donación</a>';
+          '">Ver '+ TITLE +'</a>';
         layer.bindPopup(popup);
       },
     }).addTo(map);
@@ -250,7 +258,7 @@
       }
       var selectedOption = options[selectedIndex];
       location.assign(
-        '/donaciones_ciudad/' + selectedOption.getAttribute('data-value')
+        LIST_BY_CITY_URL + selectedOption.getAttribute('data-value')
       );
     });
 
@@ -260,267 +268,7 @@
     });
   }
 
-  /**
-   * Component that renders the list of requests.
-   */
-  function RequestsTableView() {
-    this.data = [];
-    this.tpl = document.getElementById('requests-table-template').innerHTML;
-    this.emptyTpl = document.getElementById(
-      'requests-table-empty-template'
-    ).innerHTML;
-    this.requestTableEl = document.getElementById('requests-table');
-    this.paginator = new RequestsTablePaginatorView(10);
-    this.paginator.onPageChanged = this.render.bind(this);
-  }
 
-  RequestsTableView.prototype.render = renderRequestsTable;
-  RequestsTableView.prototype.setData = setData;
-
-  /**
-   * RequestsTable.setData
-   *
-   * @param {Object[]} data
-   */
-  function setData(data) {
-    this.data = data;
-    this.paginator.setData(data);
-  }
-
-  /**
-   * RequestsTable.render
-   */
-  function renderRequestsTable() {
-    var vm = this;
-    var tableHtml = '';
-    var req;
-    var i;
-    var now = moment();
-    var data = vm.paginator.getPage();
-
-    if (data.length == 0) {
-      tableHtml = this.emptyTpl;
-    }
-
-    for (i = 0; i < data.length; i++) {
-      req = data[i].properties;
-
-      tableHtml += this.tpl
-        .replace(/{{id}}/g, req.pk)
-        .replace(/{{added}}/g, moment(req.added).from(now))
-        .replace(/{{name}}/g, req.name);
-    }
-
-    requestAnimationFrame(function () {
-      vm.requestTableEl.innerHTML = tableHtml;
-      vm.paginator.render();
-    });
-  }
-
-  /**
-   * Responsible for rendering the pagination widget.
-   */
-  function RequestsTablePaginatorView(pageSize) {
-    this.pageSize = pageSize;
-    this.tpl = document.getElementById(
-      'requests-table-paginator-template'
-    ).innerHTML;
-    this.el = document.getElementById('requests-table-paginator');
-
-    // The following should be defined by the parent component.
-    this.onNextPage = undefined;
-    this.onPrevPage = undefined;
-    this.onFirstPage = undefined;
-    this.onLastPage = undefined;
-  }
-
-  RequestsTablePaginatorView.prototype.render = renderPaginator;
-  RequestsTablePaginatorView.prototype.setData = setPaginatorData;
-  RequestsTablePaginatorView.prototype.next = next;
-  RequestsTablePaginatorView.prototype.prev = prev;
-  RequestsTablePaginatorView.prototype.firstPage = firstPage;
-  RequestsTablePaginatorView.prototype.lastPage = lastPage;
-  RequestsTablePaginatorView.prototype.setFlags = setFlags;
-  RequestsTablePaginatorView.prototype.getPage = getPage;
-  RequestsTablePaginatorView.prototype.setupPaginationListeners = setupPaginationListeners;
-
-  /**
-   * RequestsTablePaginatorView.render
-   */
-  function renderPaginator() {
-    this.setFlags();
-
-    if (this.pages == 0) {
-      this.el.innerHTML = '';
-      return;
-    }
-    var html = this.tpl
-      .replace(/{{currentPage}}/g, this.currentPage + 1)
-      .replace(/{{nextPage}}/g, this.currentPage + 2)
-      .replace(/{{previousPage}}/g, this.currentPage)
-      .replace(/{{totalPages}}/g, this.totalPages)
-      .replace(
-        /{{hasMultiplePages}}/g,
-        'has-multiple-pages-' + this.hasMultiplePages
-      );
-
-    if (!this.hasNext) {
-      html = html.replace(/{{hasNext}}/g, 'disabled');
-    }
-
-    if (!this.showNext) {
-      html = html.replace(/{{showNext}}/g, 'is-hidden');
-    }
-
-    if (!this.hasPrev) {
-      html = html.replace(/{{hasPrev}}/g, 'disabled');
-    }
-
-    if (!this.showPrev) {
-      html = html.replace(/{{showPrev}}/g, 'is-hidden');
-    }
-
-    if (this.currentPage === 0) {
-      html = html.replace(/{{hasFirst}}/g, 'disabled');
-      html = html.replace(/{{showFirst}}/g, 'is-hidden');
-    } else if (this.currentPage === this.totalPages - 1) {
-      html = html.replace(/{{hasLast}}/g, 'disabled');
-      html = html.replace(/{{showLast}}/g, 'is-hidden');
-    }
-
-    if (this.totalPages == 1) {
-      //show only current
-      html = html.replace(/{{showFirst}}/g, 'is-hidden');
-      html = html.replace(/{{showLast}}/g, 'is-hidden');
-    }
-
-    this.el.innerHTML = html;
-    this.setupPaginationListeners();
-  }
-
-  /**
-   * RequestsTablePaginatorView.setPaginatorData
-   *
-   * Fills in the paginated data array based on the given data source.
-   * @param {Object[]} dataSource
-   */
-  function setPaginatorData(dataSource) {
-    this.count = dataSource.length;
-    this.pages = [];
-    this.currentPage = 0;
-    this.nextPage = 0;
-    this.previousPage = 0;
-
-    if (dataSource.length == 0) {
-      return;
-    }
-    this.totalPages = Math.ceil(this.count / this.pageSize);
-    var page = [];
-
-    if (this.totalPages == 1) {
-      this.pages.push(dataSource);
-      return;
-    }
-
-    for (var i = 0; i < this.count; i++) {
-      page.push(dataSource[i]);
-
-      if (page.length == this.pageSize) {
-        this.pages.push(page);
-        page = [];
-      }
-    }
-
-    if (page.length > 0) {
-      this.pages.push(page);
-    }
-  }
-
-  function setFlags() {
-    this.hasMultiplePages = true;
-    this.hasNext = false;
-    this.hasPrev = false;
-    this.showPrev = false;
-    this.showNext = false;
-
-    if (this.totalPages == 1) {
-      this.hasMultiplePages = false;
-      this.hasNext = false;
-      this.hasPrev = false;
-      this.showPrev = false;
-      this.showNext = false;
-      return;
-    }
-
-    if (this.currentPage < this.totalPages - 1) {
-      this.hasNext = true;
-      if (this.currentPage + 2 != this.totalPages) {
-        this.showNext = true;
-      }
-    }
-
-    if (this.currentPage > 0) {
-      this.hasPrev = true;
-      if (this.currentPage != 1) {
-        this.showPrev = true;
-      }
-    }
-  }
-
-  /**
-   * RequestsTablePaginatorView.setupPaginationListeners
-   */
-  function setupPaginationListeners() {
-    var vm = this;
-    this.el
-      .querySelector('.next-button')
-      .addEventListener('click', vm.next.bind(this));
-    this.el
-      .querySelector('.prev-button')
-      .addEventListener('click', vm.prev.bind(this));
-    this.el
-      .querySelector('.first-button')
-      .addEventListener('click', vm.firstPage.bind(this));
-    this.el
-      .querySelector('.last-button')
-      .addEventListener('click', vm.lastPage.bind(this));
-    this.el
-      .querySelector('.current-plus-button')
-      .addEventListener('click', vm.next.bind(this));
-    this.el
-      .querySelector('.current-minus-button')
-      .addEventListener('click', vm.prev.bind(this));
-  }
-
-  /**
-   * @returns {Object[]}
-   */
-  function getPage() {
-    if (this.pages.length == 0) {
-      return [];
-    }
-    return this.pages[this.currentPage];
-  }
-
-  function next() {
-    this.currentPage += 1;
-    this.onPageChanged();
-  }
-
-  function prev() {
-    this.currentPage -= 1;
-    this.onPageChanged();
-  }
-
-  function firstPage() {
-    this.currentPage = 0;
-    this.onPageChanged();
-  }
-
-  function lastPage() {
-    this.currentPage = this.totalPages - 1;
-    this.onPageChanged();
-  }
 
   /**
    * This component controls the spinner.

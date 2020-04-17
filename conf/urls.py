@@ -17,7 +17,7 @@ from org.views import RestrictedView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', core_views.home, name='home'),
-    path('recibir', TemplateView.as_view(template_name="info_request.html")),
+    path('recibir', TemplateView.as_view(template_name="help_request/info.html")),
     path('solicitar', core_views.request_form, name="request-form"),
     path('dar', TemplateView.as_view(template_name="info_give.html")),
     path('legal', TemplateView.as_view(template_name="legal.html"), name='legal'),

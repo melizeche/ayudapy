@@ -55,7 +55,7 @@ def request_form(request):
             return redirect("pedidos-detail", id=new_help_request.id)
     else:
         form = HelpRequestForm()
-    return render(request, "help_request_form.html", {"form": form})
+    return render(request, "help_request/create.html", {"form": form})
 
 
 def view_request(request, id):
@@ -67,6 +67,7 @@ def view_request(request, id):
 
     context = {
         "help_request": help_request,
+        "name": help_request.name,
         "thumbnail": help_request.thumb if help_request.picture else "/static/img/logo.jpg",
         "phone_number_img": image_to_base64(text_to_image(help_request.phone, 300, 50)),
         "whatsapp": '595'+help_request.phone[1:]+'?text=Hola+'+help_request.name
@@ -94,7 +95,7 @@ def view_request(request, id):
                     help_request.save()
                     vote_ctrl["{id}".format(id=help_request.id)] = True
 
-    response = render(request, "request.html", context)
+    response = render(request, "help_request/details.html", context)
 
     if vote_ctrl_cookie_key not in request.COOKIES:
         # initialize control cookie
@@ -138,7 +139,7 @@ def view_faq(request):
 def list_requests(request):
     cities = [(i['city'], i['city_code']) for i in HelpRequest.objects.all().values('city', 'city_code').distinct().order_by('city_code')]
     context = {"list_cities": cities}
-    return render(request, "list.html", context)
+    return render(request, "help_request/list.html", context)
 
 
 def list_by_city(request, city):
@@ -158,4 +159,4 @@ def list_by_city(request, city):
         list_paginated = paginator.page(paginator.num_pages)
 
     context = {"list_help": list_help_requests, "geo": geo, "city": city, "list_paginated": list_paginated}
-    return render(request, "list_by_city.html", context)
+    return render(request, "help_request/list_by_city.html", context)
