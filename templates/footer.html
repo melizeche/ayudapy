@@ -1,45 +1,79 @@
 {% load static %}
 <footer class="footer">
-  <nav class="columns is-vcentered">
-    <!-- Left side -->
-    <div class="column is-one-fifth">
-      <p class="level-item">
-        <ul class="list is-fullwidth-mobile has-text-left-desktop has-text-centered-mobile">
-          <a class="list-item" href="{% url 'legal' %}">Términos de uso</a>
-          <a class="list-item" href="{% url 'general_faq' %}">Preguntas frecuentes</a>
-          <a class="list-item" href="{% url 'contact_us' %}">Contacto</a>
-        </ul>
-    </div>
+	<nav class="columns is-vcentered">
+		<!-- Left side -->
+		<div class="column is-one-fifth">
+			<a class="navbar-item" href="{% url 'legal' %}">
+				<div class="level is-mobile">
+					<div class="level-left">
+						<span class="level-item">Términos de uso</span>
+					</div>
+					<div class="level-right">
+						<span class="icon level-item">
+							<i class="fas fa-chevron-right"></i>
+						</span>
+					</div>
+				</div>
+			</a>
 
-    <div class="column is-three-fifth">
-      <div class="columns is-mobile is-centered">
-        <figure class="image is-96x96">
-          <a href="{% url 'login'%}?next={{request.path}}">
-            {#                <h6 class="is-full subtitle is-4 has-text-centered is-marginless">Apoya</h6>#}
-            <img class="is-rounded" src="{% static 'img/icono.svg' %}">
-          </a>
-        </figure>
-      </div>
-      <div class="columns  is-mobile is-centered">
-        {% if user.is_authenticated %}
-          <p>Usuario: <b>{{ user.get_username }}</b><br>
-        <a href="{% url 'logout'%}?next={{request.path}}">Cerrar sesión</a>
-      </p>
-        {% endif %}
-      </div>
-    </div>
+			<a class="navbar-item" href="{% url 'general_faq' %}">
+				<div class="level is-mobile">
+					<div class="level-left">
+						<span class="level-item">Preguntas frecuentes</span>
+					</div>
+					<div class="level-right">
+						<span class="icon level-item">
+							<i class="fas fa-chevron-right"></i>
+						</span>
+					</div>
+				</div>
+			</a>
 
-    <!-- Right side -->
-    <div class="column is-one-fifth">
-      <!-- <div class="level-item"> -->
-      <p class="column is-size-7 has-text-centered has-text-right-desktop is-family-monospace">
-        Desarrollado por <a href="https://melizeche.com">Marcelo Elizeche</a>
-        <br> Código fuente libre bajo licencia <a href="https://opensource.org/licenses/GPL-3.0">GPLv3</a>
-        <br><a href="https://github.com/melizeche/ayudapy" target="_blank">Revisá el código <span class="icon"><i
-              class="fab fa-github" title="logo Github"></i></span></a>
-      </p>
-      <!-- </div> -->
-    </div>
-  </nav>
+			<a class="navbar-item" href="{% url 'contact_us' %}">
+				<div class="level is-mobile">
+					<div class="level-left">
+						<span class="level-item">Contacto</span>
+					</div>
+					<div class="level-right">
+						<span class="icon level-item">
+							<i class="fas fa-chevron-right"></i>
+						</span>
+					</div>
+				</div>
+			</a>
+		</div>
 
+		<!-- Center side -->
+		<div class="column is-three-fifths media center">
+			<div class="columns is-vcentered is-fullwidth">
+				<div class="column">
+					<a>
+						<i class="fab fa-twitter fa-2x"></i>
+					</a>
+				</div>
+				<div class="column">
+					<a>
+						<i class="fab fa-facebook-square fa-2x"></i>
+					</a>
+				</div>
+				<div class="column">
+					<a>
+						<i class="fab fa-instagram fa-2x"></i>
+					</a>
+				</div>
+				<div class="column">
+					<a>
+						<i class="fab fa-youtube fa-2x"></i>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<!-- Right side -->
+		<div class="column is-one-fifth">
+			<p class="column is-size-7 has-text-centered has-text-right-desktop">
+				<a href="https://coderio.co/" target="_blank"> Potenciado por _coderio</a>
+			</p>
+		</div>
+	</nav>
 </footer>
