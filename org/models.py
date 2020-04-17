@@ -79,6 +79,7 @@ class DonationCenter(models.Model):
         city = self._get_city()
         self.city = city
         self.city_code = unidecode(city).replace(" ", "_")
+        self.phone = self.phone.replace(" ", "")
         return super(DonationCenter, self).save()
 
     def __str__(self):

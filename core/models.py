@@ -135,6 +135,7 @@ class HelpRequest(models.Model):
         city = self._get_city()
         self.city = city
         self.city_code = unidecode(city).replace(" ", "_")
+        self.phone = self.phone.replace(" ", "")
         return super(HelpRequest, self).save(*args, **kwargs)
 
     def __str__(self):
