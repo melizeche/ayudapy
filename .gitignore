@@ -67,3 +67,7 @@ conf/.env
 
 # Docker bind mounts
 db-data
+/conf/.env
+docker-compose copy.yml
+
+wait-for-db copy.sh
