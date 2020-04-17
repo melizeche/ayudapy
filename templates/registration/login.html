@@ -24,7 +24,7 @@
       <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
         <div class="field">
-          <label class="label">Username</label>
+          <label class="label">Usuario</label>
           <div class="control has-icons-left has-icons-right">
             <input id="id_username" name="username" class="input" type="text" placeholder="username">
             <span class="icon is-small is-left">
@@ -33,7 +33,7 @@
           </div>
         </div>
         <div class="field">
-          <label for="id_password" class="label">Password</label>
+          <label for="id_password" class="label">Contraseña</label>
           <p class="control has-icons-left">
             <input id="id_password" name="password" type="password" class="input" placeholder="Password">
             <span class="icon is-small is-left">
