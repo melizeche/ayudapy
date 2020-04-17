@@ -28,6 +28,14 @@ cp conf/.env.example conf/.env # you should edit this file with your configurati
 ./manage.py runserver
 ```
 
+We use `django-pipeline` to handle CSS/JS assests, and this library requires `yuglify`. To install `yuglify`, issue the following:
+
+```
+npm -g install yuglify
+```
+
+The above command assumes that [NPM](https://www.npmjs.com/get-npm) is available.
+
 ## Install using docker-compose
 
 ```

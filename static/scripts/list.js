@@ -100,17 +100,18 @@
   }
 
   function geoFindMe() {
-    const status = document.querySelector('#status');
+    var status = document.querySelector('#status');
 
     function success(position) {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
+      var latitude = position.coords.latitude;
+      var longitude = position.coords.longitude;
 
       var greenIcon = new L.Icon({
-        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+        iconUrl:
+          'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
         iconSize: [25, 41],
         iconAnchor: [12, 41],
-        popupAnchor: [1, -34]
+        popupAnchor: [1, -34],
       });
 
       console.log('${latitude} ' + longitude);
@@ -155,8 +156,10 @@
     }
 
     fetch(searchUrl)
-      .then((response) => response.json())
-      .then((data) => {
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
         vm.loadingIndicator.hide();
 
         if (vm.clusters) {
@@ -394,7 +397,8 @@
       html = html.replace(/{{showLast}}/g, 'is-hidden');
     }
 
-    if(this.totalPages == 1){ //show only current
+    if (this.totalPages == 1) {
+      //show only current
       html = html.replace(/{{showFirst}}/g, 'is-hidden');
       html = html.replace(/{{showLast}}/g, 'is-hidden');
     }
@@ -459,7 +463,7 @@
 
     if (this.currentPage < this.totalPages - 1) {
       this.hasNext = true;
-      if ((this.currentPage + 2) != this.totalPages) {
+      if (this.currentPage + 2 != this.totalPages) {
         this.showNext = true;
       }
     }
@@ -486,10 +490,10 @@
     this.el
       .querySelector('.first-button')
       .addEventListener('click', vm.firstPage.bind(this));
-      this.el
+    this.el
       .querySelector('.current-plus-button')
       .addEventListener('click', vm.next.bind(this));
-      this.el
+    this.el
       .querySelector('.current-minus-button')
       .addEventListener('click', vm.prev.bind(this));
     this.el

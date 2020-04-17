@@ -1,5 +1,6 @@
-{% load leaflet_tags %}
 {% load static %}
+{% load leaflet_tags %}
+{% load pipeline %}
 <!DOCTYPE html>
 <html>
 
@@ -130,6 +131,7 @@
         src="https://cdn.jsdelivr.net/combine/npm/moment@2.24.0/min/moment.min.js,npm/moment@2.24.0/locale/es.js"></script>
     {% leaflet_js plugins="ALL" %}
     {% leaflet_css plugins="ALL" %}
+    {% javascript 'leaflet-patch.js' %}
 </head>
 
 <body class="Site">
