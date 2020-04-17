@@ -2,6 +2,7 @@
 {% load leaflet_tags %}
 {% load humanize %}
 {% load static %}
+{% load pipeline %}
 
 {% block bread %}
   <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
@@ -109,11 +110,12 @@
 	<div id="requests-table-paginator"></div>
       </div>
     </div>
-    <script type="text/javascript" src="{% static 'scripts/list.js' %}"></script>
+    {% javascript 'list.js' %}
+
 
     <script type="text/javascript">
       function mainMapInit(map, options) {
-	new ListRequestView(map, options);
+	      new ListRequestView(map, options);
       }
     </script>
 

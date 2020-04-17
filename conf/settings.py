@@ -28,6 +28,8 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
+DEBUG_PROPAGATE_EXCEPTIONS = True
+
 
 # Application definition
 
@@ -48,6 +50,7 @@ INSTALLED_APPS = [
     'rest_framework_gis',
     'django_filters',
     'simple_history',
+    'pipeline'
 ]
 
 MIDDLEWARE = [
@@ -128,7 +131,7 @@ USE_TZ = True
 
 STATIC_ROOT= os.path.join(BASE_DIR, 'allstatic')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "static")
 ]
 STATIC_URL = '/static/'
 
@@ -170,3 +173,36 @@ REST_FRAMEWORK = {
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/'
+
+# Configs related to django-pipeline
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'pipeline.finders.CachedFileFinder',
+    'pipeline.finders.PipelineFinder'
+)
+PIPELINE = {
+    'JAVASCRIPT': {
+        'list.js': {
+                'source_filenames': (
+                    'scripts/list.js',
+                ),
+                'output_filename': 'scripts/list.min.js',
+        },
+        'list-donation.js': {
+                'source_filenames': (
+                    'scripts/list-donation.js',
+                ),
+                'output_filename': 'scripts/list-donation.min.js',
+        },
+        'leaflet-patch.js': {
+                'source_filenames': (
+                    'scripts/leaflet-patch.js',
+                ),
+                'output_filename': 'scripts/leaflet-patch.min.js',
+        }
+    },
+    'CSS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
+    'JS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor'
+}

@@ -11,6 +11,7 @@ https://ayudapy.org
 - Python 3.6+
 - Django 2.2+
 - PostGIS 3.0+
+- PostgreSQL 11+
 
 ## Install
 
@@ -28,6 +29,14 @@ cp conf/.env.example conf/.env # you should edit this file with your configurati
 ./manage.py runserver
 ```
 
+We use `django-pipeline` to handle CSS/JS assests, and this library requires `yuglify`. To install `yuglify`, issue the following:
+
+```
+npm -g install yuglify
+```
+
+The above command assumes that [NPM](https://www.npmjs.com/get-npm) is available.
+
 ## Install using docker-compose
 
 ```
@@ -43,7 +52,8 @@ docker-compose exec app ./manage.py migrate
 2. Create your feature branch: `git checkout -b my-new-feature`
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request :D
+5. Add your name and git account to the Contributors section in this `Readme.MD` :D
+6. Submit a pull request to `dev` branch
 
 ## Author
 
@@ -51,12 +61,17 @@ docker-compose exec app ./manage.py migrate
 
 ## Contributors / Thanks
 
+- Agustin Gomez Mansilla https://github.com/gomezag
 - Agustín Gómez https://github.com/gomezag
+- Axel Ferreira https://github.com/axelampro
+- Blas Isaias Fernández https://github.com/BlasFerna
 - Cabu Vallejos https://github.com/cabupy
 - Diego Allen https://github.com/dalleng
+- Diego Schulz https://github.com/dschulz
 - Diosnel Velázquez https://github.com/diosnelv
-- Diego Allen https://github.com/dalleng
+- Felipe Hermosilla https://github.com/felipehermosilla
 - Félix Pedrozo https://github.com/X1lef
+- Grosip https://github.com/grosip
 - Guillermo Caballero https://github.com/Guillecaba
 - Jean Claude Adams https://github.com/jcroot
 - Jesus Alderete https://github.com/jesus-bucksapp
@@ -65,6 +80,7 @@ docker-compose exec app ./manage.py migrate
 - Juan Hüttemann https://github.com/juanhuttemann
 - Leonardo Carreras https://github.com/leocarreras
 - Manuel Nuñez https://github.com/manununhez
+- Miguel Báez https://github.com/migueljoba 
 - Osbarge https://github.com/osbarge
 - Pablo Santa Cruz https://github.com/pablo
 
