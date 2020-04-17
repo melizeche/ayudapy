@@ -11,6 +11,7 @@ https://ayudapy.org
 - Python 3.6+
 - Django 2.2+
 - PostGIS 3.0+
+- PostgreSQL 11+
 
 ## Install
 
@@ -43,7 +44,8 @@ docker-compose exec app ./manage.py migrate
 2. Create your feature branch: `git checkout -b my-new-feature`
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request :D
+5. Add your name and git account to the Contributors section in this `Readme.MD` :D
+6. Submit a pull request to `dev` branch
 
 ## Author
 
@@ -55,7 +57,6 @@ docker-compose exec app ./manage.py migrate
 - Cabu Vallejos https://github.com/cabupy
 - Diego Allen https://github.com/dalleng
 - Diosnel Velázquez https://github.com/diosnelv
-- Diego Allen https://github.com/dalleng
 - Félix Pedrozo https://github.com/X1lef
 - Guillermo Caballero https://github.com/Guillecaba
 - Jean Claude Adams https://github.com/jcroot
@@ -67,6 +68,13 @@ docker-compose exec app ./manage.py migrate
 - Manuel Nuñez https://github.com/manununhez
 - Osbarge https://github.com/osbarge
 - Pablo Santa Cruz https://github.com/pablo
+- Miguel Báez https://github.com/migueljoba 
+- Agustin Gomez Mansilla https://github.com/gomezag
+- Blas Isaias Fernández https://github.com/BlasFerna
+- Axel Ferreira https://github.com/axelampro
+- Grosip https://github.com/grosip
+- Diego Schulz https://github.com/dschulz
+- Felipe Hermosilla https://github.com/felipehermosilla
 
 ## TODO
 
