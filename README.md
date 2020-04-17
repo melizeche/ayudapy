@@ -53,11 +53,17 @@ docker-compose exec app ./manage.py migrate
 
 ## Contributors / Thanks
 
+- Agustin Gomez Mansilla https://github.com/gomezag
 - Agustín Gómez https://github.com/gomezag
+- Axel Ferreira https://github.com/axelampro
+- Blas Isaias Fernández https://github.com/BlasFerna
 - Cabu Vallejos https://github.com/cabupy
 - Diego Allen https://github.com/dalleng
+- Diego Schulz https://github.com/dschulz
 - Diosnel Velázquez https://github.com/diosnelv
+- Felipe Hermosilla https://github.com/felipehermosilla
 - Félix Pedrozo https://github.com/X1lef
+- Grosip https://github.com/grosip
 - Guillermo Caballero https://github.com/Guillecaba
 - Jean Claude Adams https://github.com/jcroot
 - Jesus Alderete https://github.com/jesus-bucksapp
@@ -66,15 +72,9 @@ docker-compose exec app ./manage.py migrate
 - Juan Hüttemann https://github.com/juanhuttemann
 - Leonardo Carreras https://github.com/leocarreras
 - Manuel Nuñez https://github.com/manununhez
+- Miguel Báez https://github.com/migueljoba 
 - Osbarge https://github.com/osbarge
 - Pablo Santa Cruz https://github.com/pablo
-- Miguel Báez https://github.com/migueljoba 
-- Agustin Gomez Mansilla https://github.com/gomezag
-- Blas Isaias Fernández https://github.com/BlasFerna
-- Axel Ferreira https://github.com/axelampro
-- Grosip https://github.com/grosip
-- Diego Schulz https://github.com/dschulz
-- Felipe Hermosilla https://github.com/felipehermosilla
 
 ## TODO
 
