@@ -13,3 +13,4 @@ django-silk==4.0.1
 ua-parser~=0.10
 django-environ==0.4.5
 django-simple-history==2.8.0
+django-pipeline==1.7.0

@@ -99,11 +99,11 @@
   }
 
   function geoFindMe() {
-    const status = document.querySelector('#status');
+    var status = document.querySelector('#status');
 
     function success(position) {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
+      var latitude = position.coords.latitude;
+      var longitude = position.coords.longitude;
 
       console.log('${latitude} ' + longitude);
       you = L.marker([latitude, longitude], {
@@ -146,8 +146,10 @@
     }
 
     fetch(searchUrl)
-      .then((response) => response.json())
-      .then((data) => {
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
         vm.loadingIndicator.hide();
 
         if (vm.clusters) {
@@ -386,7 +388,8 @@
       html = html.replace(/{{showLast}}/g, 'is-hidden');
     }
 
-    if(this.totalPages == 1){ //show only current
+    if (this.totalPages == 1) {
+      //show only current
       html = html.replace(/{{showFirst}}/g, 'is-hidden');
       html = html.replace(/{{showLast}}/g, 'is-hidden');
     }
@@ -451,7 +454,7 @@
 
     if (this.currentPage < this.totalPages - 1) {
       this.hasNext = true;
-      if ((this.currentPage + 2) != this.totalPages) {
+      if (this.currentPage + 2 != this.totalPages) {
         this.showNext = true;
       }
     }
@@ -481,13 +484,12 @@
     this.el
       .querySelector('.last-button')
       .addEventListener('click', vm.lastPage.bind(this));
-      this.el
+    this.el
       .querySelector('.current-plus-button')
       .addEventListener('click', vm.next.bind(this));
-      this.el
+    this.el
       .querySelector('.current-minus-button')
       .addEventListener('click', vm.prev.bind(this));
-
   }
 
   /**
@@ -519,7 +521,6 @@
     this.currentPage = this.totalPages - 1;
     this.onPageChanged();
   }
-
 
   /**
    * This component controls the spinner.
