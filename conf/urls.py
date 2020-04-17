@@ -21,6 +21,7 @@ urlpatterns = [
     path('solicitar', core_views.request_form, name="request-form"),
     path('dar', TemplateView.as_view(template_name="info_give.html")),
     path('legal', TemplateView.as_view(template_name="legal.html"), name='legal'),
+    path('voluntario', TemplateView.as_view(template_name="voluntary_form.html"), name='voluntario'),
     path('pedidos/<int:id>', core_views.view_request, name='pedidos-detail'),
     path('pedidos_ciudad/<slug:city>', core_views.list_by_city, name='pedidos-by-city'),
     path('pedidos', core_views.list_requests),
