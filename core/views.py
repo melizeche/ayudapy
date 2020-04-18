@@ -131,7 +131,7 @@ def view_faq(request):
         'faq_list': faq_list
     }
 
-    template = "general_faq.html"
+    template = "footer/general_faq.html"
 
     return render(request, template, context)
 

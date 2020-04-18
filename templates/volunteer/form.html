@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block bread %}
+<nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <span class="icon is-small">
+        <i class="fas fa-home" aria-hidden="true"></i>
+      </span>
+      <a href="/">Inicio</a></li>
+    <li class="is-active"><a href="#" aria-current="page">Quiero ser voluntario</a></li>
+  </ul>
+</nav>
+{% endblock bread %}
+{% block content%}
+
+<div class="columns is-centered center">
+  <iframe
+    src="https://docs.google.com/forms/d/e/1FAIpQLSdlQHsanu2HvAHz0FIwO_CnRCnQlRd3j0KriwAMNLJtGZQkBw/viewform?embedded=true"
+    width="640" height="2220" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
+
+</div>
+
+{% endblock %}
