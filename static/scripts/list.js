@@ -19,7 +19,7 @@
 
     // Use Leaflet API here
     map.setZoom(13);
-    map.options.minZoom = 11;
+    map.options.minZoom = 8;
 
     map.addControl(
       new L.Control.Fullscreen({
