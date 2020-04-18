@@ -105,12 +105,21 @@
       var latitude = position.coords.latitude;
       var longitude = position.coords.longitude;
 
+      var greenIcon = new L.Icon({
+        iconUrl:
+          'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+      });
+
       console.log('${latitude} ' + longitude);
       you = L.marker([latitude, longitude], {
-        opacity: 0.3,
+        opacity: 0.8,
+        icon: greenIcon,
         title: 'Tu ubicación',
       }).addTo(maps[0]);
-      you.bindPopup('Tu ubicación').openPopup();
+      you.bindPopup('<b>Tu ubicación</b>').openPopup();
       maps[0].panTo(new L.LatLng(latitude, longitude), 14);
       status.textContent = 'Mostrando tu localización actual';
     }
