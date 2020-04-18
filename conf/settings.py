@@ -175,7 +175,7 @@ REST_FRAMEWORK = {
 LOGIN_REDIRECT_URL = '/'
 
 # Configs related to django-pipeline
-STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+#STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
