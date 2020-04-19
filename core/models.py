@@ -134,7 +134,7 @@ class HelpRequest(models.Model):
         return city
 
     def _deactivate_duplicates(self):
-        return HelpRequest.objects.filter(phone=self.phone, title=self.title).exclude(id=self.id).update(active=False)
+        return HelpRequest.objects.filter(phone=self.phone, title=self.title).update(active=False)
 
     def save(self, *args, **kwargs):
         from unidecode import unidecode
@@ -142,7 +142,8 @@ class HelpRequest(models.Model):
         self.city = city
         self.city_code = unidecode(city).replace(" ", "_")
         self.phone = self.phone.replace(" ", "")
-        self._deactivate_duplicates()
+        if not self.id:
+            self._deactivate_duplicates()
         return super(HelpRequest, self).save(*args, **kwargs)
 
     def __str__(self):
