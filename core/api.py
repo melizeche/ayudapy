@@ -22,9 +22,12 @@ class DynamicSearchFilter(filters.SearchFilter):
 class HelpRequestViewSet(viewsets.ModelViewSet):
     queryset = HelpRequest.objects.filter(active=True).order_by('-id')
     serializer_class = HelpRequestSerializer
-    filter_backends = [InBBoxFilter, DjangoFilterBackend, DynamicSearchFilter,]
+    filter_backends = [InBBoxFilter, DjangoFilterBackend, DynamicSearchFilter, ]
     search_fields = ['title', 'phone',]
-    filterset_fields = ['city']
+    filterset_fields = {
+            'added': ['gte', 'lte'],
+            'city': ['exact'],
+    }
     bbox_filter_field = 'location'
     bbox_filter_include_overlapping = True
 
