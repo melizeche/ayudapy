@@ -46,7 +46,7 @@
       <div class="column is-6">
         <div class="panel is-info">
           <p class="panel-heading">
-            Últimos centros de donación en {{city}}
+            Centros de donación en {{city}}
           </p>
           <div style="overflow-y:auto;max-height:75vh;padding:15px;">
             {% for donation in list_paginated %}
@@ -55,7 +55,7 @@
                   <div class="media-content">
                     <div class="content">
                       <p>
-                        <i class="fas fa-people-carry" aria-hidden="true"></i>
+                        <i class="fas fa-hand-holding-heart" aria-hidden="true"></i>
                         <strong style="color:#363636;">#{{donation.id}} | {{donation.name}}</strong>
                         <small>{{donation.added|naturaltime}}</small>
                       </p>

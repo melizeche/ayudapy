@@ -16,8 +16,8 @@ else:
     FONT_PATH = "./static/Roboto/Roboto-Regular.ttf"
 
 
-def create_thumbnail(imagepath: str, basewidth: int, force=False) -> bool:  # TODO: Use f'strings' instead of % format
-    thumbfilename = "%s_th%s" % (
+def create_thumbnail(imagepath: str, basewidth: int, force=False) -> bool:
+    thumbfilename = "{}_th{}".format(
         path.splitext(imagepath)[0],
         path.splitext(imagepath)[1],
     )
@@ -27,7 +27,7 @@ def create_thumbnail(imagepath: str, basewidth: int, force=False) -> bool:  # TO
             wpercent = basewidth / float(img.size[0])
             hsize = int((float(img.size[1]) * float(wpercent)))
             img = img.resize((basewidth, hsize), Image.ANTIALIAS)
-            thumbfilename = "%s_th%s" % (
+            thumbfilename = "{}_th{}".format(
                 path.splitext(imagepath)[0],
                 path.splitext(imagepath)[1],
             )
@@ -47,7 +47,7 @@ def rename_img(instance, filename):  # TODO: Use f'strings' instead of % format
         format = (
             str(instance.phone)
             + "_"
-            + time.strftime("%Y%m%d%H%M", time.localtime())
+            + time.strftime(f"%Y%m%d%H%M", time.localtime())
             + "_"
             + filename
         )
