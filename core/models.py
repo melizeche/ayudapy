@@ -133,12 +133,16 @@ class HelpRequest(models.Model):
             logger.error(f"Geolocator unavailable: {repr(e)}")
         return city
 
+    def _deactivate_duplicates(self):
+        return HelpRequest.objects.filter(phone=self.phone, title=self.title).exclude(id=self.id).update(active=False)
+
     def save(self, *args, **kwargs):
         from unidecode import unidecode
         city = self._get_city()
         self.city = city
         self.city_code = unidecode(city).replace(" ", "_")
         self.phone = self.phone.replace(" ", "")
+        self._deactivate_duplicates()
         return super(HelpRequest, self).save(*args, **kwargs)
 
     def __str__(self):
