@@ -1,12 +1,11 @@
+(function () {
   /**
    * Component that renders the list of requests.
    */
-function TableView() {
+  function TableView() {
     this.data = [];
     this.tpl = document.getElementById('table-template').innerHTML;
-    this.emptyTpl = document.getElementById(
-      'table-empty-template'
-    ).innerHTML;
+    this.emptyTpl = document.getElementById('table-empty-template').innerHTML;
     this.requestTableEl = document.getElementById('table');
     this.paginator = new TablePaginatorView(10);
     this.paginator.onPageChanged = this.render.bind(this);
@@ -14,6 +13,9 @@ function TableView() {
 
   TableView.prototype.render = renderTable;
   TableView.prototype.setData = setData;
+
+  //export this
+  window.TableView = TableView;
 
   /**
    * Table.setData
@@ -61,9 +63,7 @@ function TableView() {
    */
   function TablePaginatorView(pageSize) {
     this.pageSize = pageSize;
-    this.tpl = document.getElementById(
-      'table-paginator-template'
-    ).innerHTML;
+    this.tpl = document.getElementById('table-paginator-template').innerHTML;
     this.el = document.getElementById('table-paginator');
   }
 
@@ -254,3 +254,4 @@ function TableView() {
     this.currentPage = this.totalPages - 1;
     this.onPageChanged();
   }
+})();
