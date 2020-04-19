@@ -11,9 +11,9 @@ from PIL import Image, ImageDraw, ImageFont
 logger = logging.getLogger(__name__)
 
 if "core" in os.getcwd():
-    FONT_PATH = "../static/Roboto/Roboto-Regular.ttf"
+    FONT_PATH = "../static/fonts/Roboto-Regular.ttf"
 else:
-    FONT_PATH = "./static/Roboto/Roboto-Regular.ttf"
+    FONT_PATH = "./static/fonts/Roboto-Regular.ttf"
 
 
 def create_thumbnail(imagepath: str, basewidth: int, force=False) -> bool:  # TODO: Use f'strings' instead of % format

@@ -185,6 +185,12 @@ PIPELINE = {
     'PIPELINE_ENABLED': True,
     'PIPELINE_COLLECTOR_ENABLED': True,
     'JAVASCRIPT': {
+        'table-view.js': {
+                'source_filenames': (
+                    'scripts/table-view.js',
+                ),
+                'output_filename': 'scripts/table-view.min.js',
+        },
         'list.js': {
                 'source_filenames': (
                     'scripts/list.js',

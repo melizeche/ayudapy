@@ -62,7 +62,7 @@
         </div>
 
 
-        <div class="row">
+        <div class="row" style="margin-bottom: 5px;border: 1px green solid; border-radius: 2px;">
             {% leaflet_map "main" callback="mainMapInit" %}
         </div>
         <button id="find-me" class="button is-success  is-outlined is-fullwidth"><span class="icon is-small">
@@ -99,13 +99,14 @@
                 Centros de donación
             </p>
             <div style="overflow-y:auto;max-height:75vh;padding:15px;">
-                <div id="requests-table">
+                <div id="table">
                 </div>
             </div>
         </div>
-        <div id="requests-table-paginator"></div>
+        <div id="table-paginator"></div>
     </div>
 </div>
+{% javascript 'table-view.js' %}
 {% javascript 'list-donation.js' %}
 
 <script type="text/javascript">
@@ -114,7 +115,7 @@
     }
 </script>
 
-<script type="text/template" id="requests-table-template">
+<script type="text/template" id="table-template">
       {% verbatim %}
 	<div class="media">
 	    <a href="/donaciones/{{id}}" class="has-text-grey-dark" title="{{added}}">
@@ -132,7 +133,7 @@
       {% endverbatim %}
     </script>
 
-<script type="text/template" id="requests-table-empty-template">
+<script type="text/template" id="table-empty-template">
       {% verbatim %}
 	<div class="media">
 	    <h1>No se encuentran centros de donación en la ubicación actual.</h1>
@@ -140,9 +141,9 @@
       {% endverbatim %}
     </script>
 
-    <script type="text/template" id="requests-table-paginator-template">
+    <script type="text/template" id="table-paginator-template">
         {% verbatim %}
-          <div class="row requests-table-paginator">
+          <div class="row table-paginator">
               <div class="column is-5">
                 Mostrando &lt; Página {{currentPage}} de {{totalPages}} &gt;
             </div>
