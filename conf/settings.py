@@ -185,6 +185,12 @@ PIPELINE = {
     'PIPELINE_ENABLED': True,
     'PIPELINE_COLLECTOR_ENABLED': True,
     'JAVASCRIPT': {
+        'paginator.js': {
+                'source_filenames': (
+                    'scripts/paginator.js',
+                ),
+                'output_filename': 'scripts/paginator.min.js',
+        },
         'list.js': {
                 'source_filenames': (
                     'scripts/list.js',

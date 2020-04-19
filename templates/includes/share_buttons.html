@@ -1,4 +1,4 @@
-{% with url=request.build_absolute_uri text=""|add:donation_center.name|add:" ofrece su ayuda" %}
+{% with url=request.build_absolute_uri text=""|add:name|add:" necesita de tu ayuda" %}
     <div class="field is-grouped">
         <p class="control">
             <a href="whatsapp://send?text={{text}} {{url}}" data-action="share/whatsapp/share"  target="_blank">
