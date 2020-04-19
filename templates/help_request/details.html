@@ -37,7 +37,7 @@
                     <span class="is-5">{{ message }}</span>
                     <p><span class="icon is-medium"><i class="fas fa-hand-point-down"></i></span>
                     Podés compartir tu pedido haciendo click en los botones</p>
-            {% include 'includes/buttons.html'%}
+            {% include 'includes/share_buttons.html'%}
             </div>
         {% endfor %}
       {% endif %}
@@ -118,7 +118,7 @@
                 {% endif %}
 
         </section>
-                    {% include 'vote_button.html' %}
+                    {% include 'includes/vote_button.html' %}
 
     </div>
 
@@ -159,7 +159,7 @@
                         Podés compartir este pedido haciendo click en los botones
                     </label>
                 <div class="is-fullwidth">
-                {% include 'includes/buttons.html'%}
+                {% include 'includes/share_buttons.html'%}
                 </div>
           
 

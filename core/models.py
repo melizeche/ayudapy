@@ -24,6 +24,7 @@ class HelpRequestQuerySet(models.QuerySet):
         rank = SearchRank(F("search_vector"), query)
         return self.filter(search_vector=query).annotate(rank=rank).order_by("-rank")
 
+# Category: model ...
 
 class Category(models.Model):
     name = models.CharField(max_length=30)
@@ -35,6 +36,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+# FrequentAskedQuestion: model ...
 
 class FrequentAskedQuestion(models.Model):
     """
@@ -59,6 +61,7 @@ class FrequentAskedQuestion(models.Model):
     def __str__(self):
         return self.question
 
+# HelpRequest: represents a ...
 
 class HelpRequest(models.Model):
     title = models.CharField(
@@ -152,6 +155,8 @@ def thumbnail(sender, instance, created, **kwargs):
         except Exception as e:
             logger.error(f"Error creating thumbnail: {repr(e)}")
 
+
+# Status: ...
 
 class Status(models.Model):
     name = models.CharField(

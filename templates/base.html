@@ -20,7 +20,7 @@
     <meta name="twitter:card" content="summary_large_image">
 
 
-    <link rel="icon" href="{% static "favicon.svg" %}" type="image/svg" />
+    <link rel="icon" href="{% static "logo_ayudapy.svg" %}" type="image/svg" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-switch@2.0.0/dist/css/bulma-switch.min.css">
     <!-- <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script> -->
@@ -84,15 +84,15 @@
         }
 
 
-        .requests-table-paginator>.has-multiple-pages-true,
-        .request-table-paginator>.has-next-true,
-        .request-table-paginator>.has-prev-true {
+        .table-paginator>.has-multiple-pages-true,
+        .table-paginator>.has-next-true,
+        .table-paginator>.has-prev-true {
             display: block;
         }
 
-        .requests-table-paginator>.has-multiple-pages-false,
-        .request-table-paginator>.has-next-false,
-        .request-table-paginator>.has-prev-false {
+        .table-paginator>.has-multiple-pages-false,
+        .table-paginator>.has-next-false,
+        .table-paginator>.has-prev-false {
             display: none;
         }
 
@@ -158,7 +158,7 @@
             </div>
         </section>
     </main>
-    {% include 'footer.html' %}
+    {% include 'footer/footer.html' %}
 </body>
 
 </html>
