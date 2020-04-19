@@ -104,8 +104,8 @@ class HelpRequest(models.Model):
     added = models.DateTimeField("Agregado", auto_now_add=True, null=True, blank=True, db_index=True)
     upvotes = models.IntegerField(default=0, blank=True)
     downvotes = models.IntegerField(default=0, blank=True)
-    city = models.CharField(max_length=30, blank=True, default="", editable=False)
-    city_code = models.CharField(max_length=30, blank=True, default="", editable=False)
+    city = models.CharField(max_length=50, blank=True, default="", editable=False)
+    city_code = models.CharField(max_length=50, blank=True, default="", editable=False)
     categories = models.ManyToManyField(Category, blank=True)
     search_vector = SearchVectorField()
     history = HistoricalRecords()
@@ -355,7 +355,7 @@ class User(models.Model):
     )
     city_code = models.CharField(
         "Código Ciudad",
-        max_length=30,
+        max_length=50,
         help_text="Código de Ciudad por Defecto del Usuario",
         blank=True,
         null=True
