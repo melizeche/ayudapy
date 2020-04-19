@@ -1,10 +1,10 @@
 // script to support the templates/help_request/list.html file
 (function () {
-  var GEO_URL = "/api/v1/helprequestsgeo/";
-  var LIST_URL = "/pedidos/";
-  var LIST_BY_CITY_URL = "/pedidos_ciudad/";
-  var TITLE = "Pedido";
-  var ICON_URL = "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png";
+  const GEO_URL = "/api/v1/helprequestsgeo/";
+  const LIST_URL = "/pedidos/";
+  const LIST_BY_CITY_URL = "/pedidos_ciudad/";
+  const TITLE = "Pedido";
+  const ICON_URL = "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png";
   
   /**
    * ListRequestView is the main component of the list.html page.
