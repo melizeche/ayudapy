@@ -88,22 +88,15 @@
       });
     }
 
-    async function success(position) {
-      const latitude  = position.coords.latitude;
-      const longitude = position.coords.longitude;
-
-      boton.textContent = 'Te encontré, seguí completando !';
-      boton.disabled = true;
-      status.textContent = '';
-
+    async function addMarker(longitude, latitude) {
       document.getElementById('id_location').innerHTML = makePoint(longitude, latitude);
       
       await getDireccion(longitude, latitude);
 
       const you = L.marker([latitude, longitude], {draggable: true, opacity: 0.9, title:'Tu ubicación'}).addTo(maps[0]);
-      you.bindPopup('Moveme si queres !').openPopup();
+      you.bindPopup('<b>Mové este punto a tu ubicación !</b>').openPopup();
       
-      maps[0].setView([latitude, longitude], 16);
+      maps[0].setView([latitude, longitude], 10);
 
       you.on('dragend', async function (e) {
         await getDireccion(e.target._latlng.lng, e.target._latlng.lat);
@@ -111,8 +104,29 @@
       });
     }
 
+    function success(position) {
+      const latitude  = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      boton.textContent = 'Te encontré, seguí completando !';
+      boton.disabled = true;
+      status.textContent = '';
+
+      addMarker(longitude, latitude);
+    }
+
     function error() {
-      status.textContent = 'No puedo encontrarte, usá los botones del mapa más abajo';
+      
+      // Punto 0 = Panteon de los heroes
+      const latitude  = -25.282077;
+      const longitude = -57.635131;
+
+      boton.textContent = 'No te encontré, seguí completando !';
+      boton.disabled = true;
+      status.textContent = 'No puedo encontrarte, mové el punto mas abajo.';
+
+      addMarker(longitude, latitude);
+      
     }
 
     if (!navigator.geolocation) {

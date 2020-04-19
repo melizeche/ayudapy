@@ -1,9 +1,9 @@
 // script to support the templates/donation_center/list.html file
 (function () {
-  const GEO_URL = "/api/v1/donationcentersgeo/";
-  const LIST_URL = "/donaciones/";
-  const LIST_BY_CITY_URL = "/donaciones_ciudad/";
-  const TITLE = "Donación";
+  var GEO_URL = "/api/v1/donationcentersgeo/";
+  var LIST_URL = "/donaciones/";
+  var LIST_BY_CITY_URL = "/donaciones_ciudad/";
+  var TITLE = "Donación";
 
   /**
    * ListRequestView is the main component of the list.html page.
