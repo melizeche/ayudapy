@@ -63,6 +63,7 @@ docker-compose exec app ./manage.py migrate
 
 - Agustin Gomez Mansilla https://github.com/gomezag
 - Agustín Gómez https://github.com/gomezag
+- Alejandro Duque 🇨🇴 https://github.com/aleducode
 - Axel Ferreira https://github.com/axelampro
 - Blas Isaias Fernández https://github.com/BlasFerna
 - Cabu Vallejos https://github.com/cabupy
