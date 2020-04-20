@@ -9,7 +9,7 @@
 	display: flex;
 	min-height: 100vh;
 	flex-direction: column;
-	background-image: url('../static/img/header_texture.png'), url('../static/img/footer_texture.png');
+	background-image: url('../img/header_texture.png'), url('../img/footer_texture.png');
 	background-repeat: no-repeat, no-repeat;
 	background-color: #f8f8f8;
 	background-position: top, bottom;
