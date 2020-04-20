@@ -20,7 +20,7 @@ urlpatterns = [
     path('', core_views.home, name='home'),
     path('dar', TemplateView.as_view(template_name="giver/info.html")),
     path('legal', TemplateView.as_view(template_name="footer/legal.html"), name='legal'),
-    path('voluntario', TemplateView.as_view(template_name="volunteer/form.html"), name='voluntario'),
+    path('voluntario/legal', TemplateView.as_view(template_name="volunteer/info.html"), name='voluntariolegal'),
     path('preguntas_frecuentes', core_views.view_faq, name='general_faq'),
     path('contacto', TemplateView.as_view(template_name="footer/contact_us.html"), name='contact_us'),
     # help requests
@@ -35,6 +35,8 @@ urlpatterns = [
     path('donaciones', org_views.list_donation),
     path('donaciones_ciudad/<slug:city>', org_views.list_donation_by_city, name='donation-by-city'),
     path('donaciones/<int:id>', org_views.view_donation_center, name='donaciones-detail'),
+    # volunteer
+    path('voluntario', TemplateView.as_view(template_name="volunteer/form.html"), name='voluntario'),
     # login/logout
     path('accounts/', include('django.contrib.auth.urls')),
 ]
