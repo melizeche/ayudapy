@@ -71,3 +71,7 @@ db-data
 docker-compose copy.yml
 
 wait-for-db copy.sh
+/.vscode
+/env
+/wait-for-db copy.sh
+/docker-compose copy.yml
