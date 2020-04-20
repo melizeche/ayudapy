@@ -75,3 +75,4 @@ wait-for-db copy.sh
 /env
 /wait-for-db copy.sh
 /docker-compose copy.yml
+templates/info_request copy.html
