@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %} Pedido #{{help_request.id}} {% endblock %} 
+{% block title %} Pedido #{{help_request.id}} - AyudaPy{% endblock %} 
 
 {% block fb-title %} Pedido #{{help_request.id}} - {{ help_request.title}} {% endblock %} 
 {% block fb-description %} {{help_request.message}} {% endblock %} 
-{% block fb-image %} {{thumbnail}} {% endblock %} 
 
 {% load leaflet_tags %} 
 {% load static %}
@@ -35,23 +34,38 @@
             <div class="notification is-success is-half" id='msg{{ forloop.counter }}'>
                 <button class="delete" onclick="document.getElementById('msg{{ forloop.counter }}').style.display = 'none';"></button>
                     <span class="is-5">{{ message }}</span>
-                    <p><span class="icon is-medium"><i class="far fa-hand-point-down"></i></span>
+                    <p><span class="icon is-medium"><i class="fas fa-hand-point-down"></i></span>
                     Podés compartir tu pedido haciendo click en los botones</p>
-            {% include 'includes/buttons.html'%}
+            {% include 'includes/share_buttons.html'%}
             </div>
         {% endfor %}
       {% endif %}
         <div class="subtitle center is-3">
+      {% if help_request.active %}
         <a class="has-text-primary" href="/pedidos/{{help_request.id}}">Pedido #{{help_request.id}}</a>
+      {% else %}
+        <a class="has-text-primary" href="/pedidos/{{help_request.id}}"><strike>Pedido #{{help_request.id}}</strike></a>
+      {% endif %}
         </div>
     </div>
 </div>
 <div class="columns is-centered">
     <div class="column is-four-fifths">
-
+      {% if not help_request.active %}
+      <div class="notification is-success is-half" >
+            <span class="is-5"><p class="is-size-2">¡Pedido ya resuelto!</p>
+              <p class="has-text-white-ter">El pedido de ayuda ya fue asistido o el usuario pidió darlo de baja</p>
+            </span>
+      </div>
+      {% endif %}
         <div class="card">
+      {% if help_request.active %}
         <header class="card-header has-background-light is-light">
             <p class="card-header-title is-size-4">{{ help_request.title}}</p>
+      {% else %}
+      <header class="card-header has-background-light is-light">
+            <p class="card-header-title is-size-4"><strike>{{ help_request.title}}</strike></p>
+      {% endif %}
         </header>
         <section class="card-content">
                     <p class="has-text-right is-size-7" title="{{help_request.added|naturaltime}}">{{help_request.added}}</p>
@@ -67,6 +81,7 @@
                     <hr>
                     <p class="subtitle">Nombre:</p>
                     <p class="title is-4">{{ help_request.name}}</p>
+                {% if help_request.active %}
                     <p class="subtitle">Contacto:</p>
                     <p class="title is-4">
                       <a href="tel:{{help_request.phone}}">
@@ -99,9 +114,10 @@
                             <span>Abrir en Google Maps</span>
                         </button>
                      </a>
+                {% endif %}
 
         </section>
-                    {% include 'vote_button.html' %}
+                    {% include 'includes/vote_button.html' %}
 
     </div>
 
@@ -138,11 +154,11 @@
                 </article> {% endcomment %}
                 <hr>
                 <label class="label has-text-success">
-                    <span class="icon is-medium"><i class="far fa-hand-point-down"></i></span>
+                    <span class="icon is-medium"><i class="fas fa-hand-point-down"></i></span>
                         Podés compartir este pedido haciendo click en los botones
                     </label>
                 <div class="is-fullwidth">
-                {% include 'includes/buttons.html'%}
+                {% include 'includes/share_buttons.html'%}
                 </div>
           
 

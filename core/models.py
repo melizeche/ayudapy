@@ -24,6 +24,7 @@ class HelpRequestQuerySet(models.QuerySet):
         rank = SearchRank(F("search_vector"), query)
         return self.filter(search_vector=query).annotate(rank=rank).order_by("-rank")
 
+# Category: model ...
 
 class Category(models.Model):
     name = models.CharField(max_length=30)
@@ -35,6 +36,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+# FrequentAskedQuestion: model ...
 
 class FrequentAskedQuestion(models.Model):
     """
@@ -59,6 +61,7 @@ class FrequentAskedQuestion(models.Model):
     def __str__(self):
         return self.question
 
+# HelpRequest: represents a ...
 
 class HelpRequest(models.Model):
     title = models.CharField(
@@ -101,8 +104,8 @@ class HelpRequest(models.Model):
     added = models.DateTimeField("Agregado", auto_now_add=True, null=True, blank=True, db_index=True)
     upvotes = models.IntegerField(default=0, blank=True)
     downvotes = models.IntegerField(default=0, blank=True)
-    city = models.CharField(max_length=30, blank=True, default="", editable=False)
-    city_code = models.CharField(max_length=30, blank=True, default="", editable=False)
+    city = models.CharField(max_length=50, blank=True, default="", editable=False)
+    city_code = models.CharField(max_length=50, blank=True, default="", editable=False)
     categories = models.ManyToManyField(Category, blank=True)
     search_vector = SearchVectorField()
     history = HistoricalRecords()
@@ -130,11 +133,17 @@ class HelpRequest(models.Model):
             logger.error(f"Geolocator unavailable: {repr(e)}")
         return city
 
+    def _deactivate_duplicates(self):
+        return HelpRequest.objects.filter(phone=self.phone, title=self.title).update(active=False)
+
     def save(self, *args, **kwargs):
         from unidecode import unidecode
         city = self._get_city()
         self.city = city
         self.city_code = unidecode(city).replace(" ", "_")
+        self.phone = self.phone.replace(" ", "")
+        if not self.id:
+            self._deactivate_duplicates()
         return super(HelpRequest, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -151,6 +160,8 @@ def thumbnail(sender, instance, created, **kwargs):
         except Exception as e:
             logger.error(f"Error creating thumbnail: {repr(e)}")
 
+
+# Status: ...
 
 class Status(models.Model):
     name = models.CharField(
@@ -344,7 +355,7 @@ class User(models.Model):
     )
     city_code = models.CharField(
         "Código Ciudad",
-        max_length=30,
+        max_length=50,
         help_text="Código de Ciudad por Defecto del Usuario",
         blank=True,
         null=True

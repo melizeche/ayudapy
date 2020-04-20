@@ -27,6 +27,7 @@ DEP = (
     (17, "San Pedro"),
 )
 
+# Organization represents ...
 
 class Organization(models.Model):
     name = models.CharField("Nombre de la Organización", max_length=200)
@@ -38,6 +39,8 @@ class Organization(models.Model):
         verbose_name = "Organización"
         verbose_name = "Organizaciones"
 
+# Donation Center represents an establishment where the user with needs could go to 
+# receive some help.
 
 class DonationCenter(models.Model):
     name = models.CharField("Nombre del lugar", max_length=200)
@@ -59,6 +62,7 @@ class DonationCenter(models.Model):
     history = HistoricalRecords()
 
 
+    # TODO - getCity() se utliza en HelpRequest y otros modelos. Se podria unificar
     def _get_city(self):
         geolocator = Nominatim(user_agent="ayudapy")
         cordstr = "%s, %s" % self.location.coords[::-1]
@@ -79,6 +83,7 @@ class DonationCenter(models.Model):
         city = self._get_city()
         self.city = city
         self.city_code = unidecode(city).replace(" ", "_")
+        self.phone = self.phone.replace(" ", "")
         return super(DonationCenter, self).save()
 
     def __str__(self):
@@ -88,6 +93,8 @@ class DonationCenter(models.Model):
         verbose_name = "Centro de Donación"
         verbose_name_plural = "Centros de Donación"
 
+
+# Profile a model to represents volunteers.
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

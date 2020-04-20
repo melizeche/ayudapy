@@ -11,22 +11,22 @@
             </span>
             <a href="/">Inicio</a>
         </li>
-        <li><a href="/donar">Info donar</a></li>
-        <li class="is-active"><a href="#" aria-current="page">Centros de donación</a></li>
+        <li><a href="/dar">Info ayudar</a></li>
+        <li class="is-active"><a href="#" aria-current="page">Pedidos de ayuda</a></li>
       </ul>
   </nav>
 {% endblock bread %}
 
 {% block content%}
 <div class="title center">
-  Centros de donación en {{city}}
+  Pedidos en {{city}}
 </div>
 <div class="subtitle center">
-    <a href="/donaciones"> (ver todos)</a>
+    <a href="/pedidos"> (ver todos)</a>
 </div>
-{% if not list_donations %}
+{% if not list_help %}
 <div class="notification is-warning center is-size-5">
-  Todavía no hay centros de donación, volvé en un rato
+  Todavía no hay pedidos de ayuda, volvé en un rato
 </div>
 {% endif %}
     <div class="columns is-centered">
@@ -35,7 +35,7 @@
         <div style="margin-bottom: .75em; ">
           <div class="field">
             <input id="switchNormal" type="checkbox" onclick="groupMarkerRequest()" name="switchNormal" class="switch">
-            <label for="switchNormal">Agrupar donaciones</label>
+            <label for="switchNormal">Agrupar pedidos</label>
           </div>
         </div>
         <!-- End Switch clustering -->
@@ -46,18 +46,20 @@
       <div class="column is-6">
         <div class="panel is-info">
           <p class="panel-heading">
-            Últimos centros de donación en {{city}}
+            Últimos pedidos de ayuda en {{city}}
           </p>
           <div style="overflow-y:auto;max-height:75vh;padding:15px;">
-            {% for donation in list_paginated %}
+            {% for pedido in list_paginated %}
               <div class="media">
-                <a href="/donaciones/{{donation.id}}" class="has-text-grey-dark" title="{{donation.added}}">
+                <a href="/pedidos/{{pedido.id}}" class="has-text-grey-dark" title="{{pedido.added}}">
                   <div class="media-content">
                     <div class="content">
                       <p>
                         <i class="fas fa-people-carry" aria-hidden="true"></i>
-                        <strong style="color:#363636;">#{{donation.id}} | {{donation.name}}</strong>
-                        <small>{{donation.added|naturaltime}}</small>
+                        <strong style="color:#363636;">#{{pedido.id}} | {{pedido.name}}</strong>
+                        <small>{{pedido.added|naturaltime}}</small>
+                        <br>
+                        {{pedido.title}}
                       </p>
                     </div>
                   </div>
@@ -66,7 +68,7 @@
             {% endfor %}
           </div>
         </div>
-       {% include "nav_paginator_controls.html" %}
+       {% include "includes/nav_paginator_controls.html" %}
       </div>
     </div>
     
@@ -85,12 +87,12 @@
         if (typeof (Storage) === "undefined") {
           switchElement.disabled = true;
         } else {
-          switchElement.checked = false;
+          switchElement.checked = true;
           var isGroupMarksActive = JSON.parse(localStorage.getItem("group_markers_setting"));
           if (isGroupMarksActive != null) {
-            if (isGroupMarksActive) {
-              switchElement.checked = true;
-            }
+            switchElement.checked = isGroupMarksActive;
+          } else {
+            localStorage.setItem('group_markers_setting', JSON.stringify(true));
           }
         }
       }
@@ -124,9 +126,9 @@
         var markerClusters = L.markerClusterGroup();
         var layerGroup = L.geoJSON(data, {
           onEachFeature: function (feature, layer) {
-            var popup = '<a class="subtitle" href="/donaciones/' + feature.properties.pk + '"><h1>Donación #' + feature.properties.pk +
-              '</h1></a><p class="has-text-weight-bold">Nombre: ' + feature.properties.name + '</p>' +
-              '<a class="is-size-6" href="/donaciones/' + feature.properties.pk + '">Ver Donación</a>';
+            var popup = '<a class="subtitle" href="/pedidos/' + feature.properties.pk + '"><h1>Pedido #' + feature.properties.pk +
+              '</h1></a><p class="has-text-weight-bold">Nombre: ' + feature.properties.name + '</p><p>' + feature.properties.title + '</p>' +
+              '<a class="is-size-6" href="/pedidos/' + feature.properties.pk + '">Ver Pedido</a>';
             layer.bindPopup(popup);
 
             markerClusters.addLayer(layer);
@@ -140,9 +142,9 @@
         console.log("loadMarkers");
         var layerGroup = L.geoJSON(data, {
           onEachFeature: function (feature, layer) {
-            var popup = '<a class="subtitle" href="/donaciones/' + feature.properties.pk + '"><h1>Donación #' + feature.properties.pk +
-              '</h1></a><p class="has-text-weight-bold">Nombre: ' + feature.properties.name + '</p><p>' +
-              '<a class="is-size-6" href="/donaciones/' + feature.properties.pk + '">Ver Donación</a>';
+            var popup = '<a class="subtitle" href="/pedidos/' + feature.properties.pk + '"><h1>Pedido #' + feature.properties.pk +
+              '</h1></a><p class="has-text-weight-bold">Nombre: ' + feature.properties.name + '</p><p>' + feature.properties.title + '</p>' +
+              '<a class="is-size-6" href="/pedidos/' + feature.properties.pk + '">Ver Pedido</a>';
             layer.bindPopup(popup);
           }
         }).addTo(map);
@@ -152,14 +154,8 @@
       function groupMarkerRequest() {
         //Update cached status
         var checkbox = document.getElementById('switchNormal');
-        if (checkbox.checked != true) {
-          localStorage.setItem('group_markers_setting', JSON.stringify(false));
-        } else {
-          localStorage.setItem('group_markers_setting', JSON.stringify(true));
-        }
-
+        localStorage.setItem('group_markers_setting', JSON.stringify(checkbox.checked));
         location.reload(); //refresh the page with the new map display setting
-
       }
 
     </script>

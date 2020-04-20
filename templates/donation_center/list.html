@@ -81,7 +81,7 @@
                 <div class="field has-addons">
                     <div class="control is-expanded">
                         <input id="search-text-field" class="input is-small" type="text" name="search-text-field"
-                            placeholder="Búsqueda por título o descripción, Ejemplo: Pañal">
+                            placeholder="Búsqueda por nombre, Ejemplo: Cruz Roja">
                     </div>
                     <div class="control">
                         <button class="button is-warning is-small" id="search-button">
@@ -99,13 +99,14 @@
                 Centros de donación
             </p>
             <div style="overflow-y:auto;max-height:75vh;padding:15px;">
-                <div id="requests-table">
+                <div id="table">
                 </div>
             </div>
         </div>
-        <div id="requests-table-paginator"></div>
+        <div id="table-paginator"></div>
     </div>
 </div>
+{% javascript 'table-view.js' %}
 {% javascript 'list-donation.js' %}
 
 <script type="text/javascript">
@@ -114,14 +115,14 @@
     }
 </script>
 
-<script type="text/template" id="requests-table-template">
+<script type="text/template" id="table-template">
       {% verbatim %}
 	<div class="media">
 	    <a href="/donaciones/{{id}}" class="has-text-grey-dark" title="{{added}}">
 	      <div class="media-content">
 		<div class="content">
 		  <p>
-		    <i class="fas fa-people-carry" aria-hidden="true"></i>
+		    <i class="fas fa-hand-holding-heart" aria-hidden="true"></i>
 		    <strong style="color:#363636;">#{{id}} | {{name}}</strong>
 		    <small>{{added}}</small>
 		  </p>
@@ -132,7 +133,7 @@
       {% endverbatim %}
     </script>
 
-<script type="text/template" id="requests-table-empty-template">
+<script type="text/template" id="table-empty-template">
       {% verbatim %}
 	<div class="media">
 	    <h1>No se encuentran centros de donación en la ubicación actual.</h1>
@@ -140,9 +141,9 @@
       {% endverbatim %}
     </script>
 
-    <script type="text/template" id="requests-table-paginator-template">
+    <script type="text/template" id="table-paginator-template">
         {% verbatim %}
-          <div class="row requests-table-paginator">
+          <div class="row table-paginator">
               <div class="column is-5">
                 Mostrando &lt; Página {{currentPage}} de {{totalPages}} &gt;
             </div>
