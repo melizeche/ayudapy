@@ -7,61 +7,7 @@
 		</li>
 	</ul>
 </nav>
-{% endblock bread %} {% block content%}
-
-<div class="columns center" style="margin-top: 20px;">
-	<div
-		class="column is-two-third-mobile is-half-tablet is-half-desktop is-half-widescreen is-half-fullhd regular-shadow"
-		style="background-color: #2979ff;"
-	>
-		<article class="media">
-			<figure class="media-left">
-				<p class="image is-96x96">
-					<img src="../static/img/img_important.svg" />
-				</p>
-			</figure>
-			<div class="media-content">
-				<div class="content">
-					<p class="title is-4 has-text-white" style="overflow: hidden;">Importante</p>
-					<p class="bd-notification is-primary has-text-white has-text-left">
-						Esta es una plataforma ciudadana que depende totalmente de la buena voluntad de la gente. No hay
-						garantías de recibir ayuda sí o sí. La información que uno carga va a ser 100% de acceso
-						público.
-					</p>
-					<p class="has-text-justified">
-						<a href="/legal" class="has-text-white">Mas info acá</a>
-					</p>
-				</div>
-			</div>
-		</article>
-	</div>
-</div>
-
-<div class="columns center" style="margin-top: 20px;">
-	<div
-		class="column is-two-third-mobile is-half-tablet is-half-desktop is-half-widescreen is-half-fullhd regular-shadow"
-		style="background-color: white;"
-	>
-		<article class="media animated fadeIn">
-			<figure class="media-left">
-				<p class="image is-96x96">
-					<img src="../static/img/img_howitsworks.svg" />
-				</p>
-			</figure>
-			<div class="media-content">
-				<div class="content">
-					<p class="title is-4 has-text-black" style="overflow: hidden;">Cómo funciona</p>
-					<p class="bd-notification is-primary has-text-black has-text-left">
-						Tenés que cargar tu datos: nombre, teléfono de contacto, ciudad, ubicación y qué necesitás.
-						<b>Argentina por vos</b> te permite poder compartir tu pedido de ayuda para que más gente lo
-						vea, así como ofrecer a la gente que quiere ayudar una interfaz para buscar a los que necesitan.
-					</p>
-				</div>
-			</div>
-		</article>
-	</div>
-</div>
-
+{% endblock bread %} {% block content%} {% include "./disclaimer.html" %}
 <div class="columns center">
 	<div
 		class="column is-two-third-mobile is-half-tablet is-half-desktop is-half-widescreen is-half-fullhd is-marginless is-paddingless"
