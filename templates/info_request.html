@@ -1,16 +1,19 @@
 {% extends 'base.html' %} {% block bread %}
-<nav class="animated fadeIn" aria-label="breadcrumbs">
-	<div class="buttons">
-		<a href="/" class="button is-text">
-			<span>Inicio</span>
-		</a>
-		<a href="#" class="button is-text" aria-current="page">Recibir ayuda</a>
-	</div>
+<nav class="breadcrumb has-bullet-separator" aria-label="breadcrumbs">
+	<ul>
+		<li><a href="/" style="color: #9096a1;">Inicio</a></li>
+		<li class="is-active">
+			<a href="#" class="is-active" style="color: #2979ff;">Recibir ayuda</a>
+		</li>
+	</ul>
 </nav>
 {% endblock bread %} {% block content%}
 
 <div class="columns center" style="margin-top: 20px;">
-	<div class="column is-one-third regular-shadow" style="background-color: #2979ff;">
+	<div
+		class="column is-two-third-mobile is-half-tablet is-half-desktop is-one-third-widescreen is-one-third-fullhd regular-shadow"
+		style="background-color: #2979ff;"
+	>
 		<article class="media">
 			<figure class="media-left">
 				<p class="image is-96x96">
@@ -35,8 +38,11 @@
 </div>
 
 <div class="columns center" style="margin-top: 20px;">
-	<div class="column is-one-third regular-shadow" style="background-color: white;">
-		<article class="media">
+	<div
+		class="column is-two-third-mobile is-half-tablet is-half-desktop is-one-third-widescreen is-one-third-fullhd regular-shadow"
+		style="background-color: white;"
+	>
+		<article class="media animated fadeIn">
 			<figure class="media-left">
 				<p class="image is-96x96">
 					<img src="../static/img/img_howitsworks.svg" />
@@ -57,12 +63,14 @@
 </div>
 
 <div class="columns center">
-	<div class="column is-one-third is-marginless is-paddingless">
-		<article class="media">
+	<div
+		class="column is-two-third-mobile is-half-tablet is-half-desktop is-one-third-widescreen is-one-third-fullhd is-marginless is-paddingless"
+	>
+		<article class="media animated fadeIn">
 			<div class="media-content">
 				<a
 					href="/solicitar"
-					class="button is-success is-fullwidth"
+					class="button is-success is-fullwidth hover-grow"
 					style="border-radius: 10px; margin-top: 30px;"
 				>
 					<span>Si entiendo, quiero continuar </span>
