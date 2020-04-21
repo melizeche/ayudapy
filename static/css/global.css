@@ -6,10 +6,8 @@
 }
 
 .logo {
-	display: block;
-	position: relative;
-	width: 10em;
-	height: auto;
+	padding-top: 10px;
+	margin-bottom: 30px;
 }
 
 .regular-shadow {

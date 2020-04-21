@@ -48,25 +48,16 @@
 	</head>
 
 	<body class="Site">
-		<section class="is-fullwidth animated fadeIn faster center" >
-			<div class="card home-cards is-shadowless" style="background-color: transparent;">
-				<div class="card-content center" style="padding: 24px 0 0 0;">
-					<div class="media center">
-						<div>
-							<figure class="logo">
-								<img class="is-rounded" src="../static/img/img_logo.png" alt="" />
-							</figure>
-						</div>
-					</div>
-					<div class="content center">
-						<p class="title is-5 center" style="color: #2979ff !important;">Argentina por vos</p>
-					</div>
-				</div>
+		<div class="media center logo">
+			<div>
+				<figure>
+					<img src="../static/img/img_logo.svg" alt="" />
+				</figure>
 			</div>
-		</section>
+		</div>
 
 		<main class="Site-content animated fadeIn">
-			<section class="section center" style="padding-top: 0;">
+			<section class="section center">
 				<div class="container">
 					{% block bread %} {% endblock bread %} {% block content %} {% endblock content %}
 				</div>
