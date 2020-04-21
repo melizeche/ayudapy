@@ -1,47 +1,55 @@
 {% extends 'base.html'%} {% block content %}
 <div class="is-fullhd">
 	<div class="columns is-centered is-2 animated fadeIn" style="margin-top: 20px;">
-		<a href="/recibir" class="hover-grow">
-			<div class="card home-cards" style="background-color: #9b51e0;">
-				<div class="card-content">
-					<div class="media center">
-						<div>
-							<figure class="image is-96x96">
-								<img class="is-rounded" src="../static/img/needhelp.svg" alt="" />
-							</figure>
+		<div
+			class="column is-two-third-mobile is-half-tablet is-half-desktop is-one-fifth-widescreen is-one-fifth-fullhd hover-grow"
+		>
+			<a href="/recibir">
+				<div class="card home-cards" style="background-color: #9b51e0;">
+					<div class="card-content">
+						<div class="media center">
+							<div>
+								<figure class="image is-96x96">
+									<img class="is-rounded" src="../static/img/needhelp.svg" alt="" />
+								</figure>
+							</div>
+						</div>
+
+						<div class="content">
+							<p class="title is-3 center has-text-white">¡Necesito ayuda!</p>
+							<p class="subtitle is-size-6 center has-text-white">
+								Publicá tu pedido para que<br />la gente vea
+							</p>
 						</div>
 					</div>
-
-					<div class="content">
-						<p class="title is-3 center has-text-white">¡Necesito ayuda!</p>
-						<p class="subtitle is-size-6 center has-text-white">
-							Publicá tu pedido para que<br />la gente vea
-						</p>
-					</div>
 				</div>
-			</div>
-		</a>
+			</a>
+		</div>
 
-		<a href="/recibir" style="margin-left: 30px;" class="hover-grow">
-			<div class="card home-cards" style="background-color: #ffab07;">
-				<div class="card-content">
-					<div class="media center">
-						<div>
-							<figure class="image is-96x96">
-								<img class="is-rounded" src="../static/img/iwanttohelp.svg" alt="" />
-							</figure>
+		<div
+			class="column is-two-third-mobile is-half-tablet is-half-desktop is-one-fifth-widescreen is-one-fifth-fullhd hover-grow"
+		>
+			<a href="/dar">
+				<div class="card home-cards" style="background-color: #ffab07;">
+					<div class="card-content">
+						<div class="media center">
+							<div>
+								<figure class="image is-96x96">
+									<img class="is-rounded" src="../static/img/iwanttohelp.svg" alt="" />
+								</figure>
+							</div>
+						</div>
+
+						<div class="content">
+							<p class="title is-3 center has-text-white">¡Quiero ayudar!</p>
+							<p class="subtitle is-size-6 center has-text-white">
+								Encontrá a alguien cerca<br />tuyo para ayudar
+							</p>
 						</div>
 					</div>
-
-					<div class="content">
-						<p class="title is-3 center has-text-white">¡Quiero ayudar!</p>
-						<p class="subtitle is-size-6 center has-text-white">
-							Encontrá a alguien cerca<br />tuyo para ayudar
-						</p>
-					</div>
 				</div>
-			</div>
-		</a>
+			</a>
+		</div>
 
 		<div class="columns is-centered">
 			<!-- <div class="column is-3 is-offset-3">

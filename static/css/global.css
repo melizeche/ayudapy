@@ -5,10 +5,24 @@
 	text-align: center;
 }
 
+.logo {
+	padding-top: 10px;
+	margin-bottom: 30px;
+}
+
 .regular-shadow {
 	-webkit-box-shadow: 10px 10px 16px -5px rgba(0, 0, 0, 0.2);
 	-moz-box-shadow: 10px 10px 16px -5px rgba(0, 0, 0, 0.2);
 	box-shadow: 10px 10px 16px -5px rgba(0, 0, 0, 0.2);
+}
+
+.modalLi::before {
+	content: '\2022';
+	color: #2979ff;
+	font-weight: bold;
+	display: inline-block;
+	width: 1em;
+	margin-left: -1.3em;
 }
 
 .Site {

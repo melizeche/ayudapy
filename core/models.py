@@ -93,7 +93,7 @@ class HelpRequest(models.Model):
     picture = models.ImageField(
         "Foto",
         upload_to=rename_img,
-        help_text="Si querés podés adjuntar una foto relacionada con tu pedido, es opcional pero puede ayudar a que la gente entienda mejor tu situación",
+        help_text=mark_safe('<p class="help text-muted has-text-left" style="margin:0 0 5px 5px;">Si querés podés adjuntar una foto relacionada con tu pedido, es opcional pero puede ayudar a que la gente entienda mejor tu situación</p>'),
         null=True,
         blank=True,
     )
