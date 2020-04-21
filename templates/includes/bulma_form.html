@@ -28,13 +28,13 @@
 {% for field in form.visible_fields %}
 <div class="field">
     {% if field.field.required %}
-    <label class="label" for="{{ field.name }}">{{ field.label }}*</label>
+    <label class="label has-text-left" for="{{ field.name }}" style="margin: 35px 0 4px 3px;">{{ field.label }}*</label>
     {%else%}
         {% if field.name != 'categories' %}
-            <label class="label has-text-weight-normal" for="{{ field.name }}">{{ field.label }}</label>
+            <label class="label has-text-left" for="{{ field.name }}" style="margin: 35px 0 4px 3px;">{{ field.label }}</label>
         {% else %}
-            <br>
-        <div class="columns is-centered is-mobile is-multiline">
+			<!-- <br> -->
+        <!-- <div class="columns is-centered is-mobile is-multiline">
           <div class="column is-3-desktop is-3-mobile ">
             <div class="field">
               <p><i class="fas fa-coffee fa-2x {% if form.viveres.checked %} has-text-info{% endif %}"></i></p>
@@ -62,13 +62,12 @@
                 <input id="bebes" value="bebes" type="checkbox" name="categories" class="switch is-info">
               <label for="bebes"></label>
           </div>
-        </div>
-
-
-        {% endif %}
-    {%endif%}
+        </div> -->
+		{% endif %}
+	{%endif%}
+	
     {% if field.help_text|safe %}
-    <p class="help text-muted">{{ field.help_text }}</p>
+    <p class="help text-muted has-text-left" style="margin: 0 0 10px 4px;">{{ field.help_text }}</p>
     {% endif %}
 
     {% if form.is_bound %}
@@ -87,20 +86,17 @@
     {% else %}
     {% if field.field.widget.input_type == "file" %}
     <p id="status"></p>
-    <div class="file has-name is-boxed is-primary is-fullwidth ">
+    <div class="file has-name is-boxed is-primary is-fullwidth" style="margin-top: 10px;">
         <label class="file-label">
             {% render_field field class="file-input" %}
-            <span class="file-cta">
-                    <span class="file-icon">
-                        <i class="fas fa-upload"></i>
-                    </span>
-                    <span class="file-label center">
-                        Adjuntá una foto
-                    </span>
-                    </span>
-            <span class="file-name">
-                    
-                    </span>
+            <span class="button is-info is-outlined">
+				<span class="file-icon">
+					<i class="fas fa-image"></i>
+					&nbsp;&nbsp;Adjuntá una foto
+				</span>
+			</span>
+            <span class="file-name" style="border: none;">
+			</span>
         </label>
     </div>
     {% else %}

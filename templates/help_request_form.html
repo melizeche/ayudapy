@@ -1,28 +1,31 @@
 {% extends 'base.html' %} {% load leaflet_tags %} {% load static %} {% block bread %}
-<nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+<nav class="breadcrumb has-bullet-separator" aria-label="breadcrumbs">
 	<ul>
-		<li>
-			<a href="/">
-				<span class="icon is-small">
-					<i class="fas fa-home" aria-hidden="true"></i>
-				</span>
-				<span>Inicio</span>
-			</a>
+		<li><a href="/" style="color: #9096a1;">Inicio</a></li>
+		<li><a href="/recibir" style="color: #9096a1;">Información</a></li>
+		<li class="is-active">
+			<a href="#" class="is-active" style="color: #2979ff;">Necesito ayuda</a>
 		</li>
-		<li><a href="/recibir">Info</a></li>
-		<li class="is-active"><a href="#" aria-current="page">Recibir ayuda</a></li>
 	</ul>
 </nav>
 {% endblock bread %} {% block content%}
+
 <div class="columns is-centered">
 	<div class="column is-half">
-		<button href="#" id="find-me" class="button is-success is-outlined is-fullwidth" style="margin-bottom: 10px;">
+		<button
+			href="#"
+			id="find-me"
+			class="button is-fullwidth"
+			style="margin: 30px 0 30px 0; background-color: #2979ff !important; color: white;"
+		>
 			<span class="icon is-small">
-				<i class="fas fa-location-arrow"></i>
+				<i class="fas fa-map-marker-alt"></i>
 			</span>
 			<span>Apreta acá voy a tratar de encontrarte</span>
 		</button>
+
 		<p id="status"></p>
+
 		<form enctype="multipart/form-data" method="post" action="/solicitar">
 			{% csrf_token %} {% include 'includes/bulma_form.html' with form=form %}
 			<div class="control">
@@ -33,20 +36,25 @@
 		<div class="modal" id="myModal">
 			<div class="modal-background"></div>
 			<div class="modal-card">
-				<header class="modal-card-head">
-					<p class="modal-card-title">Ayuda con el mapa</p>
+				<header class="modal-card-head" style="background-color: white;">
+					<p class="modal-card-title has-text-left" style="font-weight: bold; color: #2979ff !important;">
+						Ayuda con el mapa
+					</p>
 					<button class="delete" aria-label="close"></button>
 				</header>
 				<section class="modal-card-body">
-					<li class="is-size-7">
-						Mové el mapa hasta donde veas tu ubicación y luego apretá en el icono
-						<i class="fas fa-map-marker-alt"></i> y luego marcá en el mapa el punto exacto
-					</li>
-					<li class="is-size-7">
-						Si te equivocaste podés apretar en el icono <i class="far fa-edit"></i> así podés mover el
-						marcador, una vez corregido apretar 'Grabar'
-					</li>
-					<p class="image"><img src="{% static "img/ayudamapa.gif" %}" alt=""></p>
+					<ul style="list-style-position: outside;margin-left: 30px;">
+						<li class="is-size-6 has-text-left has-text-black modalLi">
+							Mové el mapa hasta donde veas tu ubicación y luego apretá en el icono
+							<i class="fas fa-map-marker-alt"></i> y luego marcá en el mapa el punto exacto
+						</li>
+						<br />
+						<li class="is-size-6 has-text-left has-text-black modalLi">
+							Si te equivocaste podés apretar en el icono <i class="far fa-edit"></i> así podés mover el
+							marcador, una vez corregido apretar 'Grabar'
+						</li>
+					</ul>
+					<p class="image" style="margin-top: 30px;"><img src="{% static "img/ayudamapa.gif" %}" alt=""></p>
 				</section>
 				<footer class="modal-card-foot">
 					<button class="button is-success close">Ok</button>
