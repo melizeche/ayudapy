@@ -15,7 +15,7 @@
 		<button
 			href="#"
 			id="find-me"
-			class="button is-fullwidth"
+			class="button is-fullwidth hover-grow"
 			style="margin: 30px 0 30px 0; background-color: #2979ff !important; color: white;"
 		>
 			<span class="icon is-small">
@@ -28,7 +28,7 @@
 
 		<form enctype="multipart/form-data" method="post" action="/solicitar">
 			{% csrf_token %} {% include 'includes/bulma_form.html' with form=form %}
-			<div class="control">
+			<div class="control hover-grow">
 				<button id="submit" class="button is-success is-fullwidth">Enviar</button>
 			</div>
 		</form>
