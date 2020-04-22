@@ -143,7 +143,7 @@ def list_requests(request):
 
 
 def list_by_city(request, city):
-    list_help_requests = HelpRequest.objects.filter(city_code=city).order_by("-added")  # TODO limit this
+    list_help_requests = HelpRequest.objects.filter(city_code=city, active=True).order_by("-added")  # TODO limit this
     city = list_help_requests[0].city
     query = list_help_requests
     geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
