@@ -11,12 +11,7 @@
             <a class="pagination-previous" disabled>Previo</a>
         {% endif %}
 
-         <!-- next (>>) nav button -->
-        {% if list_paginated.has_next %}
-            <a href="?page={{ list_paginated.next_page_number }}{% if search %}&q={{ search }}{% endif %}" class="pagination-next">Siguiente</a>
-        {% else %}
-        <a class="pagination-next" disabled>Siguiente</a>
-        {% endif %}
+      
 
         <ul class="pagination-list">
             {% if list_paginated.number > 1 %}
@@ -41,7 +36,13 @@
             <li><a href="?page={{ list_paginated.paginator.num_pages }}{% if search %}&q={{ search }}{% endif %}"
                     class="pagination-link" aria-label="Goto last page">{{ list_paginated.paginator.num_pages }}</a></li>
             {% endif %}
-        </ul>
+		</ul>
+		   <!-- next (>>) nav button -->
+        {% if list_paginated.has_next %}
+            <a href="?page={{ list_paginated.next_page_number }}{% if search %}&q={{ search }}{% endif %}" class="pagination-next">Siguiente</a>
+        {% else %}
+        <a class="pagination-next" disabled>Siguiente</a>
+        {% endif %}
       </nav>
 </div>
 <!-- end pagination nav buttons -->

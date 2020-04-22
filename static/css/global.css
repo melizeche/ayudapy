@@ -141,6 +141,16 @@ footer {
 	content: none;
 }
 
+
+.pagination-link[disabled], .pagination-next[disabled], .pagination-previous[disabled] {
+    background-color: #efefef;
+    border-color: #a7b0c0;
+    box-shadow: none;
+    color: #a7b0c0;
+    opacity: .5;
+}
+
+
 @-webkit-keyframes fadeIn {
 	from {
 		opacity: 0;
