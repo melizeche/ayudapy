@@ -3,26 +3,24 @@
 {% load humanize %} 
 
 {% block bread %}
-  <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
-    <ul>
-        <li>
-            <span class="icon is-small">
-            <i class="fas fa-home" aria-hidden="true"></i>
-            </span>
-            <a href="/">Inicio</a>
-        </li>
-        <li><a href="/dar">Info ayudar</a></li>
-        <li class="is-active"><a href="#" aria-current="page">Pedidos de ayuda</a></li>
-      </ul>
-  </nav>
+<nav class="breadcrumb has-bullet-separator" aria-label="breadcrumbs">
+	<ul>
+		<li><a href="/" style="color: #9096a1;">Inicio</a></li>
+		<li><a href="/dar" style="color: #9096a1;">Información</a></li>
+		<li class="is-active">
+			<a href="#" class="is-active" style="color: #2979ff;">Quiero ayudar</a>
+		</li>
+	</ul>
+</nav>
 {% endblock bread %}
 
 {% block content%}
-<div class="title center">
-  Pedidos en {{city}}
+<div class="title center" style="color: #2979ff; font-weight: bold;">
+	Pedidos en {{city}}
 </div>
+
 <div class="subtitle center">
-    <a href="/pedidos"> (ver todos)</a>
+    <a href="/pedidos" style="text-decoration: solid !important;">Ver todos</a>
 </div>
 {% if not list_help %}
 <div class="notification is-warning center is-size-5">
@@ -32,10 +30,17 @@
     <div class="columns is-centered">
       <div class="column is-6">
         <!-- Start Switch clustering -->
-        <div style="margin-bottom: .75em; ">
+        <div class="has-text-left" style="margin-bottom: .75em; ">
           <div class="field">
-            <input id="switchNormal" type="checkbox" onclick="groupMarkerRequest()" name="switchNormal" class="switch">
-            <label for="switchNormal">Agrupar pedidos</label>
+			<input 
+				id="switchNormal" 
+				type="checkbox" 
+				onclick="groupMarkerRequest()" 
+				name="switchNormal" 
+				class="checkbox"
+				style="width: 15px; height: 15px;"
+			>
+			  <label for="switchNormal">Agrupar pedidos</label>
           </div>
         </div>
         <!-- End Switch clustering -->
@@ -44,27 +49,44 @@
         </div>
       </div>
       <div class="column is-6">
-        <div class="panel is-info">
-          <p class="panel-heading">
-            Últimos pedidos de ayuda en {{city}}
-          </p>
+        <div class="panel is-info is-shadowless">
+			<p
+			class="panel-heading has-text-left"
+			style="background-color: transparent; color: #ffab07; padding: 5px; margin-bottom: 35px; font-size: 26px !important;"
+		>
+			Últimos pedidos de ayuda en {{city}}
+		</p>
+          
           <div style="overflow-y:auto;max-height:75vh;padding:15px;">
             {% for pedido in list_paginated %}
-              <div class="media">
-                <a href="/pedidos/{{pedido.id}}" class="has-text-grey-dark" title="{{pedido.added}}">
-                  <div class="media-content">
-                    <div class="content">
-                      <p>
-                        <i class="fas fa-people-carry" aria-hidden="true"></i>
-                        <strong style="color:#363636;">#{{pedido.id}} | {{pedido.name}}</strong>
-                        <small>{{pedido.added|naturaltime}}</small>
-                        <br>
-                        {{pedido.title}}
-                      </p>
-                    </div>
-                  </div>
-                </a>
-              </div>
+              <a href="/pedidos/{{id}}" class="has-text-grey-dark" title="{{added}}">
+			<div class="media">
+				<div class="media-content">
+					<div class="content">
+						<article class="media is-paddingless">
+							<figure class="media-left" style="margin: 10px">
+								<p class="image is-48x48">
+									<img src="../static/img/img_hand.svg" />
+								</p>
+							</figure>
+							<div class="media-content">
+								<div class="content">
+									<p class="bd-notification is-primary has-text-black has-text-left" style="margin-bottom: 0;">
+										<strong style="color: #2979ff;">#{{pedido.id}}</strong> | {{pedido.name}}
+									</p>
+									<p class="bd-notification is-primary has-text-black has-text-left" style="margin-bottom: 0; color: #a7b0c0 !important;">
+										<small class="is-small" style="font-size: 12px;">{{pedido.added}}</small>
+									</p>
+									<p class="bd-notification is-primary has-text-black has-text-left" style="margin-bottom: 0;">
+										{{pedido.title}}
+									</p>
+								</div>
+							</div>
+						</article>
+					</div>
+				</div>
+			</div>
+		</a>
             {% endfor %}
           </div>
         </div>
