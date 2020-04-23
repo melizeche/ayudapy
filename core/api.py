@@ -20,7 +20,7 @@ class DynamicSearchFilter(filters.SearchFilter):
 
 
 class HelpRequestViewSet(viewsets.ModelViewSet):
-    queryset = HelpRequest.objects.filter(active=True).order_by('-id')
+    queryset = HelpRequest.objects.filter(active=True, resolved=False).order_by('-id')
     serializer_class = HelpRequestSerializer
     filter_backends = [InBBoxFilter, DjangoFilterBackend, DynamicSearchFilter, ]
     search_fields = ['title', 'phone',]
@@ -33,7 +33,7 @@ class HelpRequestViewSet(viewsets.ModelViewSet):
 
 
 class HelpRequestGeoViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = HelpRequest.objects.filter(active=True).order_by('-pk')
+    queryset = HelpRequest.objects.filter(active=True, resolved=False).order_by('-pk')
     pagination_class = None
     serializer_class = HelpRequestGeoJSONSerializer
     bbox_filter_field = 'location'

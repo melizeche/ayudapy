@@ -100,6 +100,7 @@ class HelpRequest(models.Model):
         null=True,
         blank=True,
     )
+    resolved = models.BooleanField(default=False, db_index=True)
     active = models.BooleanField(default=True, db_index=True)
     added = models.DateTimeField("Agregado", auto_now_add=True, null=True, blank=True, db_index=True)
     upvotes = models.IntegerField(default=0, blank=True)
@@ -134,7 +135,7 @@ class HelpRequest(models.Model):
         return city
 
     def _deactivate_duplicates(self):
-        return HelpRequest.objects.filter(phone=self.phone, title=self.title).update(active=False)
+        return HelpRequest.objects.filter(phone=self.phone).update(active=False)
 
     def save(self, *args, **kwargs):
         from unidecode import unidecode
