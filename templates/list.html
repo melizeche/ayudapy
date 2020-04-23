@@ -1,173 +1,216 @@
-{% extends 'base.html' %}
-{% load leaflet_tags %}
-{% load humanize %}
-{% load static %}
-
-{% block bread %}
-  <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
-    <ul>
-        <li>
-          <a href="/">
-            <span class="icon is-small">
-              <i class="fas fa-home" aria-hidden="true"></i>
-            </span>
-            <span>Inicio</span>
-          </a>
-        </li>
-        <li><a href="/dar">Info</a></li>
-        <li class="is-active"><a href="#" aria-current="page">Pedidos de ayuda</a></li>
-      </ul>
-  </nav>
-{% endblock bread %}
-
-{% block content%}
-<div class="title center">
-  Pedidos cercanos {{help_request.id}}
-  <div id="loading-indicator" class="loader-wrapper">
-    <div class="loader is-loading"></div>
-  </div>
+{% extends 'base.html' %} {% load leaflet_tags %} {% load humanize %} {% load static %} {% block bread %}
+<nav class="breadcrumb has-bullet-separator" aria-label="breadcrumbs">
+	<ul>
+		<li><a href="/" style="color: #9096a1;">Inicio</a></li>
+		<li><a href="/dar" style="color: #9096a1;">Información</a></li>
+		<li class="is-active">
+			<a href="#" class="is-active" style="color: #2979ff;">Quiero ayudar</a>
+		</li>
+	</ul>
+</nav>
+{% endblock bread %} {% block content%}
+<div class="title center" style="color: #2979ff; font-weight: bold;">
+	Pedidos cercanos {{help_request.id}}
+	<div id="loading-indicator" class="loader-wrapper">
+		<div class="loader is-loading"></div>
+	</div>
 </div>
-    <div class="columns is-centered">
-      <div class="column is-6">
-        <div class="row is-centered cities-dropdown-wrapper">
-          <div class="columns is-vcentered is-desktop">
-            <div class="column">
-              <div class="cities-dropdown" role="menu">
-                <div class="field is-horizontal">
-                  <div class="field-body">
-                    <div class="field">
-                      <div class="control">
-                        <div class="select is-small">
-                          <input name="cities" class="input is-small" list="list_cities" placeholder="Seleccionar ciudad..." autocomplete="off">
-                        </div>
-                          <p class="help has-text-info"> Si no ves tu ciudad es porque no hay pedidos!</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <datalist id="list_cities">
-                      <select size=10>
-                        {% for city, code in list_cities %}
-                          <option data-value="{{code}}">
-                            {{city}}
-                          </option>
-                        {% endfor %}
-                      </select>
-                  </datalist>
-              </div>
-            </div>
-          </div> 
-        </div>
 
-
-	<div class="row" style="margin-bottom: 5px;border: 1px green solid; border-radius: 2px;">
-	  {% leaflet_map "main" callback="mainMapInit" %}
-	</div>
-	<button id="find-me" class="button is-success  is-outlined is-fullwidth"><span class="icon is-small">
-	    <i class="fas fa-location-arrow"></i>
-	  </span>
-	  <span>Mi ubicación</span>
-	</button>
-	<p id="status"></p>
-      </div>
-
-
-
-      <div class="column is-6">
-	<div class="columns is-vcentered is-desktop">
-	  <div class="column">
-	  <div class="field has-addons">
-	    <div class="control is-expanded">
-	      <input
-		id="search-text-field"
-		class="input is-small"
-		type="text"
-		name="search-text-field"
-		placeholder="Búsqueda por título o descripción, Ejemplo: Pañal"
-	      >
-	    </div>
-	    <div class="control" >
-	      <button class="button is-warning is-small" id="search-button">
-		Buscar
-	      </button>
-	    </div>
-          </div>
-          </div>
-        </div>
-
-      <br>
-
-        <div class="panel is-info">
-          <p class="panel-heading">
-            Últimos pedidos de ayuda
-          </p>
-          <div style="overflow-y:auto;max-height:75vh;padding:15px;">
-	    <div id="requests-table">
-	    </div>
-          </div>
-        </div>
-	<div id="requests-table-paginator"></div>
-      </div>
-    </div>
-    <script type="text/javascript" src="{% static 'scripts/list.js' %}"></script>
-
-    <script type="text/javascript">
-      function mainMapInit(map, options) {
-	new ListRequestView(map, options);
-      }
-    </script>
-
-    <script type="text/template" id="requests-table-template">
-      {% verbatim %}
-	<div class="media">
-	    <a href="/pedidos/{{id}}" class="has-text-grey-dark" title="{{added}}">
-	      <div class="media-content">
-		<div class="content">
-		  <p>
-		    <i class="fas fa-people-carry" aria-hidden="true"></i>
-		    <strong style="color:#363636;">#{{id}} | {{name}}</strong>
-		    <small>{{added}}</small>
-		    <br>
-		    {{title}}
-		  </p>
+<div class="columns is-centered">
+	<div class="column is-6">
+		<label class="label has-text-left">Buscar tu ciudad</label>
+		<div class="row is-centered cities-dropdown-wrapper">
+			<div class="columns is-vcentered is-desktop">
+				<div class="column">
+					<div class="cities-dropdown" role="menu">
+						<div class="field is-horizontal">
+							<div class="field-body">
+								<div class="field">
+									<div class="control">
+										<div class="select">
+											<input
+												name="cities"
+												class="input"
+												list="list_cities"
+												placeholder="Seleccionar ciudad..."
+												autocomplete="off"
+											/>
+										</div>
+										<p class="help has-text-info">
+											<i
+												class="fas fa-info-circle"
+												style="font-size: 15px; margin-left: 3px; color: #2979ff;"
+											></i
+											>&nbsp;&nbsp;Si no ves tu ciudad es porque no hay pedidos!
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<datalist id="list_cities">
+							<select size="10">
+								{% for city, code in list_cities %}
+								<option data-value="{{code}}">
+									{{city}}
+								</option>
+								{% endfor %}
+							</select>
+						</datalist>
+					</div>
+				</div>
+			</div>
 		</div>
-	      </div>
-	  </a>
+
+		<div class="row" style="margin-bottom: 5px; border: 1px green solid; border-radius: 2px;">
+			{% leaflet_map "main" callback="mainMapInit" %}
+		</div>
+
+		<button
+			href="#"
+			id="find-me"
+			class="button is-fullwidth hover-grow"
+			style="margin: 30px 0 30px 0; background-color: #2979ff !important; color: white;"
+		>
+			<span class="icon is-small">
+				<i class="fas fa-map-marker-alt"></i>
+			</span>
+			<span>Apreta acá, para ver tu ubicación</span>
+		</button>
+		<p id="status"></p>
 	</div>
-      {% endverbatim %}
-    </script>
 
-    <script type="text/template" id="requests-table-empty-template">
-      {% verbatim %}
-	<div class="media">
-	    <h1>No se encuentran pedidos de ayuda en la ubicación actual.</h1>
+	<div class="column is-6">
+		<label class="label has-text-left">Buscar pedidos</label>
+		<div class="columns is-vcentered is-desktop">
+			<div class="column">
+				<div class="field has-addons">
+					<div class="control is-expanded">
+						<input
+							class="input"
+							type="text"
+							placeholder="Búsqueda por título o descripción, Ejemplo: Pañal"
+							id="search-text-field"
+							name="search-text-field"
+						/>
+					</div>
+					<div class="control">
+						<a
+							class="button is-info"
+							id="search-button"
+							style="border-radius: 5px; background-color: #2979ff; margin-left: 10px;"
+						>
+							Buscar
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<p
+			class="panel-heading has-text-left"
+			style="background-color: transparent; color: #ffab07; padding: 5px; margin-bottom: 35px; font-size: 26px !important;"
+		>
+			Últimos pedidos de ayuda
+		</p>
+		<div class="panel is-info has-text-left">
+			<div style="overflow-y: auto; max-height: 75vh;">
+				<div id="requests-table"></div>
+			</div>
+		</div>
+		<div id="requests-table-paginator"></div>
 	</div>
-      {% endverbatim %}
-    </script>
 
-    <script type="text/template" id="requests-table-paginator-template">
-          {% verbatim %}
-        	<div class="row requests-table-paginator">
-        	    <div class="column is-5">
-        		  Mostrando &lt; Página {{currentPage}} de {{totalPages}} &gt;
-              </div>
-              <nav class="pagination is-right" role="navigation" aria-label="pagination">
-                  <button class="pagination-previous prev-button" {{hasPrev}}>Previo</button>
-                  <button class="pagination-next next-button" {{hasNext}}>Siguiente</button>
+	<script type="text/javascript" src="{% static 'scripts/list.js' %}"></script>
 
-                  <ul class="pagination-list">
-                      <li><button class="pagination-link first-button {{showFirst}}" {{hasFirst}}>1</button></li>
-                      <li><span class="pagination-ellipsis {{showPrev}}">&hellip;</span></li>
-                      <li><button class="pagination-link current-minus-button {{showPrev}}">{{previousPage}} </button></li>
-                      <li><button class="pagination-link is-current">{{currentPage}} </button></li>
-                      <li><button class="pagination-link current-plus-button {{showNext}}">{{nextPage}} </button></li>
-                      <li><span class="pagination-ellipsis {{showNext}}">&hellip;</span></li>
-                      <li><button class="pagination-link last-button {{showLast}}" {{hasLast}}>{{totalPages}}</button></li>
-                  </ul>
-            </nav>
-        	</div>
-          {% endverbatim %}
-      </script>
+	<script type="text/javascript">
+		function mainMapInit(map, options) {
+			new ListRequestView(map, options);
+		}
+	</script>
 
+	<script type="text/template" id="requests-table-template">
+		     {% verbatim %}
+		<a href="/pedidos/{{id}}" class="has-text-grey-dark" title="{{added}}">
+			<div class="media">
+				<div class="media-content">
+					<div class="content">
+						<article class="media is-paddingless">
+							<figure class="media-left" style="margin: 10px">
+								<p class="image is-48x48">
+									<img src="../static/img/img_hand.svg" />
+								</p>
+							</figure>
+							<div class="media-content">
+								<div class="content">
+									<p class="bd-notification is-primary has-text-black has-text-left" style="margin-bottom: 0;">
+										<strong style="color: #2979ff;">#{{id}}</strong> | {{name}}
+									</p>
+									<p class="bd-notification is-primary has-text-black has-text-left" style="margin-bottom: 0; color: #a7b0c0 !important;">
+										<small class="is-small" style="font-size: 12px;">{{added}}</small>
+									</p>
+									<p class="bd-notification is-primary has-text-black has-text-left" style="margin-bottom: 0;">
+										{{title}}
+									</p>
+								</div>
+							</div>
+						</article>
+					</div>
+				</div>
+			</div>
+		</a>
+		{% endverbatim %}
+	</script>
 
-{% endblock %}
+	<script type="text/template" id="requests-table-empty-template">
+		     {% verbatim %}
+		<div class="media">
+		    <h1>No se encuentran pedidos de ayuda en la ubicación actual.</h1>
+		</div>
+		     {% endverbatim %}
+	</script>
+
+	<script type="text/template" id="requests-table-paginator-template">
+		{% verbatim %}
+		<div class="row requests-table-paginator">
+
+			<nav class="pagination is-centered" role="navigation" aria-label="pagination">
+				<button class="pagination-previous prev-button is-outlined" {{hasPrev}} style="background-color: white !important; color: #a7b0c0 !important;"> <i class="fas fa-chevron-left"></i>&nbsp;&nbsp;Anterior</button>
+
+				<ul class="pagination-list">
+					<li>
+						<button class="pagination-link first-button {{showFirst}} is-outlined" {{hasFirst}} style="background-color: white !important; color: #2979ff; border-color: #2979ff;">1</button>
+					</li>
+
+					<li>
+						<span class="pagination-ellipsis {{showPrev}} is-outlined">&hellip;</span>
+					</li>
+
+					<li>
+						<button class="pagination-link current-minus-button {{showPrev}} is-outlined">{{previousPage}} </button>
+					</li>
+
+					<li>
+						<button class="pagination-link is-current is-outlined">{{currentPage}} </button>
+					</li>
+
+					<li>
+						<button class="pagination-link current-plus-button {{showNext}} is-outlined">{{nextPage}} </button>
+					</li>
+					
+					<li>
+						<span class="pagination-ellipsis {{showNext}} is-outlined">&hellip;</span>
+					</li>
+
+					<li>
+						<button class="pagination-link last-button {{showLast}} is-outlined" {{hasLast}} style="background-color: white !important; color: #2979ff; border-color: #2979ff;">{{totalPages}}</button>
+					</li>
+				</ul>
+
+				<button class="pagination-next next-button is-outlined" {{hasNext}} style="background-color: white !important; color: #a7b0c0 !important;">Siguiente&nbsp;&nbsp;<i class="fas fa-chevron-right"></i> </button>
+			</nav>
+		</div>
+		{% endverbatim %}
+	</script>
+
+	{% endblock %}
+</div>
