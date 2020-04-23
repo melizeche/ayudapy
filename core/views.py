@@ -60,6 +60,9 @@ def request_form(request):
 
 def view_request(request, id):
     help_request = get_object_or_404(HelpRequest, pk=id)
+    active_requests = []
+    if not help_request.active:
+        active_requests = HelpRequest.objects.filter(phone=help_request.phone, active=True).order_by('-pk')
     vote_ctrl = {}
     vote_ctrl_cookie_key = 'votectrl'
     # cookie expiration
@@ -72,7 +75,8 @@ def view_request(request, id):
         "phone_number_img": image_to_base64(text_to_image(help_request.phone, 300, 50)),
         "whatsapp": '595'+help_request.phone[1:]+'?text=Hola+'+help_request.name
                     + ',+te+escribo+por+el+pedido+que+hiciste:+'+quote_plus(help_request.title)
-                    + '+https:'+'/'+'/'+'ayudapy.org/pedidos/'+help_request.id.__str__()
+                    + '+https:'+'/'+'/'+'ayudapy.org/pedidos/'+help_request.id.__str__(),
+        "active_requests": active_requests,
     }
     if request.POST:
         if request.POST['vote']:
@@ -143,7 +147,7 @@ def list_requests(request):
 
 
 def list_by_city(request, city):
-    list_help_requests = HelpRequest.objects.filter(city_code=city, active=True).order_by("-added")  # TODO limit this
+    list_help_requests = HelpRequest.objects.filter(city_code=city, active=True, resolved=False).order_by("-added")  # TODO limit this
     city = list_help_requests[0].city
     query = list_help_requests
     geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
