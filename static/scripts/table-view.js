@@ -27,6 +27,18 @@
     this.paginator.setData(data);
   }
 
+    /*!
+  * Sanitize and encode all HTML in a user-submitted string
+  * (c) 2018 Chris Ferdinandi, MIT License, https://gomakethings.com
+  * @param  {String} str  The user-submitted string
+  * @return {String} str  The sanitized string
+  */
+  function sanitizeHTML(str) {
+    var temp = document.createElement("div");
+    temp.textContent = str;
+    return temp.innerHTML;
+  }
+
   /**
    * Table.render
    */
@@ -48,8 +60,8 @@
       tableHtml += this.tpl
         .replace(/{{id}}/g, req.pk)
         .replace(/{{added}}/g, moment(req.added).from(now))
-        .replace(/{{name}}/g, req.name)
-        .replace(/{{title}}/g, req.title);
+        .replace(/{{name}}/g, sanitizeHTML(req.name))
+        .replace(/{{title}}/g, sanitizeHTML(req.title));
     }
 
     requestAnimationFrame(function () {
