@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'rest_framework_gis',
     'django_filters',
     'simple_history',
-    'pipeline'
+    'pipeline',
+    'admin_honeypot',
 ]
 
 MIDDLEWARE = [
