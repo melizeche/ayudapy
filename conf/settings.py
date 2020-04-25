@@ -5,6 +5,13 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import environ
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+# reading .env file
+environ.Env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -14,12 +21,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '+92rh@(!r+5wi(h1))nlb_&5g!6wlu2^869_@#_icgevff486)'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['*']
+
+DEBUG_PROPAGATE_EXCEPTIONS = True
 
 
 # Application definition
@@ -35,15 +44,16 @@ INSTALLED_APPS = [
     'leaflet',
     'django.contrib.gis',
     'core',
+    'org',
     'widget_tweaks',
     'rest_framework',
     'rest_framework_gis',
     'django_filters',
-    #'silk',
+    'simple_history',
+    'pipeline'
 ]
 
 MIDDLEWARE = [
-    #'silk.middleware.SilkyMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -51,7 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'core.middleware.AyudaPYMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'conf.urls'
@@ -139,7 +149,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_ROOT = 'static'
+STATIC_ROOT= os.path.join(BASE_DIR, 'allstatic')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static")
+]
 STATIC_URL = '/static/'
 
 STATICFILES_FINDERS = (
@@ -176,5 +189,54 @@ LEAFLET_CONFIG = {
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 25,
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        #'rest_framework.renderers.BrowsableAPIRenderer',  # Uncomment this like if you want to use the nice API view for dev
+    )
 }
+
+# Redirect to home URL after login (Default redirects to /accounts/profile/)
+LOGIN_REDIRECT_URL = '/'
+
+# Configs related to django-pipeline
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'pipeline.finders.CachedFileFinder',
+    'pipeline.finders.PipelineFinder'
+)
+PIPELINE = {
+    'PIPELINE_ENABLED': True,
+    'PIPELINE_COLLECTOR_ENABLED': True,
+    'JAVASCRIPT': {
+        'table-view.js': {
+                'source_filenames': (
+                    'scripts/table-view.js',
+                ),
+                'output_filename': 'scripts/table-view.min.js',
+        },
+        'list.js': {
+                'source_filenames': (
+                    'scripts/list.js',
+                ),
+                'output_filename': 'scripts/list.min.js',
+        },
+        'list-donation.js': {
+                'source_filenames': (
+                    'scripts/list-donation.js',
+                ),
+                'output_filename': 'scripts/list-donation.min.js',
+        },
+        'leaflet-patch.js': {
+                'source_filenames': (
+                    'scripts/leaflet-patch.js',
+                ),
+                'output_filename': 'scripts/leaflet-patch.min.js',
+        }
+    },
+    'CSS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
+    'JS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor'
+}
+
+STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'

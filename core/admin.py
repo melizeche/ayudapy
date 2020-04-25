@@ -1,7 +1,19 @@
 from django.contrib import admin
 from leaflet.admin import LeafletGeoAdmin
 
-from .models import HelpRequest, FrequentAskedQuestion
+from .models import (
+    Category,
+    HelpRequest,
+    FrequentAskedQuestion,
+)
+
+
+def unresolve(modeladmin, request, queryset):
+    queryset.update(resolved=False)
+
+
+def resolve(modeladmin, request, queryset):
+    queryset.update(resolved=True)
 
 
 def deactivate(modeladmin, request, queryset):
@@ -18,6 +30,7 @@ class HelpRequestAdmin(LeafletGeoAdmin):
         "id",
         "name",
         "phone",
+        "resolved",
         "active",
         "title",
         "message",
@@ -25,9 +38,11 @@ class HelpRequestAdmin(LeafletGeoAdmin):
         "downvotes",
     )
     search_fields = ["title", "message", "name", "phone"]
-    actions = [deactivate, activate]
+    actions = [resolve, unresolve, deactivate, activate]
 
 
+resolve.short_description = "Marcar pedidos seleccionados como resueltos"
+unresolve.short_description = "Marcar pedidos seleccionados como NO resueltos"
 deactivate.short_description = "Marcar pedidos seleccionados como inactivos"
 activate.short_description = "Marcar pedidos seleccionados como activos"
 
@@ -43,5 +58,7 @@ class FrequentAskedQuestionAdmin(admin.ModelAdmin):
     search_fields = ['question']
     list_filter = ['active']
 
+
 # FAQ model registration & applied customization
 admin.site.register(FrequentAskedQuestion, FrequentAskedQuestionAdmin)
+admin.site.register(Category)

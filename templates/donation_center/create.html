@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load leaflet_tags %}
+{% load static %}
+{% block bread %}
+<nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
+    <ul>
+        <li>
+          <a href="/">
+            <span class="icon is-small">
+              <i class="fas fa-home" aria-hidden="true"></i>
+            </span>
+            <span>Inicio</span>
+          </a>
+        </li>
+        <li><a href="/donar">Info donar</a></li>
+        <li class="is-active"><a href="#" aria-current="page">Registrar centro de donación</a></li>
+    </ul>
+</nav>
+{% endblock bread %} 
+{% block content%}
+<div class="columns is-centered"> 
+    <div class="column is-half">
+      <button href="#" id="find-me" class="button is-success  is-outlined is-fullwidth">
+        <span class="icon is-small">
+          <i class="fas fa-location-arrow"></i>
+        </span>
+        <span>Apreta acá voy a tratar de
+          encontrarte</span>
+      </button>
+      <p id="status"></p>
+      <form enctype="multipart/form-data" method="post" action="/ceder">
+        {% csrf_token %}
+        {% include 'donation_center/post.html' with form=form %}
+        <div class="control">
+          <button id="submit" class="button is-success is-fullwidth">Enviar</button>
+        </div>
+      </form>
+
+
+<div class="modal" id="myModal">
+  <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Ayuda con el mapa</p>
+            <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+            <li class="is-size-7"> Mové el mapa hasta donde veas tu ubicación y luego apretá en el icono <i class="fas fa-map-marker-alt"></i> y luego marcá en el mapa el punto exacto</li>
+            <li class="is-size-7"> Si te equivocaste podés apretar en el icono <i class="fas fa-edit"></i> así podés mover el marcador, una vez corregido apretar 'Grabar' </li>
+                <p class="image"><img src="{% static "img/ayudamapa.gif" %}" alt=""></p>
+        </section>
+        <footer class="modal-card-foot">
+             <button class="button is-success close">Ok</button>
+        </footer>
+    </div>
+</div>
+
+<script>
+
+  function geoFindMe() {
+
+    const status = document.querySelector('#status');
+    const boton = document.querySelector('#find-me');
+
+    function makePoint(longitude, latitude) {
+      return JSON.stringify({
+        type: 'Point',
+        coordinates: [longitude, latitude]
+      });
+    }
+
+    function success(position) {
+      const latitude  = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      boton.textContent = 'Encontré, seguí completando tus datos !';
+      boton.disabled = true;
+      status.textContent = '';
+
+      document.getElementById('id_location').innerHTML = makePoint(longitude, latitude);
+
+      maps[0].addControl(
+        new L.Control.Fullscreen({
+          title: {
+            false: 'Ver en Pantalla Completa',
+            true: 'Salir de Pantalla Completa',
+          },
+        })
+      );
+
+      const you = L.marker([latitude, longitude],
+        {
+          draggable: true,
+          opacity: 0.9,
+          title:'Tu ubicación'
+        }
+      ).addTo(maps[0]);
+
+      you.bindPopup('<b>Moveme si queres !</b>').openPopup();
+
+      maps[0].setView([latitude, longitude], 16);
+
+      you.on('dragend', function (e) {
+        document.getElementById('id_location').innerHTML = makePoint(e.target._latlng.lng, e.target._latlng.lat);
+      });
+
+    }
+
+    function error() {
+      status.textContent = 'No puedo encontrarte, usá los botones del mapa más abajo';
+    }
+
+    if (!navigator.geolocation) {
+      status.textContent = 'Tu navegador no soporta la geolocalización';
+    } else {
+      status.textContent = 'Buscando tu ubicación…';
+      navigator.geolocation.getCurrentPosition(success, error);
+    }
+
+  }
+
+  function checkRequestForm() {
+      fields = ['id_title', 'id_message','id_name','id_phone','id_location','id_address']
+      var valid = true;
+      for (field in fields) {
+          if (!document.getElementById(fields[field]).checkValidity()) {
+          valid = false
+        }
+      }
+
+      if (valid) {
+        document.querySelector('#submit').textContent="Enviando..."
+        document.querySelector('#submit').disabled="disabled";
+        return true;
+      }
+  }
+
+  document.querySelectorAll('.modal-button').forEach(function(el) {
+    el.addEventListener('click', function() {
+      var target = document.querySelector(el.getAttribute('data-target'));
+      //map.invalidateSize();
+      target.classList.add('is-active');
+
+      target.querySelector('.close').addEventListener('click',   function() {
+          target.classList.remove('is-active');
+      });
+      target.querySelector('.delete').addEventListener('click',   function() {
+          target.classList.remove('is-active');
+      });
+      target.querySelector('.modal-background').addEventListener('click',   function() {
+          target.classList.remove('is-active');
+      });
+    });
+  });
+
+  document.querySelector('#find-me').addEventListener('click', geoFindMe);
+
+</script>
+{% endblock %}

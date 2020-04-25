@@ -9,6 +9,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.safestring import mark_safe
 from geopy.geocoders import Nominatim
+from simple_history.models import HistoricalRecords
 
 from core.utils import create_thumbnail, rename_img
 
@@ -23,6 +24,19 @@ class HelpRequestQuerySet(models.QuerySet):
         rank = SearchRank(F("search_vector"), query)
         return self.filter(search_vector=query).annotate(rank=rank).order_by("-rank")
 
+# Category: model ...
+
+class Category(models.Model):
+    name = models.CharField(max_length=30)
+    code = models.CharField(max_length=30, primary_key=True)
+    color = models.CharField(max_length=10, default="#000000")
+    icon = models.CharField(max_length=30, null=True, blank=True)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+
+# FrequentAskedQuestion: model ...
 
 class FrequentAskedQuestion(models.Model):
     """
@@ -47,6 +61,7 @@ class FrequentAskedQuestion(models.Model):
     def __str__(self):
         return self.question
 
+# HelpRequest: represents a ...
 
 class HelpRequest(models.Model):
     title = models.CharField(
@@ -74,8 +89,8 @@ class HelpRequest(models.Model):
     )
     location = models.PointField(
         "Ubicación",
-        help_text=mark_safe('Seleccioná tu ubicación para que la gente pueda encontrarte, si no querés marcar tu casa una buena opción puede ser la comisaría más cercana o algún otro sitio público cercano.\
-            <br>Si tenés problemas con este paso <a href="#" class="is-link modal-button" data-target="#myModal" aria-haspopup="true">mirá esta ayuda</a>'),
+        help_text=mark_safe('<p style="margin-bottom:5px;font-size:10px;">Seleccioná tu ubicación para que la gente pueda encontrarte, si no querés marcar tu casa una buena opción puede ser la comisaría más cercana o algún otro sitio público cercano.\
+            <br>Si tenés problemas con este paso <a href="#" class="is-link modal-button" data-target="#myModal" aria-haspopup="true">mirá esta ayuda</a></p><p id="div_direccion" style="font-size: 10px; margin-bottom: 5px;"></p>'),
         srid=4326,
     )
     picture = models.ImageField(
@@ -85,13 +100,16 @@ class HelpRequest(models.Model):
         null=True,
         blank=True,
     )
+    resolved = models.BooleanField(default=False, db_index=True)
     active = models.BooleanField(default=True, db_index=True)
     added = models.DateTimeField("Agregado", auto_now_add=True, null=True, blank=True, db_index=True)
     upvotes = models.IntegerField(default=0, blank=True)
     downvotes = models.IntegerField(default=0, blank=True)
-    city = models.CharField(max_length=30, blank=True, default="", editable=False)
-    city_code = models.CharField(max_length=30, blank=True, default="", editable=False)
+    city = models.CharField(max_length=50, blank=True, default="", editable=False)
+    city_code = models.CharField(max_length=50, blank=True, default="", editable=False)
+    categories = models.ManyToManyField(Category, blank=True)
     search_vector = SearchVectorField()
+    history = HistoricalRecords()
     objects = HelpRequestQuerySet.as_manager()
 
     @property
@@ -102,23 +120,32 @@ class HelpRequest(models.Model):
     def _get_city(self):
         geolocator = Nominatim(user_agent="ayudapy")
         cordstr = "%s, %s" % self.location.coords[::-1]
-        location = geolocator.reverse(cordstr, language='es')
         city = ''
-        if location.raw.get('address'):
-            if location.raw['address'].get('city'):
-                city = location.raw['address']['city']
-            elif location.raw['address'].get('town'):
-                city = location.raw['address']['town']
-            elif location.raw['address'].get('locality'):
-                city = location.raw['address']['locality']
+        try:
+            location = geolocator.reverse(cordstr, language='es')
+            if location.raw.get('address'):
+                if location.raw['address'].get('city'):
+                    city = location.raw['address']['city']
+                elif location.raw['address'].get('town'):
+                    city = location.raw['address']['town']
+                elif location.raw['address'].get('locality'):
+                    city = location.raw['address']['locality']
+        except Exception as e:
+            logger.error(f"Geolocator unavailable: {repr(e)}")
         return city
 
-    def save(self):
+    def _deactivate_duplicates(self):
+        return HelpRequest.objects.filter(phone=self.phone).update(active=False)
+
+    def save(self, *args, **kwargs):
         from unidecode import unidecode
         city = self._get_city()
         self.city = city
         self.city_code = unidecode(city).replace(" ", "_")
-        return super(HelpRequest, self).save()
+        self.phone = self.phone.replace(" ", "")
+        if not self.id:
+            self._deactivate_duplicates()
+        return super(HelpRequest, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"<Pedido #{self.id} - {self.name}>"
@@ -134,6 +161,8 @@ def thumbnail(sender, instance, created, **kwargs):
         except Exception as e:
             logger.error(f"Error creating thumbnail: {repr(e)}")
 
+
+# Status: ...
 
 class Status(models.Model):
     name = models.CharField(
@@ -160,13 +189,13 @@ class Device(models.Model):
     device_id = models.CharField(
         "Id Dispositivo",
         max_length=128,
-        help_text= "Identificador del Dispositivo",
+        help_text="Identificador del Dispositivo",
         unique=True
     )
     ua_string = models.CharField(
         "User Agent",
         max_length=512,
-        help_text = "User Agent",
+        help_text="User Agent",
         null=True,
         blank=True
     )
@@ -242,6 +271,13 @@ class Device(models.Model):
         null=True,
         blank=True
     )
+    push_notification_token = models.CharField(
+        "Token de Notificación",
+        help_text="Token de Notificación para envíos tipo PUSH",
+        max_length=128,
+        null=True,
+        blank=True
+    )
 
 
 # User: to represent a user in ayudapy
@@ -263,7 +299,7 @@ class User(models.Model):
     name = models.CharField(
         "Nombre Completo",
         max_length=512,
-        help_text = "Nombre Completo del Usuario",
+        help_text="Nombre Completo del Usuario",
         null=True,
         blank=True
     )
@@ -320,7 +356,7 @@ class User(models.Model):
     )
     city_code = models.CharField(
         "Código Ciudad",
-        max_length=30,
+        max_length=50,
         help_text="Código de Ciudad por Defecto del Usuario",
         blank=True,
         null=True
@@ -339,6 +375,7 @@ class User(models.Model):
         blank=True,
         null=True
     )
+    history = HistoricalRecords()
 
 
 class HelpRequestOwner(models.Model):
@@ -348,4 +385,3 @@ class HelpRequestOwner(models.Model):
         primary_key=True
     )
     user_iid = models.ForeignKey(User, on_delete=models.CASCADE)
-

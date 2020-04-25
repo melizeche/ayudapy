@@ -72,3 +72,12 @@ gunicorn_start.sh
 
 # Staticfiles
 static/
+media/
+gunicorn_start.sh
+conf/.env
+
+# Docker bind mounts
+db-data
+
+# static files generated in production mode
+allstatic/*

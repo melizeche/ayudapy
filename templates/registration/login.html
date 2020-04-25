@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+
+<div class="is-fullhd">
+  <div class="columns is-centered">
+    {% if form.errors %}
+    <p class="help is-danger">
+      Su nombre de usuario y contraseña no coinciden.
+      Por favor inténtelo de vuelta.
+    </p>
+    {% endif %}
+  </div>
+  <div class="columns is-centered">
+    {% if next %}
+    {% if user.is_authenticated %}
+    <p>Su cuenta no tiene acceso a esta página. Para proceder,
+       inicie sesión con una cuenta que tenga acceso.</p>
+    {% endif %}
+    {% endif %}
+  </div>
+  <div class="columns is-centered">
+    <div class="box">
+      <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="field">
+          <label class="label">Usuario</label>
+          <div class="control has-icons-left has-icons-right">
+            <input id="id_username" name="username" class="input" type="text" placeholder="username">
+            <span class="icon is-small is-left">
+              <i class="fas fa-user"></i>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="id_password" class="label">Contraseña</label>
+          <p class="control has-icons-left">
+            <input id="id_password" name="password" type="password" class="input" placeholder="Password">
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </p>
+        </div>
+
+
+        <input type="submit" class="button is-primary" value="Ingresar" class="btn btn-primary pull-right" />
+          <a href="/" type="button" class="button is-light" class="btn btn-light pull-right">Cancelar</a>
+        <input type="hidden" name="next" value="{{ next }}" />
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

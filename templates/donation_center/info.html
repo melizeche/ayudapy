@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block bread %}
+  <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
+    <ul>
+        <li>
+            <a href="/">
+                <span class="icon is-small">
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                </span>
+                <span>Inicio</span>
+            </a>
+        </li>
+        <li class="is-active">
+            <a href="#" aria-current="page">Info donar</a></li>
+        </ul>
+    </nav>
+{% endblock bread %}
+{% block content%}
+
+<div class="columns is-centered center">
+  <div class="column">
+    <div class="tile is-ancestor center">
+        <div class="tile is-5 is-vertical is-parent">
+            <div class="tile is-child notification is-danger">
+                <p class="title">Importante</p>
+                <p class="has-text-justified">Esta es una plataforma ciudadana que depende totalmente de la buena voluntad de la gente. No hay garantías de recibir ayuda sí o sí.
+            La información que uno carga va a ser 100% de acceso público.</p> <a href="/legal">Más info acá</a>
+            </div>
+            <div class="tile is-child is-warning box">
+                <p class="title">¿Cómo funciona?</p>
+                <p class="has-text-justified">Tenés que cargar tu datos: nombre, teléfono de contacto, ciudad, ubicación y qué necesitás.</p>
+                <p class="has-text-justified"><b>AyudaPy</b> te permite poder compartir tu pedido de ayuda para que más gente lo vea, así como ofrecer a la gente que quiere ayudar una interfaz para buscar a los que necesitan</p>
+            </div>
+            <div class="tile is-child">
+                <a href="/ceder">
+                    <button class="button is-success is-large is-fullwidth is-size-5 has-text-weight-bold">
+                    <span>OK entiendo, quiero continuar </span>
+                    <span class="icon is-medium"><i class="fas fa-thumbs-up is-le"></i></span>
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

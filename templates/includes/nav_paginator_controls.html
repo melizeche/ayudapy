@@ -1,0 +1,47 @@
+<!-- start pagination nav buttons -->
+<div class="row">
+    <div class="column is-5">
+        Mostrando &lt; Página {{ list_paginated.number }} de {{ list_paginated.paginator.num_pages }} &gt;
+    </div>
+    <nav class="pagination is-right" role="navigation" aria-label="pagination">
+        <!-- previous (<<) nav button -->
+        {% if list_paginated.has_previous %}
+            <a href="?page={{ list_paginated.previous_page_number }}{% if search %}&q={{ search }}{% endif %}" class="pagination-previous">Previo</a>
+        {% else %}
+            <a class="pagination-previous" disabled>Previo</a>
+        {% endif %}
+
+         <!-- next (>>) nav button -->
+        {% if list_paginated.has_next %}
+            <a href="?page={{ list_paginated.next_page_number }}{% if search %}&q={{ search }}{% endif %}" class="pagination-next">Siguiente</a>
+        {% else %}
+        <a class="pagination-next" disabled>Siguiente</a>
+        {% endif %}
+
+        <ul class="pagination-list">
+            {% if list_paginated.number > 1 %}
+            <li><a href="?page={{ 1 }}{% if search %}&q={{ search }}{% endif %}" class="pagination-link"
+                    aria-label="Goto page 1"> 1 </a></li>
+            {% endif %}
+            {% if list_paginated.number > 2 %}
+            <li><span class="pagination-ellipsis">&hellip;</span></li>
+            <li><a href="?page={{list_paginated.number|add:"-1"}}{% if search %}&q={{ search }}{% endif %}"
+                    class="pagination-link"
+                    aria-label="Goto page {{list_paginated.number|add:"-1"}}">{{list_paginated.number|add:"-1"}}</a></li>
+            {% endif %}
+            <li><a class="pagination-link is-current" aria-label="Page {{ list_paginated.number }}"
+                    aria-current="page">{{ list_paginated.number }} </a></li>
+            {% if list_paginated.number|add:"1" < list_paginated.paginator.num_pages %}
+            <li><a href="?page={{list_paginated.number|add:"1"}}{% if search %}&q={{ search }}{% endif %}"
+                    class="pagination-link"
+                    aria-label="Goto page {{list_paginated.number|add:"1"}}">{{list_paginated.number|add:"1"}}</a></li>
+            <li><span class="pagination-ellipsis">&hellip;</span></li>
+            {% endif %}
+            {% if list_paginated.number < list_paginated.paginator.num_pages %}
+            <li><a href="?page={{ list_paginated.paginator.num_pages }}{% if search %}&q={{ search }}{% endif %}"
+                    class="pagination-link" aria-label="Goto last page">{{ list_paginated.paginator.num_pages }}</a></li>
+            {% endif %}
+        </ul>
+      </nav>
+</div>
+<!-- end pagination nav buttons -->

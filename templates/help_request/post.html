@@ -1,0 +1,153 @@
+{% load widget_tweaks %}
+{% for hidden_field in form.hidden_fields %}
+{{ hidden_field }}
+{% endfor %}
+{% if form.non_field_errors %}
+<div class="modal is-danger" role="alert">
+    {% for error in form.non_field_errors %} {{ error }} {% endfor %}
+</div>
+{% endif %}
+{% if form.errors %}
+{% for field in form %}
+{% for error in field.errors %}
+<div class="message is-danger">
+    <div class="message-body">
+        {{ error|escape }}
+    </div>
+</div>
+{% endfor %}
+{% endfor %}
+{% for error in form.non_field_errors %}
+<div class="message is-danger">
+    <div class="message-body">
+        {{ error|escape }}
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+{% for field in form.visible_fields %}
+<div class="field">
+    {% if field.field.required %}
+    <label class="label" for="{{ field.name }}">{{ field.label }}*</label>
+    {%else%}
+        {% if field.name != 'categories' %}
+            <label class="label has-text-weight-normal" for="{{ field.name }}">{{ field.label }}</label>
+        {% else %}
+            <br>
+            <label class="label" for="title">Categoría del pedido*</label>
+            <p class="help text-muted">Elegí las categorías del pedido (podés marcar varias categorías)</p>
+            <br>
+        <div class="columns is-centered is-mobile is-multiline">
+          <div class="column is-3-desktop is-3-mobile ">
+            <div class="field">
+{#              <p onclick="changeViveres()"><i class="fas fa-utensils fa-2x {% if form.viveres.checked %} has-text-info{% endif %}"></i></p>#}
+              <p onclick="changeSwitch('viveres')"><i id="viveresIcon" class="fas fa-utensils fa-2x"></i></p>
+{#              <p class="is-size-7"> {{ field.0 }}</p>#}
+              <p onclick="changeSwitch('viveres')" class="is-size-7"> Víveres</p>
+              <input type="checkbox" value="viveres"  onclick="changeIconClass('viveres')" id="viveres" name="categories" class="switch is-info">
+              <label for="viveres"></label>
+            </div>
+          </div>
+             <div class="column is-3-desktop is-3-mobile">
+                    <p onclick="changeSwitch('bebes')"><i id="bebesIcon" class="fas fa-child fa-2x"></i></p>
+                   <p onclick="changeSwitch('bebes')" class="is-size-7">Bebés</p>
+                    <input id="bebes" value="bebes"  onclick="changeIconClass('bebes')" type="checkbox" name="categories" class="switch is-info">
+                  <label for="bebes"></label>
+              </div>
+            <div class="column is-3-desktop is-3-mobile">
+                <p onclick="changeSwitch('medicamentos')"><i id="medicamentosIcon"
+                        class="fas fa-prescription-bottle-alt fa-2x"></i></p>
+               <p onclick="changeSwitch('medicamentos')" class="is-size-7"> Remedios</p>
+           <input id="medicamentos" value="medicamentos" onclick="changeIconClass('medicamentos')" type="checkbox" name="categories" class="switch is-info">
+              <label for="medicamentos"></label>
+          </div>
+           <div class="column is-3-desktop is-3-mobile">
+                <p onclick="changeSwitch('limpieza')"><i id="limpiezaIcon" class="fas fa-pump-soap fa-2x"></i></p>
+               <p onclick="changeSwitch('limpieza')" class="is-size-7"> Limpieza</p>
+             <input  value="limpieza" id="limpieza" onclick="changeIconClass('limpieza')" type="checkbox" name="categories" class="switch is-info">
+              <label for="limpieza"></label>
+          </div>
+
+
+        </div>
+
+
+        {% endif %}
+    {%endif%}
+    {% if field.help_text|safe %}
+    <p class="help text-muted">{{ field.help_text }}</p>
+    {% endif %}
+
+    {% if form.is_bound %}
+    {% if field.errors %}
+    <div class="control">
+        {% render_field field class="input is-danger" %}
+    </div>
+    {% for error in field.errors %}
+    <div class="help is-danger">
+        {{ error }}
+    </div>
+    {% endfor %}
+    {% else %}
+    {% render_field field class="input is-success" %}
+    {% endif %}
+    {% else %}
+    {% if field.field.widget.input_type == "file" %}
+    <p id="status"></p>
+    <div class="file has-name is-boxed is-primary is-fullwidth ">
+        <label class="file-label">
+            {% render_field field class="file-input" %}
+            <span class="file-cta">
+                    <span class="file-icon">
+                        <i class="fas fa-upload"></i>
+                    </span>
+                    <span class="file-label center">
+                        Adjuntá una foto
+                    </span>
+                    </span>
+            <span class="file-name">
+                    
+                    </span>
+        </label>
+    </div>
+    {% else %}
+    <div class="control">
+        {{ field }}
+    </div>
+    {% endif %}
+    {% endif %}
+</div>
+{% endfor %}
+
+<script type="text/javascript">
+
+      function changeViveres() {
+
+        var elemento = document.getElementById('viveres');
+
+        elemento.checked = !elemento.checked;
+
+        if(elemento){
+           document.getElementById('viveresIcon').classList.add("has-text-info");
+        }else{
+           document.getElementById('viveresIcon').classList.remove("has-text-info");
+
+        }
+      }
+
+      function changeSwitch(name){
+        var elemento = document.getElementById(name);
+        elemento.checked = !elemento.checked;
+        changeIconClass(name);
+      }
+
+      function changeIconClass(name) {
+          var elemento = document.getElementById(name);
+          if (elemento.checked) {
+              document.getElementById(name+'Icon').classList.add("has-text-info");
+          } else {
+              document.getElementById(name+'Icon').classList.remove("has-text-info");
+          }
+      }
+
+</script>

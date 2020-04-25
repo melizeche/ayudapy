@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %} Donación #{{donation_center.id}} {% endblock %}
+
+{% block fb-title %} Donación #{{donation_center.id}} - {{ donation_center.title}} {% endblock %}
+
+{% load leaflet_tags %}
+{% load static %}
+{% load l10n %}
+{% load humanize %}
+{% block bread %}
+<nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
+    <ul>
+        <li>
+            <a href="/">
+                <span class="icon is-small">
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                </span>
+                <span>Inicio</span>
+            </a>
+        </li>
+        <li><a href="/donar">Info donar</a></li>
+        <li><a href="/donaciones">Centros de donación</a></li>
+        <li class="is-active"><a href="#" aria-current="page">Centro de donación #{{donation_center.id}}</a></li>
+    </ul>
+</nav>
+{% endblock bread %}
+{% block content%}
+<div class="columns is-centered">
+    <div class="subtitle center is-3">
+        <a class="has-text-primary" href="/donaciones/{{donation_center.id}}">Centro de donación #{{donation_center.id}}</a>
+    </div>
+</div>
+<div class="columns is-centered">
+    <div class="column is-four-fifths">
+
+        <div class="card">
+            <header class="card-header has-background-light is-light">
+                <p class="card-header-title is-size-4">{{ donation_center.name}}</p>
+            </header>
+            <section class="card-content">
+                <p class="has-text-right is-size-7" title="{{donation_center.added|naturaltime}}">
+                    {{donation_center.added}}</p>
+                <p class="is-size-5">{{donation_center.message|linebreaksbr}}</p>
+                <hr>
+                <p class="subtitle">Nombre:</p>
+                <p class="title is-4">{{ donation_center.name}}</p>
+                {% if donation_center.phone %}
+                    <p class="subtitle">Contacto:</p>
+                    <p class="title is-4">
+                        <a href="tel:{{donation_center.phone}}">
+                            <img src="data:image/jpeg;base64,{{phone_number_img}}">
+                        </a>
+{#                        &nbsp;#}
+{#                        <a href="https://wa.me/{{ whatsapp }}" target="_blank"#}
+{#                            class="button is-medium is-success is-outlined">#}
+{#                            <span class="icon is-small">#}
+{#                                <i class="fab fa-whatsapp"></i>#}
+{#                            </span>#}
+{#                            <span>Contactar vía WhatsApp</span>#}
+{#                        </a>#}
+                    </p>
+                {% endif %}
+                {% if donation_center.address %}
+                <p class="subtitle">Dirección:</p>
+                <p class="title is-4">{{donation_center.address}}</p>
+                {% endif %}
+                <p class="subtitle">Ciudad: </p>
+                <p class="title is-4">
+                    <a href="/donaciones_ciudad/{{donation_center.city_code}}">{{donation_center.city}}</a>
+                </p>
+                <p class="subtitle">Ubicación:
+                    {% leaflet_map "main" callback="main_map_init" %}
+                </p>
+                <a href="https://www.google.com/maps/search/?api=1&query={{donation_center.location.y|unlocalize}},{{donation_center.location.x|unlocalize}}"
+                    target="_blank">
+                    <button class="button is-medium is-fullwidth is-link is-light">
+                        <span class="icon is-medium">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </span>
+                        <span>Abrir en Google Maps</span>
+                    </button>
+                </a>
+
+            </section>
+
+        </div>
+
+        {% comment %} <article class="tile is-child is-box">
+            <p class="subtitle">{{donation_center.message|linebreaks}}</p>
+            <hr>
+            <p class="subtitle">Nombre:</p>
+            <p class="title is-4">{{ donation_center.name}}</p>
+            <p class="subtitle">Contacto:</p>
+            <p class="title is-4"><a href="tel:{{donation_center.phone}}">{{donation_center.phone}}</p></a>
+            {% if donation_center.address %}
+            <p class="subtitle">Dirección:</p>
+            <p class="title is-4">{{donation_center.address}}</p>
+            {% endif %}
+            <p class="subtitle">Ubicación:
+                {% leaflet_map "main" callback="main_map_init" %}
+            </p>
+            <a href="https://www.google.com/maps/search/?api=1&query={{donation_center.location.y|unlocalize}},{{donation_center.location.x|unlocalize}}"
+                target="_blank">
+                <button class="button is-medium is-fullwidth is-link is-light">
+                    <span class="icon is-medium">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </span>
+                    <span>Abrir en Google Maps</span>
+                </button>
+            </a>
+        </article> {% endcomment %}
+        <hr>
+        <label class="label has-text-success">
+            <span class="icon is-medium"><i class="fas fa-hand-point-down"></i></span>
+            Podés compartir esta donación haciendo click en los botones
+        </label>
+        <div class="is-fullwidth">
+            {% include 'includes/share_buttons.html'%}
+        </div>
+
+        <script type="text/javascript">
+            function main_map_init(map, options) {
+                // Use Leaflet API here
+                {% autoescape off %}
+                var lon = {{ donation_center.location.x| unlocalize}};
+                var lat = {{ donation_center.location.y| unlocalize }};
+                data = {{ donation_center.location.geojson }}
+                {% endautoescape %}
+                // zoom to point & add it to map
+                map.setView([lat, lon], 14);
+                //L.marker([lat, lon]).addTo(map);
+                L.geoJson(data).addTo(map)
+            }
+        </script>
+    </div>
+</div>
+{% endblock %}

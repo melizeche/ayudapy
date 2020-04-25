@@ -8,34 +8,13 @@ from django.shortcuts import (
 )
 
 from urllib.parse import quote_plus
-from rest_framework import viewsets
-from rest_framework import filters
-from rest_framework_gis.filters import InBBoxFilter
-from django_filters.rest_framework import DjangoFilterBackend
+import json
+import datetime
+import base64
 
 from .forms import HelpRequestForm
 from .models import HelpRequest, HelpRequestOwner, FrequentAskedQuestion
-from .serializers import HelpRequestSerializer, HelpRequestGeoJSONSerializer
 from .utils import text_to_image, image_to_base64
-
-
-class HelpRequestViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = HelpRequest.objects.filter(active=True)
-    serializer_class = HelpRequestSerializer
-    filter_backends = [InBBoxFilter, DjangoFilterBackend, filters.SearchFilter]
-    search_fields = ['title', 'phone',]
-    filterset_fields = ['city']
-    bbox_filter_field = 'location'
-    bbox_filter_include_overlapping = True
-
-
-class HelpRequestGeoViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = HelpRequest.objects.filter(active=True)
-    pagination_class = None
-    serializer_class = HelpRequestGeoJSONSerializer
-    bbox_filter_field = 'location'
-    filter_backends = (InBBoxFilter, )
-    bbox_filter_include_overlapping = True
 
 
 def home(request):
@@ -60,6 +39,7 @@ def set_owner_and_update_values(request, new_help_request):
             user.location = help_request_owner.help_request.location
             user.save()
 
+
 def request_form(request):
     if request.method == "POST":
         form = HelpRequestForm(request.POST, request.FILES)
@@ -75,28 +55,72 @@ def request_form(request):
             return redirect("pedidos-detail", id=new_help_request.id)
     else:
         form = HelpRequestForm()
-    return render(request, "help_request_form.html", {"form": form})
+    return render(request, "help_request/create.html", {"form": form})
 
 
 def view_request(request, id):
     help_request = get_object_or_404(HelpRequest, pk=id)
+    active_requests = []
+    if not help_request.active:
+        active_requests = HelpRequest.objects.filter(phone=help_request.phone, active=True).order_by('-pk')
+    vote_ctrl = {}
+    vote_ctrl_cookie_key = 'votectrl'
+    # cookie expiration
+    dt = datetime.datetime(year=2067, month=12, day=31)
 
     context = {
         "help_request": help_request,
-        "thumbnail": help_request.thumb if help_request.picture else "/static/favicon.ico",
+        "name": help_request.name,
+        "thumbnail": help_request.thumb if help_request.picture else "/static/img/logo.jpg",
         "phone_number_img": image_to_base64(text_to_image(help_request.phone, 300, 50)),
-        "whatsapp": '595'+help_request.phone[1:]+'?text=Hola+'+help_request.name+
-                    ',+te+escribo+por+el+pedido+que+hiciste:+'+'+'
-                    +quote_plus(help_request.title)+'+https:'+'/'+'/'+'ayudapy.org/pedidos/'+help_request.id.__str__()
+        "whatsapp": '595'+help_request.phone[1:]+'?text=Hola+'+help_request.name
+                    + ',+te+escribo+por+el+pedido+que+hiciste:+'+quote_plus(help_request.title)
+                    + '+https:'+'/'+'/'+'ayudapy.org/pedidos/'+help_request.id.__str__(),
+        "active_requests": active_requests,
     }
     if request.POST:
         if request.POST['vote']:
-            if request.POST['vote'] == 'up':
-                help_request.upvotes += 1
-            elif request.POST['vote'] == 'down':
-                help_request.downvotes += 1
-            help_request.save()
-    return render(request, "request.html", context)
+            if vote_ctrl_cookie_key in request.COOKIES:
+                try:
+                    vote_ctrl = json.loads(base64.b64decode(request.COOKIES[vote_ctrl_cookie_key]))
+                except:
+                    pass
+
+                try:
+                    voteFlag = vote_ctrl["{id}".format(id=help_request.id)]
+                except KeyError:
+                    voteFlag = None
+
+                if voteFlag is None:
+                    if request.POST['vote'] == 'up':
+                        help_request.upvotes += 1
+                    elif request.POST['vote'] == 'down':
+                        help_request.downvotes += 1
+                    help_request.save()
+                    vote_ctrl["{id}".format(id=help_request.id)] = True
+
+    response = render(request, "help_request/details.html", context)
+
+    if vote_ctrl_cookie_key not in request.COOKIES:
+        # initialize control cookie
+        if request.POST and request.POST['vote']:
+            # set value in POST request if cookie not exists
+            b = json.dumps({"{id}".format(id=help_request.id): True}).encode('utf-8')
+        else:
+            # set empty value in others requests
+            b = json.dumps({}).encode('utf-8')
+        value = base64.b64encode(b).decode('utf-8')
+        response.set_cookie(vote_ctrl_cookie_key, value,
+                            expires=dt)
+    else:
+        if request.POST:
+            if request.POST['vote']:
+                # update control cookie only in POST request
+                b = json.dumps(vote_ctrl).encode('utf-8')
+                value = base64.b64encode(b).decode('utf-8')
+                response.set_cookie(vote_ctrl_cookie_key, value,
+                                    expires=dt)
+    return response
 
 
 def view_faq(request):
@@ -111,55 +135,32 @@ def view_faq(request):
         'faq_list': faq_list
     }
 
-    template = "general_faq.html"
+    template = "footer/general_faq.html"
 
     return render(request, template, context)
 
 
 def list_requests(request):
-    list_help_requests = HelpRequest.objects.filter(active=True)
     cities = [(i['city'], i['city_code']) for i in HelpRequest.objects.all().values('city', 'city_code').distinct().order_by('city_code')]
-    query = list_help_requests
-    geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
-
-    search = request.GET.get('q')
-    if search:
-        list_help_requests = list_help_requests.filter_by_search_query(search)
-
-    list_help_requests = list_help_requests.order_by("-added")
-
-    # Start Pagination
-    page = request.GET.get('page', 1)
-    paginate_by = 25
-    paginator = Paginator(list_help_requests, paginate_by)
-
-    try:
-        list_help_requests_paginated = paginator.page(page)
-    except PageNotAnInteger:
-        list_help_requests_paginated = paginator.page(1)
-    except EmptyPage:
-        list_help_requests_paginated = paginator.page(paginator.num_pages)
-    # End Pagination
-
-    context = {"list_cities": cities, "list_help": list_help_requests, "geo": geo, "list_help_paginated": list_help_requests_paginated, "search": search}
-    return render(request, "list.html", context)
+    context = {"list_cities": cities}
+    return render(request, "help_request/list.html", context)
 
 
 def list_by_city(request, city):
-    list_help_requests = HelpRequest.objects.filter(city_code=city).order_by("-added")  # TODO limit this
+    list_help_requests = HelpRequest.objects.filter(city_code=city, active=True, resolved=False).order_by("-added")  # TODO limit this
     city = list_help_requests[0].city
     query = list_help_requests
     geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
 
-    page= request.GET.get('page', 1)
+    page = request.GET.get('page', 1)
     paginate_by = 25
     paginator = Paginator(list_help_requests, paginate_by)
     try:
-        list_help_requests_paginated = paginator.page(page)
+        list_paginated = paginator.page(page)
     except PageNotAnInteger:
-        list_help_requests_paginated = paginator.page(1)
+        list_paginated = paginator.page(1)
     except EmptyPage:
-        list_help_requests_paginated = paginator.page(paginator.num_pages)
+        list_paginated = paginator.page(paginator.num_pages)
 
-    context = {"list_help": list_help_requests, "geo": geo, "city": city, "list_help_paginated": list_help_requests_paginated}
-    return render(request, "list_by_city.html", context)
+    context = {"list_help": list_help_requests, "geo": geo, "city": city, "list_paginated": list_paginated}
+    return render(request, "help_request/list_by_city.html", context)
