@@ -84,6 +84,7 @@ docker-compose exec app ./manage.py migrate
 - Miguel Báez https://github.com/migueljoba 
 - Osbarge https://github.com/osbarge
 - Pablo Santa Cruz https://github.com/pablo
+- Roque Vera https://github.com/roquegv
 
 ## TODO
 
