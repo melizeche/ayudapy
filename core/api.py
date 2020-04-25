@@ -6,7 +6,7 @@ from rest_framework_gis.filters import InBBoxFilter
 
 from core.middleware import USER_TYPE_DEVICE
 from core.models import HelpRequest, Device, User
-from core.serializers import HelpRequestSerializer, HelpRequestGeoJSONSerializer, DeviceSerializer
+from core.serializers import HelpRequestSerializer, HelpRequestGeoJSONSerializer, DeviceSerializer, CitiesSerializer
 
 """
     API endpoints that allows search queries on HelpRequest 0
@@ -39,6 +39,12 @@ class HelpRequestGeoViewSet(viewsets.ReadOnlyModelViewSet):
     bbox_filter_field = 'location'
     filter_backends = (InBBoxFilter, DynamicSearchFilter,)
     bbox_filter_include_overlapping = True
+
+
+class CitiesViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = HelpRequest.objects.all().values('city', 'city_code').distinct().order_by('city_code')
+    pagination_class = None
+    serializer_class = CitiesSerializer
 
 """
 API to create/update/remove devices.
