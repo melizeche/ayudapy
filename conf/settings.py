@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'core',
     'org',
+    'ollas',
     'widget_tweaks',
     'rest_framework',
     'rest_framework_gis',
@@ -202,6 +203,12 @@ PIPELINE = {
                     'scripts/list-donation.js',
                 ),
                 'output_filename': 'scripts/list-donation.min.js',
+        },
+        'list-ollas.js': {
+                'source_filenames': (
+                    'scripts/list-ollas.js',
+                ),
+                'output_filename': 'scripts/list-ollas.min.js',
         },
         'leaflet-patch.js': {
                 'source_filenames': (
