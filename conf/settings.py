@@ -179,40 +179,4 @@ LOGIN_REDIRECT_URL = '/'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'pipeline.finders.CachedFileFinder',
-    'pipeline.finders.PipelineFinder'
 )
-PIPELINE = {
-    'PIPELINE_ENABLED': True,
-    'PIPELINE_COLLECTOR_ENABLED': True,
-    'JAVASCRIPT': {
-        'table-view.js': {
-                'source_filenames': (
-                    'scripts/table-view.js',
-                ),
-                'output_filename': 'scripts/table-view.min.js',
-        },
-        'list.js': {
-                'source_filenames': (
-                    'scripts/list.js',
-                ),
-                'output_filename': 'scripts/list.min.js',
-        },
-        'list-donation.js': {
-                'source_filenames': (
-                    'scripts/list-donation.js',
-                ),
-                'output_filename': 'scripts/list-donation.min.js',
-        },
-        'leaflet-patch.js': {
-                'source_filenames': (
-                    'scripts/leaflet-patch.js',
-                ),
-                'output_filename': 'scripts/leaflet-patch.min.js',
-        }
-    },
-    'CSS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
-    'JS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor'
-}
-
-STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
