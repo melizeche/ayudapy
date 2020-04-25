@@ -75,6 +75,7 @@ static/
 media/
 gunicorn_start.sh
 conf/.env
+.env
 
 # Docker bind mounts
 db-data
