@@ -81,6 +81,7 @@ docker-compose exec app ./manage.py migrate
 - Juan Hüttemann https://github.com/juanhuttemann
 - Leonardo Carreras https://github.com/leocarreras
 - Manuel Nuñez https://github.com/manununhez
+- Mauricio Medina https://github.com/mauri-medina
 - Miguel Báez https://github.com/migueljoba 
 - Osbarge https://github.com/osbarge
 - Pablo Santa Cruz https://github.com/pablo
