@@ -15,7 +15,8 @@ from org import views as org_views
 from org.views import RestrictedView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
+    path('jara/', admin.site.urls),
     # home
     path('', core_views.home, name='home'),
     path('dar', TemplateView.as_view(template_name="giver/info.html")),
