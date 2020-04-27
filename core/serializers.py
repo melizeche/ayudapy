@@ -33,3 +33,9 @@ class DeviceSerializer(serializers.ModelSerializer):
             'browser_family',
             'browser_version'
         )
+
+
+class CitiesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HelpRequest
+        fields = ['city', 'city_code']
