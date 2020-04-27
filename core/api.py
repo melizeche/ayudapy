@@ -1,3 +1,5 @@
+from datetime import date, timedelta
+from django.http import JsonResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework import viewsets, status, mixins
@@ -25,7 +27,7 @@ class HelpRequestViewSet(viewsets.ModelViewSet):
     filter_backends = [InBBoxFilter, DjangoFilterBackend, DynamicSearchFilter, ]
     search_fields = ['title', 'phone',]
     filterset_fields = {
-            'added': ['gte', 'lte'],
+            'added': ['gte', 'lte', 'date'],
             'city': ['exact'],
     }
     bbox_filter_field = 'location'
@@ -45,6 +47,19 @@ class CitiesViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = HelpRequest.objects.all().values('city', 'city_code').distinct().order_by('city_code')
     pagination_class = None
     serializer_class = CitiesSerializer
+
+
+def StatsView(request):
+    today = date.today()
+    stats = dict(
+        total_active=HelpRequest.objects.filter(active=True, resolved=False).count(),
+        total_active_unique_phone=HelpRequest.objects.filter(active=True, resolved=False).distinct('phone').count(),
+        total_resolved=HelpRequest.objects.filter(resolved=True).count(),
+        today=HelpRequest.objects.filter(added__date=today, active=True).count(),
+        yesterday=HelpRequest.objects.filter(added__date=today - timedelta(days=1), active=True).count(),
+    )
+    return JsonResponse(stats, )
+
 
 """
 API to create/update/remove devices.
