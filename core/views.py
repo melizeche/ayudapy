@@ -55,7 +55,19 @@ def request_form(request):
             return redirect("pedidos-detail", id=new_help_request.id)
     else:
         form = HelpRequestForm()
-    return render(request, "help_request/create.html", {"form": form})
+
+    selected_categories = []
+    if form.is_bound:
+        for field in form.visible_fields():
+            if field.name == 'categories':
+                for category in field.subwidgets:
+                    if category.data['selected']:
+                        selected_categories.append(category.data['value'])
+                break
+
+    context = {"form": form, 'selected_categories': selected_categories}
+
+    return render(request, "help_request/create.html", context)
 
 
 def view_request(request, id):
