@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+
+{% block title %} Olla Popular #{{olla_popular.id}} - AyudaPy{% endblock %} 
+
+{% block fb-title %} Olla Popular #{{olla_popular.id}} - {{ olla_popular.title}} {% endblock %} 
+{% block fb-description %} {{olla_popular.message}} {% endblock %} 
+
+{% load leaflet_tags %} 
+{% load static %}
+{% load l10n %}
+{% load humanize %}
+{% block bread %}
+  <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
+    <ul>
+      <li>
+        <a href="/">
+          <span class="icon is-small">
+            <i class="fas fa-home" aria-hidden="true"></i>
+          </span>
+          <span>Inicio</span>
+        </a>
+      </li>
+      <li><a href="/dar">Info ayudar</a></li>
+      <li><a href="/ollas">Ollas Populares</a></li>
+      <li class="is-active"><a href="#" aria-current="page">Olla Popular #{{olla_popular.id}}</a></li>
+      </ul>
+  </nav>
+{% endblock bread %}
+{% block content%}
+<div class="columns is-centered">
+    <div class="column is-half">
+      {% if messages %}
+        {% for message in messages %}
+            <div class="notification is-success is-half" id='msg{{ forloop.counter }}'>
+                <button class="delete" onclick="document.getElementById('msg{{ forloop.counter }}').style.display = 'none';"></button>
+                    <span class="is-5">{{ message }}</span>
+                    <p><span class="icon is-medium"><i class="fas fa-hand-point-down"></i></span>
+                    Podés compartir tu Olla Popular haciendo click en los botones</p>
+            {% include 'includes/share_buttons.html'%}
+            </div>
+        {% endfor %}
+      {% endif %}
+        <div class="subtitle center is-3">
+      {% if olla_popular.resolved %}
+        <a class="has-text-primary" href="/ollas/{{olla_popular.id}}"><strike>Olla Popular #{{olla_popular.id}}</strike></a>
+      {% else %}
+        <a class="has-text-primary" href="/ollas/{{olla_popular.id}}">Olla Popular #{{olla_popular.id}}</a>
+      {% endif %}
+        </div>
+    </div>
+</div>
+<div class="columns is-centered">
+    <div class="column is-four-fifths">
+{% if not olla_popular.active %}
+      <div class="notification is-danger is-half" >
+        <span class="is-5"><p class="is-size-2">Olla Popular inactivo</p>
+          <p class="has-text-white-ter">Olla Popular dado de baja o repetido, solo 1 Olla Popular activo por número de teléfono</p>
+        </span>
+    </div>
+    {% if active_ollas %}
+    <p class="is-size-4">Pero encontramos esta Olla Popular activa con el mismo número: <li><a href="/ollas/{{ active_ollas.0.id }}">#{{ active_ollas.0.id }}</a></li> </p>
+    
+        {% if user.is_authenticated %}
+          Otras ollas activas del mismo numero
+          {% for act in active_ollas %}
+          <li><a href="/ollas/{{ act.id }}">#{{ act.id }}</a></li>
+          {% endfor %}
+        {% endif%}
+
+    {% endif %}
+{% else %}
+      {% if olla_popular.resolved %}
+      <div class="notification is-success is-half" >
+            <span class="is-5"><p class="is-size-2">¡Pedido ya resuelto!</p>
+              <p class="has-text-white-ter">El pedido de ayuda ya fue marcado como asistido</p>
+            </span>
+      </div>
+      {% endif %}
+        <div class="card">
+      {% if not olla_popular.resolved %}
+        <header class="card-header has-background-light is-light">
+            <p class="card-header-title is-size-4">{{ olla_popular.title}}</p>
+      {% else %}
+      <header class="card-header has-background-light is-light">
+            <p class="card-header-title is-size-4"><strike>{{ olla_popular.title}}</strike></p>
+      {% endif %}
+        </header>
+        <section class="card-content">
+                    <p class="has-text-right is-size-7" title="{{olla_popular.added|naturaltime}}">{{olla_popular.added}}</p>
+                    <p class="is-size-5">{{olla_popular.message|linebreaksbr}}</p>
+                    {% if olla_popular.picture %}
+                    <hr>
+                      <figure class="image is-small"> 
+                        <a href="/media/{{olla_popular.picture}}">
+                          <img class="has-ratio" src="{{thumbnail}}"/>
+                        </a>
+                      </figure>
+                    {% endif %}
+                    <hr>
+                    <p class="subtitle">Nombre:</p>
+                    <p class="title is-4">{{ olla_popular.name}}</p>
+                {% if not olla_popular.resolved %}
+                    <p class="subtitle">Contacto:</p>
+                    <p class="title is-4">
+                      <a href="tel:{{olla_popular.phone}}">
+                        <img src="data:image/jpeg;base64,{{phone_number_img}}">
+                      </a>
+                        &nbsp;
+                        <a href="https://wa.me/{{ whatsapp }}" target="_blank" class="button is-medium is-success is-outlined">
+                            <span class="icon is-small">
+                              <i class="fab fa-whatsapp"></i>
+                            </span>
+                            <span>Contactar vía WhatsApp</span>
+                        </a>
+                    </p>
+                    {% if olla_popular.address %}
+                      <p class="subtitle">Dirección:</p>
+                      <p class="title is-4">{{olla_popular.address}}</p>
+                    {% endif %}
+                    <p class="subtitle">Ciudad: </p>
+                    <p class="title is-4">
+                        <a href="/ollas_ciudad/{{olla_popular.city_code}}">{{olla_popular.city}}</a>
+                    </p>
+                     <p class="subtitle">Ubicación:
+                     {% leaflet_map "main" callback="main_map_init" %}
+                     </p>
+                     <a href="https://www.google.com/maps/search/?api=1&query={{olla_popular.location.y|unlocalize}},{{olla_popular.location.x|unlocalize}}" target="_blank">
+                       <button class="button is-medium is-fullwidth is-link is-light">
+                            <span class="icon is-medium">
+                            <i class="fas fa-map-marker-alt"></i>
+                            </span>
+                            <span>Abrir en Google Maps</span>
+                        </button>
+                     </a>
+                {% endif %}
+{% endif %}
+        </section>
+                    {% include 'includes/vote_button.html' %}
+
+    </div>
+
+                {% comment %} <article class="tile is-child is-box">
+                    <p class="title is-4">{{ olla_popular.title}}</p>
+                    <p class="subtitle">{{olla_popular.message|linebreaks}}</p>
+                    <hr>
+                    <p class="subtitle">Nombre:</p>
+                    <p class="title is-4">{{ olla_popular.name}}</p>
+                    <p class="subtitle">Contacto:</p>
+                    <p class="title is-4"><a href="tel:{{olla_popular.phone}}">{{olla_popular.phone}}</p></a>
+                    {% if olla_popular.address %}
+                      <p class="subtitle">Dirección:</p>
+                      <p class="title is-4">{{olla_popular.address}}</p>
+                    {% endif %}
+                    {% if olla_popular.picture %}
+                      <figure class="image is-small"> 
+                        <a href="/media/{{olla_popular.picture}}">
+                          <img class="has-ratio" src="{{thumbnail}}"/>
+                        </a>
+                      </figure>
+                    {% endif %}
+                     <p class="subtitle">Ubicación:
+                     {% leaflet_map "main" callback="main_map_init" %}
+                     </p>
+                     <a href="https://www.google.com/maps/search/?api=1&query={{olla_popular.location.y|unlocalize}},{{olla_popular.location.x|unlocalize}}" target="_blank">
+                       <button class="button is-medium is-fullwidth is-link is-light">
+                            <span class="icon is-medium">
+                            <i class="fas fa-map-marker-alt"></i>
+                            </span>
+                            <span>Abrir en Google Maps</span>
+                        </button>
+                     </a>
+                </article> {% endcomment %}
+                <hr>
+                <label class="label has-text-success">
+                    <span class="icon is-medium"><i class="fas fa-hand-point-down"></i></span>
+                        Podés compartir esta Olla Popular haciendo click en los botones
+                    </label>
+                <div class="is-fullwidth">
+                {% include 'includes/share_buttons.html'%}
+                </div>
+          
+
+        
+
+        <script type="text/javascript">
+            function main_map_init(map, options) {
+                // Use Leaflet API here
+                {% autoescape off %}
+                var lon = {{ olla_popular.location.x|unlocalize }};
+                var lat = {{ olla_popular.location.y|unlocalize }};
+                data = {{ olla_popular.location.geojson }}
+                {% endautoescape %}
+                    // zoom to point & add it to map
+                map.setView([lat, lon], 14);
+                //L.marker([lat, lon]).addTo(map);
+                L.geoJson(data).addTo(map)
+            }
+        </script>
+    </div>
+</div>
+{% endblock %}

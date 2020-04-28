@@ -11,6 +11,7 @@ from django.views.generic import TemplateView
 
 from conf import api_urls
 from core import views as core_views
+from ollas import views as ollas_views
 from org import views as org_views
 from org.views import RestrictedView
 
@@ -40,6 +41,12 @@ urlpatterns = [
     path('voluntario', TemplateView.as_view(template_name="volunteer/form.html"), name='voluntario'),
     # login/logout
     path('accounts/', include('django.contrib.auth.urls')),
+    # ollas populares
+    path('olla', TemplateView.as_view(template_name="olla_popular/info.html")),
+    path('nueva-olla', ollas_views.olla_form, name="olla-form"),
+    path('ollas/<int:id>', ollas_views.view_olla, name="olla-detail"),
+    path('ollas_ciudad/<slug:city>', ollas_views.list_by_city, name='ollas-by-city'),
+    path('ollas', ollas_views.list_ollas, name="olla-list"),
 ]
 urlpatterns += api_urls.urlpatterns
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
