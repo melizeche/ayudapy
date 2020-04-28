@@ -161,8 +161,6 @@ def list_requests(request):
 def list_by_city(request, city):
     list_help_requests = HelpRequest.objects.filter(city_code=city, active=True, resolved=False).order_by("-added")  # TODO limit this
     city = list_help_requests[0].city
-    query = list_help_requests
-    geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
 
     page = request.GET.get('page', 1)
     paginate_by = 25
@@ -174,5 +172,5 @@ def list_by_city(request, city):
     except EmptyPage:
         list_paginated = paginator.page(paginator.num_pages)
 
-    context = {"list_help": list_help_requests, "geo": geo, "city": city, "list_paginated": list_paginated}
+    context = {"list_help": list_help_requests, "city": city, "list_paginated": list_paginated}
     return render(request, "help_request/list_by_city.html", context)
