@@ -54,7 +54,8 @@ def view_donation_center(request, id):
 
 # Create your views here.
 def list_donation(request):
-    cities = [(i['city'], i['city_code']) for i in DonationCenter.objects.all().values('city', 'city_code').distinct().order_by('city_code')]
+    cities = [(i['city'], i['city_code']) for i in DonationCenter.objects.all(
+    ).values('city', 'city_code').distinct('city_code').order_by('city_code')]
     context = {"list_donation_cities": cities}
     return render(request, "donation_center/list.html", context)
 

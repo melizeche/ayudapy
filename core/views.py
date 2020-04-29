@@ -153,7 +153,8 @@ def view_faq(request):
 
 
 def list_requests(request):
-    cities = [(i['city'], i['city_code']) for i in HelpRequest.objects.all().values('city', 'city_code').distinct().order_by('city_code')]
+    cities = [(i['city'], i['city_code']) for i in HelpRequest.objects.all().values(
+        'city', 'city_code').distinct('city_code').order_by('city_code')]
     context = {"list_cities": cities}
     return render(request, "help_request/list.html", context)
 
