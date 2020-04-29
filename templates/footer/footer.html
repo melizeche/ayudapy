@@ -1,13 +1,14 @@
 {% load static %}
+{% load i18n %}
 <footer class="footer">
   <nav class="columns is-vcentered">
     <!-- Left side -->
     <div class="column is-one-fifth">
       <p class="level-item">
         <ul class="list is-fullwidth-mobile has-text-left-desktop has-text-centered-mobile">
-          <a class="list-item" href="{% url 'legal' %}">Términos de uso</a>
-          <a class="list-item" href="{% url 'general_faq' %}">Preguntas frecuentes</a>
-          <a class="list-item" href="{% url 'contact_us' %}">Contacto</a>
+          <a class="list-item" href="{% url 'legal' %}">{% trans "Terms of use" %}</a>
+          <a class="list-item" href="{% url 'general_faq' %}">{% trans "Frequently asked questions" %}</a>
+          <a class="list-item" href="{% url 'contact_us' %}">{% trans "Contact information" %}</a>
         </ul>
     </div>
 
@@ -33,9 +34,9 @@
     <div class="column is-one-fifth">
       <!-- <div class="level-item"> -->
       <p class="column is-size-7 has-text-centered has-text-right-desktop is-family-monospace">
-        Desarrollado por <a href="https://melizeche.com">Marcelo Elizeche</a>
-        <br> Código fuente libre bajo licencia <a href="https://opensource.org/licenses/GPL-3.0">GPLv3</a>
-        <br><a href="https://github.com/melizeche/ayudapy" target="_blank" rel="noopener noreferrer">Revisá el código <span class="icon"><i
+        {% trans "Created by" %} <a href="https://melizeche.com">Marcelo Elizeche</a>
+        <br> {% trans "License" %} <a href="https://opensource.org/licenses/GPL-3.0">GPLv3</a>
+        <br><a href="https://github.com/melizeche/ayudapy" target="_blank" rel="noopener noreferrer">{% trans "Source code" %}<span class="icon"><i
               class="fab fa-github" title="logo Github"></i></span></a>
       </p>
       <!-- </div> -->

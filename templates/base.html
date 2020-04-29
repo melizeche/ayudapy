@@ -1,6 +1,7 @@
 {% load static %}
 {% load leaflet_tags %}
 {% load pipeline %}
+{% load i18n %}
 <!DOCTYPE html>
 <html>
 
@@ -13,7 +14,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="{% block fb-url %} {{ request.build_absolute_uri }} {% endblock %}">
     <meta property="og:title" content="{% block fb-title %} AyudaPy {% endblock %}">
-    <meta property="og:description" content="{% block fb-description %} Herramienta para ayudar a las personas a ayudar {% endblock %}">
+    <meta property="og:description" content="{% block fb-description %} {% trans "A tool to help people help" %} {% endblock %}">
     <meta property="og:image" content="https://{% block fb-image %}{{ request.get_host }}{% static '/img/logo.jpg' %}{% endblock %}">
 
     <!-- Twitter -->

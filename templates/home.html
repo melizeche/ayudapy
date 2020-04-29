@@ -1,4 +1,5 @@
 {% extends 'base.html'%}
+{% load i18n %}
 
 {% block content %}
 <div class="is-fullhd">
@@ -8,8 +9,8 @@
                 <a href="/recibir">
                     <article class="tile is-child notification has-text-centered"
                         style="background-color: #ffb852; color: white;">
-                        <p class="title is-4">¡Necesito ayuda!</p>
-                        <p class="subtitle is-size-7">Publicá tu pedido para que la gente vea</p>
+			    <p class="title is-4">{% trans "I need help!" %}</p>
+                        <p class="subtitle is-size-7">{% trans "Post your request for people to see it" %}</p>
                     </article>
                 </a>
             </div>
@@ -17,8 +18,8 @@
                 <a href="/dar">
                     <article class="tile is-child notification has-text-centered"
                         style="background-color: #4cd36f; color: white;">
-                        <p class="title is-4">¡Quiero ayudar!</p>
-                        <p class="subtitle is-6 is-size-7">Encontrá a alguien cerca tuyo para ayudar</p>
+                        <p class="title is-4">{% trans "I want to help!" %}</p>
+                        <p class="subtitle is-6 is-size-7">{% trans "Find someone close to you to help" %}</p>
                     </article>
                 </a>
             </div>
@@ -27,16 +28,16 @@
            <div class="column is-3">
                 <a href="/donaciones">
                     <article class="tile is-child notification has-text-centered" style="background-color: #6e6bd1; color: white;">
-                        <p class="title is-4">¡Centros de Donación!</p>
-                        <p class="subtitle is-6 is-size-7">Mirá lo que podés donar y dónde</p>
+                        <p class="title is-4">{% trans "Donation Centers!" %}</p>
+			<p class="subtitle is-6 is-size-7">{% trans "See what you can donate and where" %}</p>
                     </article>
                 </a>
             </div>
             <div class="column is-3">
                 <a href="/voluntario/legal">
                     <article class="tile is-child notification has-text-centered" style="background-color: #f95d82; color: white;">
-                        <p class="title is-4">¡Quiero ser voluntario!</p>
-                        <p class="subtitle is-size-7">Ayudanos a ayudar</p>
+                        <p class="title is-4">{% trans "I want to volunteer!" %}</p>
+                        <p class="subtitle is-size-7">{% trans "Help us to help" %}</p>
                     </article>
                 </a>
             </div>
@@ -47,16 +48,16 @@
                 <a href="/dar">
                     <article class="tile is-child notification has-text-centered"
                         style="background-color: #4cd36f; color: white;">
-                        <p class="title is-4">¡Quiero ayudar!</p>
-                        <p class="subtitle is-6 is-size-7">Encontrá a alguien cerca tuyo para ayudar</p>
+			    <p class="title is-4">{% trans "I want to help!" %}</p>
+                        <p class="subtitle is-6 is-size-7">{% trans "Find someone close to you to help" %}</p>
                     </article>
                 </a>
             </div>
             <div class="column is-4">
                 <a href="/donaciones">
                     <article class="tile is-child notification has-text-centered" style="background-color: #6e6bd1; color: white;">
-                        <p class="title is-4">¡Centros de Donación!</p>
-                        <p class="subtitle is-6 is-size-7">Mirá lo que podés donar y dónde</p>
+			    <p class="title is-4">{% trans "Donation Centers!" %}</p>
+                        <p class="subtitle is-6 is-size-7">{% trans "See what you can donate and where" %}</p>
                     </article>
                 </a>
             </div>
@@ -64,8 +65,8 @@
                 <a href="/donar">
                     <article class="tile is-child notification has-text-centered"
                         style="background-color: #f95d82; color: white;">
-                        <p class="title is-4">¡Registrar Centro!</p>
-                        <p class="subtitle is-6 is-size-7">Registrá un Centro de Donación</p>
+			    <p class="title is-4">{% trans "Register a Center!" %}</p>
+                        <p class="subtitle is-6 is-size-7">{% trans "Register a Donation Center" %}</p>
                     </article>
                 </a>
             </div>

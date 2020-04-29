@@ -12,6 +12,7 @@ https://ayudapy.org
 - Django 2.2+
 - PostGIS 3.0+
 - PostgreSQL 11+
+- Gettext 0.19+
 
 ## Install
 
