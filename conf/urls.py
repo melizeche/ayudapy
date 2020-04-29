@@ -38,6 +38,8 @@ urlpatterns = [
     path('donaciones/<int:id>', org_views.view_donation_center, name='donaciones-detail'),
     # volunteer
     path('voluntario', TemplateView.as_view(template_name="volunteer/form.html"), name='voluntario'),
+    # stats
+    path('stats', core_views.stats, name='stats'),
     # login/logout
     path('accounts/', include('django.contrib.auth.urls')),
 ]
