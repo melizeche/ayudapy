@@ -1,6 +1,7 @@
 {% load static %}
 {% load leaflet_tags %}
 {% load pipeline %}
+{% load i18n %}
 <!DOCTYPE html>
 <html>
 
@@ -13,7 +14,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="{% block fb-url %} {{ request.build_absolute_uri }} {% endblock %}">
     <meta property="og:title" content="{% block fb-title %} AyudaPy {% endblock %}">
-    <meta property="og:description" content="{% block fb-description %} Herramienta para ayudar a las personas a ayudar {% endblock %}">
+    <meta property="og:description" content="{% block fb-description %} {% trans "A tool to help people help" %} {% endblock %}">
     <meta property="og:image" content="https://{% block fb-image %}{{ request.get_host }}{% static '/img/logo.jpg' %}{% endblock %}">
 
     <!-- Twitter -->
@@ -29,7 +30,10 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-162827339-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
         gtag('js', new Date());
         gtag('config', 'UA-162827339-1');
     </script>
@@ -124,12 +128,9 @@
             border-width: 5px;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/@vizuaalog/bulmajs@0.10.3/dist/file.js"
-        integrity="sha256-9BDCQ1iKLp8eEXxQD6U8StZ4V2On9KFEHDeHeXLZ/aE=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@vizuaalog/bulmajs@0.10.3/dist/modal.js"
-        integrity="sha256-HDcVnTQ5+DdyigrR4Xge4rxqguBi19XI7vNDhTDr+hs=" crossorigin="anonymous"></script>
-    <script
-        src="https://cdn.jsdelivr.net/combine/npm/moment@2.24.0/min/moment.min.js,npm/moment@2.24.0/locale/es.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@vizuaalog/bulmajs@0.10.3/dist/file.js" integrity="sha256-9BDCQ1iKLp8eEXxQD6U8StZ4V2On9KFEHDeHeXLZ/aE=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@vizuaalog/bulmajs@0.10.3/dist/modal.js" integrity="sha256-HDcVnTQ5+DdyigrR4Xge4rxqguBi19XI7vNDhTDr+hs=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/combine/npm/moment@2.24.0/min/moment.min.js,npm/moment@2.24.0/locale/es.js"></script>
     {% leaflet_js plugins="ALL" %}
     {% leaflet_css plugins="ALL" %}
     {% javascript 'leaflet-patch.js' %}
@@ -137,8 +138,7 @@
 
 <body class="Site">
     <section class="is-fullwidth" style="background-color: #33CCCC; height: 10%;">
-        <div
-            class="column is-8-mobile is-offset-2-mobile is-4-tablet is-offset-4-tablet is-2-desktop is-offset-5-desktop ">
+        <div class="column is-8-mobile is-offset-2-mobile is-4-tablet is-offset-4-tablet is-2-desktop is-offset-5-desktop ">
             <a href="/">
                 <figure class="image is-16by1">
                     <img src="{% static "img/logo2.svg" %}">
