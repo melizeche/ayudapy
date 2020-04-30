@@ -2,76 +2,76 @@
 {% load i18n %}
 {% block bread %}
 <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
-  <ul>
-    <li>
-      <a href="/">
-        <span class="icon is-small">
-          <i class="fas fa-home" aria-hidden="true"></i>
-        </span>
-        <span>{% trans "Home" %}</span>
-      </a>
-    </li>
-    <li class="is-active"><a href="#" aria-current="page">{% trans "Contact information" %}</a></li>
-  </ul>
+    <ul>
+        <li>
+            <a href="/">
+                <span class="icon is-small">
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                </span>
+                <span>{% trans "Home" %}</span>
+            </a>
+        </li>
+        <li class="is-active"><a href="#" aria-current="page">{% trans "Contact information" %}</a></li>
+    </ul>
 </nav>
 {% endblock bread %}
 {% block content%}
 
 <div class="columns is-centered center">
-  <div class="column">
-    <div class="tile is-ancestor center">
-      <div class="tile is-5 is-vertical is-parent">
-        <div class="tile is-child is-warning">
-          <p class="title">{% trans "Do you want to contact us?" %}</p>
-          <p class="has-text-justified">
-            <a href="/recibir"><b>{% trans "If you need help, click here." %}</b></a>
-          </p>
-          <br>
-          <p class="has-text-justified">
-	    {% blocktrans trimmed %}
-	    If you have any questions or queries about the platform, you can contact us through the social networks below, or send us an email to
-	    {% endblocktrans %}
-            <a href="mailto:contacto@ayudapy.org"><i>contacto@ayudapy.org</i></a>
-          </p>
-        </div>
+    <div class="column">
+        <div class="tile is-ancestor center">
+            <div class="tile is-5 is-vertical is-parent">
+                <div class="tile is-child is-warning">
+                    <p class="title">{% trans "Do you want to contact us?" %}</p>
+                    <p class="has-text-justified">
+                        <a href="/recibir"><b>{% trans "If you need help, click here." %}</b></a>
+                    </p>
+                    <br>
+                    <p class="has-text-justified">
+                        {% blocktrans trimmed %}
+                        If you have any questions or queries about the platform, you can contact us through the social networks below, or send us an email to
+                        {% endblocktrans %}
+                        <a href="mailto:contacto@ayudapy.org"><i>contacto@ayudapy.org</i></a>
+                    </p>
+                </div>
 
-          <div class="tile is-child buttons">
-          <a href="https://www.twitter.com/ayudapyorg" target="_blank" rel="noopener noreferrer">
-            <button class="button is-medium">
-              <span class="icon">
-                <i class="fab fa-twitter has-text-info"></i>
-              </span>
-              <!-- <span>@ayuda_py</span> -->
-            </button>
-          </a>
-          <a href="https://instagram.com/ayudapyorg" target="_blank" rel="noopener noreferrer">
-            <button class="button is-medium">
-              <span class="icon">
-                <i class="fab fa-instagram has-text-danger"></i>
-              </span>
-              <!-- <span>@ayuda.py</span> -->
-            </button>
-          </a>
-          <a href="https://www.facebook.com/ayudapyorg/" target="_blank" rel="noopener noreferrer">
-            <button class="button is-medium">
-              <span class="icon">
-                <i class="fab fa-facebook has-text-link"></i>
-              </span>
-              <!-- <span>@ayudapy</span> -->
-            </button>
-          </a>
-          <a href="https://www.youtube.com/channel/UCtRcDRTKA2uQCzfvlPNvbNQ" target="_blank" rel="noopener noreferrer">
-            <button class="button is-medium">
-              <span class="icon">
-                <i class="fab fa-youtube has-text-danger"></i>
-              </span>
-              <!-- <span>@ayudapy</span> -->
-            </button>
-          </a>
+                <div class="tile is-child buttons">
+                    <a href="https://www.twitter.com/ayudapyorg" target="_blank" rel="noopener noreferrer">
+                        <button class="button is-medium">
+                            <span class="icon">
+                                <i class="fab fa-twitter has-text-info"></i>
+                            </span>
+                            <!-- <span>@ayuda_py</span> -->
+                        </button>
+                    </a>
+                    <a href="https://instagram.com/ayudapyorg" target="_blank" rel="noopener noreferrer">
+                        <button class="button is-medium">
+                            <span class="icon">
+                                <i class="fab fa-instagram has-text-danger"></i>
+                            </span>
+                            <!-- <span>@ayuda.py</span> -->
+                        </button>
+                    </a>
+                    <a href="https://www.facebook.com/ayudapyorg/" target="_blank" rel="noopener noreferrer">
+                        <button class="button is-medium">
+                            <span class="icon">
+                                <i class="fab fa-facebook has-text-link"></i>
+                            </span>
+                            <!-- <span>@ayudapy</span> -->
+                        </button>
+                    </a>
+                    <a href="https://www.youtube.com/channel/UCtRcDRTKA2uQCzfvlPNvbNQ" target="_blank" rel="noopener noreferrer">
+                        <button class="button is-medium">
+                            <span class="icon">
+                                <i class="fab fa-youtube has-text-danger"></i>
+                            </span>
+                            <!-- <span>@ayudapy</span> -->
+                        </button>
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
 {% endblock %}
