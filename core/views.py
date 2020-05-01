@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.serializers import serialize
 from django.shortcuts import (
@@ -12,6 +13,7 @@ import json
 import datetime
 import base64
 
+from .api import StatsView
 from .forms import HelpRequestForm
 from .models import HelpRequest, HelpRequestOwner, FrequentAskedQuestion
 from .utils import text_to_image, image_to_base64
@@ -175,3 +177,9 @@ def list_by_city(request, city):
 
     context = {"list_help": list_help_requests, "city": city, "list_paginated": list_paginated}
     return render(request, "help_request/list_by_city.html", context)
+
+@login_required
+def stats(request):
+    datos = StatsView(request)
+    context = {"datos": json.loads(datos.content)}
+    return render(request, "stats/stats_index.html", context)
