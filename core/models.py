@@ -8,6 +8,7 @@ from django.db.models import F
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext as _
 from geopy.geocoders import Nominatim
 from simple_history.models import HistoricalRecords
 
@@ -65,44 +66,48 @@ class FrequentAskedQuestion(models.Model):
 
 class HelpRequest(models.Model):
     title = models.CharField(
-        "Título del pedido",
+        _("Request title"),
         max_length=200,
-        help_text="Descripción corta de qué estás necesitando",
+        help_text=_("Short description of what you need"),
         db_index=True,
     )
     message = models.TextField(
-        "Descripción del pedido",
+        _("Request Description"),
         help_text=mark_safe(
-            "Acá podés contar detalladamente lo que necesitás, <b>cuanto mejor cuentes tu situación es más probable que te quieran ayudar</b>"),
+            _("Here you can tell in detail what you need, <b> the better you tell your situation the more likely they want to help you </b>")),
         max_length=2000,
         null=True,
         db_index=True,
     )
-    name = models.CharField("Nombre y Apellido", max_length=200)
-    phone = models.CharField("Teléfono de contacto", max_length=30)
+    name = models.CharField(_("Name and surname"), max_length=200)
+    phone = models.CharField(_("Telephone contact"), max_length=30)
     address = models.CharField(
-        "Dirección",
-        help_text="Para ayudar a quien quiera ayudarte saber la dirección, ciudad, barrio, referencias, o cómo llegar",
+        _("Address"),
+        help_text=_("Your address, city, neighborhood, references, or how to get there, to get help"),
         max_length=400,
         blank=False,
         null=True,
     )
     location = models.PointField(
-        "Ubicación",
-        help_text=mark_safe('<p style="margin-bottom:5px;font-size:10px;">Seleccioná tu ubicación para que la gente pueda encontrarte, si no querés marcar tu casa una buena opción puede ser la comisaría más cercana o algún otro sitio público cercano.\
-            <br>Si tenés problemas con este paso <a href="#" class="is-link modal-button" data-target="#myModal" aria-haspopup="true">mirá esta ayuda</a></p><p id="div_direccion" style="font-size: 10px; margin-bottom: 5px;"></p>'),
+        _("Location"),
+        # XXX Get rid of all HTML out of the model
+        help_text=mark_safe('<p style="margin-bottom:5px;font-size:10px;">{}<br>{} <a href="#" class="is-link modal-button" data-target="#myModal" aria-haspopup="true">{}</a></p><p id="div_direccion" style="font-size: 10px; margin-bottom: 5px;"></p>'.format(
+        _("Select your location so that people can find you, if you do not want to mark your home a good option may be the nearest police station or some other nearby public place."),
+        _("If you have problems with this step"),
+        _("Check out this help")
+        )),
         srid=4326,
     )
     picture = models.ImageField(
-        "Foto",
+        _("Photo"),
         upload_to=rename_img,
-        help_text="Si querés podés adjuntar una foto relacionada con tu pedido, es opcional pero puede ayudar a que la gente entienda mejor tu situación",
+        help_text=_("In case you want you can attach a photo related to your request. It is optional but it can help people better understand your situation."),
         null=True,
         blank=True,
     )
     resolved = models.BooleanField(default=False, db_index=True)
     active = models.BooleanField(default=True, db_index=True)
-    added = models.DateTimeField("Agregado", auto_now_add=True, null=True, blank=True, db_index=True)
+    added = models.DateTimeField(_("Added"), auto_now_add=True, null=True, blank=True, db_index=True)
     upvotes = models.IntegerField(default=0, blank=True)
     downvotes = models.IntegerField(default=0, blank=True)
     city = models.CharField(max_length=50, blank=True, default="", editable=False)

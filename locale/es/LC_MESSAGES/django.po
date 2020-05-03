@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-30 01:09+0000\n"
+"POT-Creation-Date: 2020-05-02 20:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,12 +18,112 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: core/forms.py:15
+msgid "You forgot to mark your location on the map"
+msgstr "Te olvidaste de marcar tu ubicación en el mapa"
+
+#: core/forms.py:16 core/forms.py:21 core/models.py:96
+msgid "If you have problems with this step"
+msgstr "Si tenés problemas con este paso"
+
+#: core/forms.py:17 core/forms.py:22 core/models.py:97
+msgid "Check out this help"
+msgstr "Mirá esta ayuda"
+
+#: core/forms.py:20 core/models.py:95
+msgid ""
+"Select your location so that people can find you, if you do not want to mark "
+"your home a good option may be the nearest police station or some other "
+"nearby public place."
+msgstr ""
+"Seleccioná tu ubicación para que la gente pueda encontrarte, si no querés "
+"marcar tu casa una buena opción puede ser la comisaría más cercana o algún "
+"otro sitio público cercano."
+
+#: core/forms.py:42
+msgid "Example: I urgently need food for my family"
+msgstr "Ejemplo: Necesito de manera urgente víveres para mi familia"
+
+#: core/forms.py:49
+msgid ""
+"Example: Due to the current situation I am in need of masks and cleaning "
+"products, any help, even a minimal one, will help me. Thank you so much!"
+msgstr ""
+"Ejemplo: Por la situación actual estoy necesitando tapabocas y productos de "
+"limpieza, cualquier ayuda aunque sea mínima ya me va a ayudar. Muchas "
+"Gracias!"
+
+#: core/forms.py:59
+msgid "Registration already entered, cannot duplicate the same request."
+msgstr "Registro ya ingresado, no puede duplicar mismo pedido."
+
+#: core/models.py:69
+msgid "Request title"
+msgstr "Título del pedido"
+
+#: core/models.py:71
+msgid "Short description of what you need"
+msgstr "Descripción corta de qué estás necesitando"
+
+#: core/models.py:75
+msgid "Request Description"
+msgstr "Descripción del pedido"
+
+#: core/models.py:77
+msgid ""
+"Here you can tell in detail what you need, <b> the better you tell your "
+"situation the more likely they want to help you </b>"
+msgstr ""
+"Acá podés contar detalladamente lo que necesitás, <b>cuanto mejor cuentes tu "
+"situación es más probable que te quieran ayudar</b>"
+
+#: core/models.py:82
+msgid "Name and surname"
+msgstr "Nombre y Apellido"
+
+#: core/models.py:83
+msgid "Telephone contact"
+msgstr "Teléfono de contacto"
+
+#: core/models.py:85 templates/help_request/create.html:76
+msgid "Address"
+msgstr "Dirección"
+
+#: core/models.py:86
+msgid ""
+"Your address, city, neighborhood, references, or how to get there, to get "
+"help"
+msgstr ""
+"Para ayudar a quien quiera ayudarte saber la dirección, ciudad, barrio, "
+"referencias, o cómo llegar"
+
+#: core/models.py:92
+msgid "Location"
+msgstr "Ubicación"
+
+#: core/models.py:102
+msgid "Photo"
+msgstr "Foto"
+
+#: core/models.py:104
+msgid ""
+"In case you want you can attach a photo related to your request. It is "
+"optional but it can help people better understand your situation."
+msgstr ""
+"Si querés podés adjuntar una foto relacionada con tu pedido, es opcional "
+"pero puede ayudar a que la gente entienda mejor tu situación."
+
+#: core/models.py:110
+msgid "Added"
+msgstr "Agregado"
+
 #: templates/base.html:17
 msgid "A tool to help people help"
 msgstr "Herramienta para ayudar a las personas a ayudar"
 
 #: templates/footer/contact_us.html:11 templates/footer/general_faq.html:11
-#: templates/footer/legal.html:12
+#: templates/footer/legal.html:12 templates/help_request/create.html:13
+#: templates/help_request/info.html:11
 msgid "Home"
 msgstr "Inicio"
 
@@ -194,42 +294,198 @@ msgstr ""
 msgid "The source code is distributed under the license"
 msgstr "El código está distribuido fuente bajo la licencia"
 
-#: templates/home.html:12
+#: templates/help_request/create.html:16
+msgid "Information"
+msgstr "Info"
+
+#: templates/help_request/create.html:17 templates/help_request/info.html:15
+msgid "Receive help"
+msgstr "Recibir ayuda"
+
+#: templates/help_request/create.html:28
+msgid "Click here and I will try to find you"
+msgstr "Apreta acá voy a tratar de encontrarte"
+
+#: templates/help_request/create.html:35
+msgid "Send"
+msgstr "Enviar"
+
+#: templates/help_request/create.html:44
+msgid "Map instructions"
+msgstr "Ayuda con el mapa"
+
+#: templates/help_request/create.html:49
+#, python-format
+msgid ""
+"Move the map to your location and then click on the %(icon)s icon to mark "
+"your location on the map."
+msgstr ""
+"Mové el mapa hasta donde veas tu ubicación y luego apretá en el icono "
+"%(icon)s y luego marcá en el mapa el punto exacto."
+
+#: templates/help_request/create.html:54
+#, python-format
+msgid ""
+"If you make a mistake, you can click on the %(icon)s icon to move the "
+"marker. Once corrected click on Save."
+msgstr ""
+"Si te equivocaste podés apretar en el icono %(icon)s así podés mover el "
+"marcador, una vez corregido apretar 'Grabar'."
+
+#: templates/help_request/create.html:61
+msgid "Ok"
+msgstr "Ok"
+
+#: templates/help_request/create.html:77
+msgid "Area"
+msgstr "Zona"
+
+#: templates/help_request/create.html:78
+msgid "City"
+msgstr "Ciudad"
+
+#: templates/help_request/create.html:79
+msgid "State"
+msgstr "Departamento"
+
+#: templates/help_request/create.html:106
+msgid "Your location"
+msgstr "Tu ubicación"
+
+#: templates/help_request/create.html:107
+msgid "Move this marker to your location"
+msgstr "Mové este punto a tu ubicación"
+
+#: templates/help_request/create.html:121
+msgid "Found you!"
+msgstr "Te encontré, seguí completando!"
+
+#: templates/help_request/create.html:134
+msgid "Did not find you!"
+msgstr "No te encontré, seguí completando!"
+
+#: templates/help_request/create.html:136
+msgid "Can not find you, move the marker further below."
+msgstr "No puedo encontrarte, mové el punto mas abajo."
+
+#: templates/help_request/create.html:143
+msgid "Your browser does not support geolocation"
+msgstr "Tu navegador no soporta la geolocalización"
+
+#: templates/help_request/create.html:145
+msgid "Searching your location…"
+msgstr "Buscando tu ubicación…"
+
+#: templates/help_request/info.html:24
+msgid "Important"
+msgstr "Importante"
+
+#: templates/help_request/info.html:26
+#, python-format
+msgid ""
+"This is a citizen platform that depends totally on the good will of the "
+"people. There are no guarantees of help yes or yes. The information that one "
+"uploads will be 100%% publicly accessible."
+msgstr ""
+"Esta es una plataforma ciudadana que depende totalmente de la buena voluntad "
+"de la gente. No hay garantías de recibir ayuda sí o sí. La información que "
+"uno carga va a ser 100%% de acceso público."
+
+#: templates/help_request/info.html:31
+msgid "More Information"
+msgstr "Mas info acá"
+
+#: templates/help_request/info.html:34
+msgid "How does it work"
+msgstr "Cómo funciona"
+
+#: templates/help_request/info.html:36
+msgid ""
+"You have to upload your data: name, contact phone, city, location and what "
+"you need."
+msgstr ""
+"Tenés que cargar tu datos: nombre, teléfono de contacto, ciudad, ubicación y "
+"qué necesitás."
+
+#: templates/help_request/info.html:40
+msgid ""
+"allows you to share your request for help so that more people see it, as "
+"well as offering people who want to help an interface to find those who need "
+"it."
+msgstr ""
+"te permite compartir tu pedido de ayuda para que más gente lo vea, así como "
+"ofrecer a la gente que quiere ayudar una interfaz para buscar a los que "
+"necesitan."
+
+#: templates/help_request/info.html:49
+msgid "OK I understand, I want to continue"
+msgstr "OK entiendo, quiero continuar"
+
+#: templates/help_request/post.html:38
+msgid "Request category*"
+msgstr "Categoría del pedido*"
+
+#: templates/help_request/post.html:39
+msgid ""
+"Chose the categories of your request (you can select more than one category)"
+msgstr "Elegí las categorías del pedido (podés marcar varias categorías)"
+
+#: templates/help_request/post.html:49
+msgid "Provisions"
+msgstr "Víveres"
+
+#: templates/help_request/post.html:61
+msgid "Babies"
+msgstr "Bebés"
+
+#: templates/help_request/post.html:73
+msgid "Medicine"
+msgstr "Remedios"
+
+#: templates/help_request/post.html:85
+msgid "Cleaning"
+msgstr "Limpieza"
+
+#: templates/help_request/post.html:124
+msgid "Upload a photo"
+msgstr "Adjuntá una foto"
+
+#: templates/home.html:11
 msgid "I need help!"
 msgstr "¡Necesito ayuda!"
 
-#: templates/home.html:13
+#: templates/home.html:12
 msgid "Post your request for people to see it"
 msgstr "Publicá tu pedido para que la gente vea"
 
-#: templates/home.html:21 templates/home.html:51
+#: templates/home.html:19 templates/home.html:48
 msgid "I want to help!"
 msgstr "¡Quiero ayudar!"
 
-#: templates/home.html:22 templates/home.html:52
+#: templates/home.html:20 templates/home.html:49
 msgid "Find someone close to you to help"
 msgstr "Encontrá a alguien cerca tuyo para ayudar"
 
-#: templates/home.html:31 templates/home.html:59
+#: templates/home.html:29 templates/home.html:56
 msgid "Donation Centers!"
 msgstr "¡Centros de Donación!"
 
-#: templates/home.html:32 templates/home.html:60
+#: templates/home.html:30 templates/home.html:57
 msgid "See what you can donate and where"
 msgstr "Mirá lo que podés donar y dónde"
 
-#: templates/home.html:39
+#: templates/home.html:37
 msgid "I want to volunteer!"
 msgstr "¡Quiero ser voluntario!"
 
-#: templates/home.html:40
+#: templates/home.html:38
 msgid "Help us to help"
 msgstr "Ayudanos a ayudar"
 
-#: templates/home.html:68
+#: templates/home.html:64
 msgid "Register a Center!"
 msgstr "¡Registrar Centro!"
 
-#: templates/home.html:69
+#: templates/home.html:65
 msgid "Register a Donation Center"
 msgstr "Registrá un Centro de Donación"
