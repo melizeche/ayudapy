@@ -51,6 +51,7 @@ docker-compose exec app ./manage.py migrate
 ## Want to help?
 
 * Check/Ask GitHub issues https://github.com/melizeche/ayudapy/issues
+* If want you add/modify some string in the core app check the [Internationalization/i18n Guide](I18N-GUIDE.md)
 * Any doubts?: Ask in the dev channel @ayudapy_dev in Telegram
 
 ## Contributing
@@ -59,7 +60,7 @@ docker-compose exec app ./manage.py migrate
 2. Create your feature branch: `git checkout -b my-new-feature`
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
-5. Add your name and git account to the Contributors section in this `Readme.MD` :D
+5. Add your name and git account to the Contributors section in this `README.md` :D
 6. Submit a pull request to `dev` branch
 
 ## Author
@@ -100,9 +101,15 @@ docker-compose exec app ./manage.py migrate
 
 ## Apps / Related projects
 
-* iOS app https://github.com/pescode/AyudaPY-iOS
-* Android app https://gitlab.com/rubenlop88/ayudapy
-* Argentina Por Vos fork https://github.com/coderio-co/argentinaporvos
+* iOS app
+  * App: https://apps.apple.com/py/app/ayudapy/id1508566089
+  * Code: https://github.com/pescode/AyudaPY-iOS
+* Android app 
+  * App: https://play.google.com/store/apps/details?id=org.ayudapy
+  * Code: https://gitlab.com/rubenlop88/ayudapy
+* Argentina Por Vos fork 
+  * Site : https://argentinaporvos.org/
+  * Code: https://github.com/coderio-co/argentinaporvos
 
 ## License
 
