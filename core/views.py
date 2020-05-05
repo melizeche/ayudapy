@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.serializers import serialize
 from django.shortcuts import (
@@ -12,6 +13,7 @@ import json
 import datetime
 import base64
 
+from .api import StatsView
 from .forms import HelpRequestForm
 from .models import HelpRequest, HelpRequestOwner, FrequentAskedQuestion
 from .utils import text_to_image, image_to_base64
@@ -55,7 +57,19 @@ def request_form(request):
             return redirect("pedidos-detail", id=new_help_request.id)
     else:
         form = HelpRequestForm()
-    return render(request, "help_request/create.html", {"form": form})
+
+    selected_categories = []
+    if form.is_bound:
+        for field in form.visible_fields():
+            if field.name == 'categories':
+                for category in field.subwidgets:
+                    if category.data['selected']:
+                        selected_categories.append(category.data['value'])
+                break
+
+    context = {"form": form, 'selected_categories': selected_categories}
+
+    return render(request, "help_request/create.html", context)
 
 
 def view_request(request, id):
@@ -141,7 +155,8 @@ def view_faq(request):
 
 
 def list_requests(request):
-    cities = [(i['city'], i['city_code']) for i in HelpRequest.objects.all().values('city', 'city_code').distinct().order_by('city_code')]
+    cities = [(i['city'], i['city_code']) for i in HelpRequest.objects.all().values(
+        'city', 'city_code').distinct('city_code').order_by('city_code')]
     context = {"list_cities": cities}
     return render(request, "help_request/list.html", context)
 
@@ -149,8 +164,6 @@ def list_requests(request):
 def list_by_city(request, city):
     list_help_requests = HelpRequest.objects.filter(city_code=city, active=True, resolved=False).order_by("-added")  # TODO limit this
     city = list_help_requests[0].city
-    query = list_help_requests
-    geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
 
     page = request.GET.get('page', 1)
     paginate_by = 25
@@ -162,5 +175,11 @@ def list_by_city(request, city):
     except EmptyPage:
         list_paginated = paginator.page(paginator.num_pages)
 
-    context = {"list_help": list_help_requests, "geo": geo, "city": city, "list_paginated": list_paginated}
+    context = {"list_help": list_help_requests, "city": city, "list_paginated": list_paginated}
     return render(request, "help_request/list_by_city.html", context)
+
+@login_required
+def stats(request):
+    datos = StatsView(request)
+    context = {"datos": json.loads(datos.content)}
+    return render(request, "stats/stats_index.html", context)

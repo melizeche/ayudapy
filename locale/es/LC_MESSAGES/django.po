@@ -1,0 +1,491 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-02 20:35+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: core/forms.py:15
+msgid "You forgot to mark your location on the map"
+msgstr "Te olvidaste de marcar tu ubicación en el mapa"
+
+#: core/forms.py:16 core/forms.py:21 core/models.py:96
+msgid "If you have problems with this step"
+msgstr "Si tenés problemas con este paso"
+
+#: core/forms.py:17 core/forms.py:22 core/models.py:97
+msgid "Check out this help"
+msgstr "Mirá esta ayuda"
+
+#: core/forms.py:20 core/models.py:95
+msgid ""
+"Select your location so that people can find you, if you do not want to mark "
+"your home a good option may be the nearest police station or some other "
+"nearby public place."
+msgstr ""
+"Seleccioná tu ubicación para que la gente pueda encontrarte, si no querés "
+"marcar tu casa una buena opción puede ser la comisaría más cercana o algún "
+"otro sitio público cercano."
+
+#: core/forms.py:42
+msgid "Example: I urgently need food for my family"
+msgstr "Ejemplo: Necesito de manera urgente víveres para mi familia"
+
+#: core/forms.py:49
+msgid ""
+"Example: Due to the current situation I am in need of masks and cleaning "
+"products, any help, even a minimal one, will help me. Thank you so much!"
+msgstr ""
+"Ejemplo: Por la situación actual estoy necesitando tapabocas y productos de "
+"limpieza, cualquier ayuda aunque sea mínima ya me va a ayudar. Muchas "
+"Gracias!"
+
+#: core/forms.py:59
+msgid "Registration already entered, cannot duplicate the same request."
+msgstr "Registro ya ingresado, no puede duplicar mismo pedido."
+
+#: core/models.py:69
+msgid "Request title"
+msgstr "Título del pedido"
+
+#: core/models.py:71
+msgid "Short description of what you need"
+msgstr "Descripción corta de qué estás necesitando"
+
+#: core/models.py:75
+msgid "Request Description"
+msgstr "Descripción del pedido"
+
+#: core/models.py:77
+msgid ""
+"Here you can tell in detail what you need, <b> the better you tell your "
+"situation the more likely they want to help you </b>"
+msgstr ""
+"Acá podés contar detalladamente lo que necesitás, <b>cuanto mejor cuentes tu "
+"situación es más probable que te quieran ayudar</b>"
+
+#: core/models.py:82
+msgid "Name and surname"
+msgstr "Nombre y Apellido"
+
+#: core/models.py:83
+msgid "Telephone contact"
+msgstr "Teléfono de contacto"
+
+#: core/models.py:85 templates/help_request/create.html:76
+msgid "Address"
+msgstr "Dirección"
+
+#: core/models.py:86
+msgid ""
+"Your address, city, neighborhood, references, or how to get there, to get "
+"help"
+msgstr ""
+"Para ayudar a quien quiera ayudarte saber la dirección, ciudad, barrio, "
+"referencias, o cómo llegar"
+
+#: core/models.py:92
+msgid "Location"
+msgstr "Ubicación"
+
+#: core/models.py:102
+msgid "Photo"
+msgstr "Foto"
+
+#: core/models.py:104
+msgid ""
+"In case you want you can attach a photo related to your request. It is "
+"optional but it can help people better understand your situation."
+msgstr ""
+"Si querés podés adjuntar una foto relacionada con tu pedido, es opcional "
+"pero puede ayudar a que la gente entienda mejor tu situación."
+
+#: core/models.py:110
+msgid "Added"
+msgstr "Agregado"
+
+#: templates/base.html:17
+msgid "A tool to help people help"
+msgstr "Herramienta para ayudar a las personas a ayudar"
+
+#: templates/footer/contact_us.html:11 templates/footer/general_faq.html:11
+#: templates/footer/legal.html:12 templates/help_request/create.html:13
+#: templates/help_request/info.html:11
+msgid "Home"
+msgstr "Inicio"
+
+#: templates/footer/contact_us.html:14 templates/footer/footer.html:11
+#: templates/footer/general_faq.html:49
+msgid "Contact information"
+msgstr "Contacto"
+
+#: templates/footer/contact_us.html:25
+msgid "Do you want to contact us?"
+msgstr "¿Deseas contactarnos?"
+
+#: templates/footer/contact_us.html:27
+msgid "If you need help, click here."
+msgstr "Si tenés necesidad de pedir ayuda, tocá o hace clic acá."
+
+#: templates/footer/contact_us.html:31
+msgid ""
+"If you have any questions or queries about the platform, you can contact us "
+"through the social networks below, or send us an email to"
+msgstr ""
+"Si tenés alguna duda o consulta sobre la plataforma, podés contactarnos a "
+"través de las redes sociales que están más abajo, o envianos un correo a"
+
+#: templates/footer/footer.html:9 templates/footer/legal.html:16
+msgid "Terms of use"
+msgstr "Términos de uso"
+
+#: templates/footer/footer.html:10 templates/footer/general_faq.html:14
+msgid "Frequently asked questions"
+msgstr "Preguntas frecuentes"
+
+#: templates/footer/footer.html:37
+msgid "Created by"
+msgstr "Desarrollado por"
+
+#: templates/footer/footer.html:38
+msgid "License"
+msgstr "Código fuente libre bajo licencia"
+
+#: templates/footer/footer.html:39
+msgid "Source code"
+msgstr "Revisá el código"
+
+#: templates/footer/general_faq.html:45
+msgid "Under development"
+msgstr "En desarrollo"
+
+#: templates/footer/general_faq.html:48
+msgid "This section is in development, for any questions visit"
+msgstr "Esta sección se encuentra en desarrollo, cualquier consulta vaya a"
+
+#: templates/footer/legal.html:29
+msgid "LEGAL WARNING"
+msgstr "AVISO LEGAL"
+
+#: templates/footer/legal.html:34
+msgid ""
+"By accessing and using the website and the AyudaPy database the user "
+"acknowledges the legally binding effect of the following conditions of use "
+"and the disclaimer."
+msgstr ""
+"Al acceder y utilizar la página web y a la base de datos de AyudaPy, el "
+"usuario reconoce el efecto legalmente vinculante de las siguientes "
+"condiciones de uso y de la cláusula de descargo de responsabilidad."
+
+#: templates/footer/legal.html:39
+msgid ""
+"In case the user does not agree with these conditions of use, he will not be "
+"able to access the AyudaPy website."
+msgstr ""
+"En caso de que el usuario no esté de acuerdo con estas condiciones de uso, "
+"no podrá acceder a la página web de AyudaPy."
+
+#: templates/footer/legal.html:45
+msgid "Information published on the website"
+msgstr "Información publicada en la página web"
+
+#: templates/footer/legal.html:48
+msgid ""
+"The information provided by AyudaPy is based exclusively on the "
+"contributions provided by users of the same voluntarily; therefore, the "
+"responsibility regarding the veracity of the data published in this public "
+"list corresponds to each user who makes use of it."
+msgstr ""
+"La información provista por AyudaPy se basa exclusivamente en los aportes "
+"suministrados por los usuarios de la misma voluntarimente; por lo tanto, la "
+"responsabilidad acerca de la veracidad de los datos publicados en la "
+"presente lista pública corresponde a cada usuario que haga uso de ella."
+
+#: templates/footer/legal.html:55
+msgid "Liability"
+msgstr "Descargo de responsabilidad"
+
+#: templates/footer/legal.html:58
+msgid ""
+"AyudaPy is not responsible for any erroneous, incomplete or outdated "
+"information published on this website."
+msgstr ""
+"AyudaPy no se hace responsable de ninguna información errónea, incompleta o "
+"desactualizada publicada en esta página web."
+
+#: templates/footer/legal.html:63
+msgid ""
+"AyudaPy assumes no responsibility for the malfunction of the functions of "
+"the website."
+msgstr ""
+"AyudaPy no asume ninguna responsabilidad por el mal funcionamiento de las "
+"funciones de la página web."
+
+#: templates/footer/legal.html:68
+msgid ""
+"Those liability claims against AyudaPy that refer to direct or indirect "
+"material or intellectual damages and that have been caused by access to this "
+"website and its contents and / or other websites linked to it and its "
+"contents are expressly excluded, as well as for the use or non-use of the "
+"information represented or for the use of erroneous or incomplete "
+"information."
+msgstr ""
+"Quedan expresamente excluidas aquellas demandas de responsabilidad contra "
+"AyudaPy que se refieran a daños directos o indirectos de índole material o "
+"intelectual y que hayan sido causados por el acceso a esta página web y a "
+"sus contenidos y/o a otras páginas web enlazadas en la misma y a sus "
+"contenidos, así como por la utilización o la no utilización de la "
+"información representada y/o por la utilización de información errónea o "
+"incompleta."
+
+#: templates/footer/legal.html:76
+msgid ""
+"AyudaPy is designed to prevent Cross-Site Request Forgery (CSRF) attacks "
+"related to data transmission."
+msgstr ""
+"AyudaPy esta diseñada para evitar ataques de Cross-Site Request Forgery "
+"(CSRF) en relación a la transmisión de datos."
+
+#: templates/footer/legal.html:80
+msgid ""
+"However, data transmission over the internet is not completely secure. "
+"Therefore, the information published on the AyudaPy website may be subject "
+"to alterations or interruptions as well as breaches of security and "
+"confidentiality. For this reason, AyudaPy assumes no responsibility for the "
+"receipt / non-receipt or processing / non-processing of any information that "
+"the user has transmitted to and from AyudaPy through this website or through "
+"an electronic address."
+msgstr ""
+"Sin embargo, la transmisión de datos por internet no es completamente "
+"segura. Por lo tanto, la información publicada en la página web de AyudaPy "
+"puede verse sometida a alteracioneso interrupciones así como a violaciones "
+"de la seguridad y la confidencialidad. Por este motivo, AyudaPy no asume "
+"ninguna responsabilidad por la recepción/no recepción o el procesamiento/no "
+"procesamiento de cualquier información que el usuario haya transmitido desde "
+"y aAyudaPy a través de la presente página web o a través de una dirección "
+"electrónica."
+
+#: templates/footer/legal.html:90
+msgid "Intellectual property"
+msgstr "Propiedad intelectual"
+
+#: templates/footer/legal.html:92
+msgid ""
+"The content of this web page and the data of AyudaPy are distributed under "
+"the license"
+msgstr ""
+"El contenido de esta página web y los datos de AyudaPy están distribuidos "
+"bajo la licencia"
+
+#: templates/footer/legal.html:98
+msgid "The source code is distributed under the license"
+msgstr "El código está distribuido fuente bajo la licencia"
+
+#: templates/help_request/create.html:16
+msgid "Information"
+msgstr "Info"
+
+#: templates/help_request/create.html:17 templates/help_request/info.html:15
+msgid "Receive help"
+msgstr "Recibir ayuda"
+
+#: templates/help_request/create.html:28
+msgid "Click here and I will try to find you"
+msgstr "Apreta acá voy a tratar de encontrarte"
+
+#: templates/help_request/create.html:35
+msgid "Send"
+msgstr "Enviar"
+
+#: templates/help_request/create.html:44
+msgid "Map instructions"
+msgstr "Ayuda con el mapa"
+
+#: templates/help_request/create.html:49
+#, python-format
+msgid ""
+"Move the map to your location and then click on the %(icon)s icon to mark "
+"your location on the map."
+msgstr ""
+"Mové el mapa hasta donde veas tu ubicación y luego apretá en el icono "
+"%(icon)s y luego marcá en el mapa el punto exacto."
+
+#: templates/help_request/create.html:54
+#, python-format
+msgid ""
+"If you make a mistake, you can click on the %(icon)s icon to move the "
+"marker. Once corrected click on Save."
+msgstr ""
+"Si te equivocaste podés apretar en el icono %(icon)s así podés mover el "
+"marcador, una vez corregido apretar 'Grabar'."
+
+#: templates/help_request/create.html:61
+msgid "Ok"
+msgstr "Ok"
+
+#: templates/help_request/create.html:77
+msgid "Area"
+msgstr "Zona"
+
+#: templates/help_request/create.html:78
+msgid "City"
+msgstr "Ciudad"
+
+#: templates/help_request/create.html:79
+msgid "State"
+msgstr "Departamento"
+
+#: templates/help_request/create.html:106
+msgid "Your location"
+msgstr "Tu ubicación"
+
+#: templates/help_request/create.html:107
+msgid "Move this marker to your location"
+msgstr "Mové este punto a tu ubicación"
+
+#: templates/help_request/create.html:121
+msgid "Found you!"
+msgstr "Te encontré, seguí completando!"
+
+#: templates/help_request/create.html:134
+msgid "Did not find you!"
+msgstr "No te encontré, seguí completando!"
+
+#: templates/help_request/create.html:136
+msgid "Can not find you, move the marker further below."
+msgstr "No puedo encontrarte, mové el punto mas abajo."
+
+#: templates/help_request/create.html:143
+msgid "Your browser does not support geolocation"
+msgstr "Tu navegador no soporta la geolocalización"
+
+#: templates/help_request/create.html:145
+msgid "Searching your location…"
+msgstr "Buscando tu ubicación…"
+
+#: templates/help_request/info.html:24
+msgid "Important"
+msgstr "Importante"
+
+#: templates/help_request/info.html:26
+#, python-format
+msgid ""
+"This is a citizen platform that depends totally on the good will of the "
+"people. There are no guarantees of help yes or yes. The information that one "
+"uploads will be 100%% publicly accessible."
+msgstr ""
+"Esta es una plataforma ciudadana que depende totalmente de la buena voluntad "
+"de la gente. No hay garantías de recibir ayuda sí o sí. La información que "
+"uno carga va a ser 100%% de acceso público."
+
+#: templates/help_request/info.html:31
+msgid "More Information"
+msgstr "Mas info acá"
+
+#: templates/help_request/info.html:34
+msgid "How does it work"
+msgstr "Cómo funciona"
+
+#: templates/help_request/info.html:36
+msgid ""
+"You have to upload your data: name, contact phone, city, location and what "
+"you need."
+msgstr ""
+"Tenés que cargar tu datos: nombre, teléfono de contacto, ciudad, ubicación y "
+"qué necesitás."
+
+#: templates/help_request/info.html:40
+msgid ""
+"allows you to share your request for help so that more people see it, as "
+"well as offering people who want to help an interface to find those who need "
+"it."
+msgstr ""
+"te permite compartir tu pedido de ayuda para que más gente lo vea, así como "
+"ofrecer a la gente que quiere ayudar una interfaz para buscar a los que "
+"necesitan."
+
+#: templates/help_request/info.html:49
+msgid "OK I understand, I want to continue"
+msgstr "OK entiendo, quiero continuar"
+
+#: templates/help_request/post.html:38
+msgid "Request category*"
+msgstr "Categoría del pedido*"
+
+#: templates/help_request/post.html:39
+msgid ""
+"Chose the categories of your request (you can select more than one category)"
+msgstr "Elegí las categorías del pedido (podés marcar varias categorías)"
+
+#: templates/help_request/post.html:49
+msgid "Provisions"
+msgstr "Víveres"
+
+#: templates/help_request/post.html:61
+msgid "Babies"
+msgstr "Bebés"
+
+#: templates/help_request/post.html:73
+msgid "Medicine"
+msgstr "Remedios"
+
+#: templates/help_request/post.html:85
+msgid "Cleaning"
+msgstr "Limpieza"
+
+#: templates/help_request/post.html:124
+msgid "Upload a photo"
+msgstr "Adjuntá una foto"
+
+#: templates/home.html:11
+msgid "I need help!"
+msgstr "¡Necesito ayuda!"
+
+#: templates/home.html:12
+msgid "Post your request for people to see it"
+msgstr "Publicá tu pedido para que la gente vea"
+
+#: templates/home.html:19 templates/home.html:48
+msgid "I want to help!"
+msgstr "¡Quiero ayudar!"
+
+#: templates/home.html:20 templates/home.html:49
+msgid "Find someone close to you to help"
+msgstr "Encontrá a alguien cerca tuyo para ayudar"
+
+#: templates/home.html:29 templates/home.html:56
+msgid "Donation Centers!"
+msgstr "¡Centros de Donación!"
+
+#: templates/home.html:30 templates/home.html:57
+msgid "See what you can donate and where"
+msgstr "Mirá lo que podés donar y dónde"
+
+#: templates/home.html:37
+msgid "I want to volunteer!"
+msgstr "¡Quiero ser voluntario!"
+
+#: templates/home.html:38
+msgid "Help us to help"
+msgstr "Ayudanos a ayudar"
+
+#: templates/home.html:64
+msgid "Register a Center!"
+msgstr "¡Registrar Centro!"
+
+#: templates/home.html:65
+msgid "Register a Donation Center"
+msgstr "Registrá un Centro de Donación"

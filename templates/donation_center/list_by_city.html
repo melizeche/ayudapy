@@ -96,27 +96,41 @@
       }
 
       function main_map_init(map, options) {
-            // Use Leaflet API here
-            this.map = map
-            {% autoescape off %}
-            data = {{ geo }}
-          {% endautoescape %}
-
-          map.setMaxZoom(17)
-          map.addControl(new L.Control.Fullscreen({
-            title: {
-              'false': 'Ver en Pantalla Completa',
-              'true': 'Salir de Pantalla Completa'
+          this.map = map
+          var getData = new Promise(function(resolve, reject) {
+            var city = window.location.pathname.split("/")[2]
+            var xmlRequest = new XMLHttpRequest();
+            xmlRequest.open('GET', "/api/v1/donationcentersgeo/?search="+city+"&search_fields=city_code", true);
+            xmlRequest.onload = function(){
+              if (this.status >= 200 && this.status < 300) { 
+                resolve(this.response); } 
+              else { 
+                  reject(this.statusText); 
+              }
             }
-          }));
+            xmlRequest.send();
+          });
 
-          //We check the switch status
-          var isGroupMarksActive = JSON.parse(localStorage.getItem("group_markers_setting"));
-          if (!isGroupMarksActive) {
-            loadMarkers(map, data);//load markers without clustering
-          } else {
-            loadMarkersAndGroup(map, data);
-          }
+          
+          getData.then(function(result) {
+            data = JSON.parse(result)
+            console.log(data)
+            map.setMaxZoom(17)
+            map.addControl(new L.Control.Fullscreen({
+              title: {
+                'false': 'Ver en Pantalla Completa',
+                'true': 'Salir de Pantalla Completa',
+              }}
+            ));
+
+            //We check the switch status
+            var isGroupMarksActive = JSON.parse(localStorage.getItem("group_markers_setting"));
+            if (!isGroupMarksActive) {
+              loadMarkers(map, data);//load markers without clustering
+            } else {
+              loadMarkersAndGroup(map, data);
+            }
+          });
       }
 
       function loadMarkersAndGroup(map, data) {
@@ -124,9 +138,9 @@
         var markerClusters = L.markerClusterGroup();
         var layerGroup = L.geoJSON(data, {
           onEachFeature: function (feature, layer) {
-            var popup = '<a class="subtitle" href="/donaciones/' + feature.properties.pk + '"><h1>Donación #' + feature.properties.pk +
+            var popup = '<a class="subtitle" href="/donaciones/' + feature.properties.pk + '"><h1>Centro #' + feature.properties.pk +
               '</h1></a><p class="has-text-weight-bold">Nombre: ' + feature.properties.name + '</p>' +
-              '<a class="is-size-6" href="/donaciones/' + feature.properties.pk + '">Ver Donación</a>';
+              '<a class="is-size-6" href="/donaciones/' + feature.properties.pk + '">Ver Centro</a>';
             layer.bindPopup(popup);
 
             markerClusters.addLayer(layer);
@@ -140,9 +154,9 @@
         console.log("loadMarkers");
         var layerGroup = L.geoJSON(data, {
           onEachFeature: function (feature, layer) {
-            var popup = '<a class="subtitle" href="/donaciones/' + feature.properties.pk + '"><h1>Donación #' + feature.properties.pk +
+            var popup = '<a class="subtitle" href="/donaciones/' + feature.properties.pk + '"><h1>Centro #' + feature.properties.pk +
               '</h1></a><p class="has-text-weight-bold">Nombre: ' + feature.properties.name + '</p><p>' +
-              '<a class="is-size-6" href="/donaciones/' + feature.properties.pk + '">Ver Donación</a>';
+              '<a class="is-size-6" href="/donaciones/' + feature.properties.pk + '">Ver Centro</a>';
             layer.bindPopup(popup);
           }
         }).addTo(map);

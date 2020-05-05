@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% load leaflet_tags %}
 {% load static %}
 {% block bread %}
@@ -9,11 +10,11 @@
             <span class="icon is-small">
               <i class="fas fa-home" aria-hidden="true"></i>
             </span>
-            <span>Inicio</span>
+            <span>{% trans "Home" %}</span>
           </a>
         </li>
-        <li><a href="/recibir">Info</a></li>
-        <li class="is-active"><a href="#" aria-current="page">Recibir ayuda</a></li>
+        <li><a href="/recibir">{% trans "Information" %}</a></li>
+        <li class="is-active"><a href="#" aria-current="page">{% trans "Receive help" %}</a></li>
     </ul>
 </nav>
 {% endblock bread %} 
@@ -24,14 +25,14 @@
         <span class="icon is-small">
           <i class="fas fa-location-arrow"></i>
         </span>
-        <span>Apreta acá voy a tratar de encontrarte</span>
+        <span>{% trans "Click here and I will try to find you" %}</span>
       </button>
       <p id="status"></p>
       <form enctype="multipart/form-data" method="post" action="/solicitar">
         {% csrf_token %}
         {% include 'help_request/post.html' with form=form %}
         <div class="control">
-          <button id="submit" class="button is-success is-fullwidth">Enviar</button>
+          <button id="submit" class="button is-success is-fullwidth">{% trans "Send" %}</button>
         </div>
       </form>
 
@@ -40,16 +41,24 @@
   <div class="modal-background"></div>
     <div class="modal-card">
         <header class="modal-card-head">
-            <p class="modal-card-title">Ayuda con el mapa</p>
+            <p class="modal-card-title">{% trans "Map instructions" %}</p>
             <button class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
-            <li class="is-size-7"> Mové el mapa hasta donde veas tu ubicación y luego apretá en el icono <i class="fas fa-map-marker-alt"></i> y luego marcá en el mapa el punto exacto</li>
-            <li class="is-size-7"> Si te equivocaste podés apretar en el icono <i class="fas fa-edit"></i> así podés mover el marcador, una vez corregido apretar 'Grabar' </li>
-                <p class="image"><img src="{% static "img/ayudamapa.gif" %}" alt=""></p>
+            <li class="is-size-7">
+            {% blocktrans trimmed with icon="<i class=\"fas fa-map-marker-alt\"></i>" %}
+	    Move the map to your location and then click on the {{ icon }} icon to mark your location on the map.
+	    {% endblocktrans %}
+	    </li>
+            <li class="is-size-7">
+            {% blocktrans trimmed with icon="<i class=\"fas fa-edit\"></i>" %}
+	    If you make a mistake, you can click on the {{ icon }} icon to move the marker. Once corrected click on Save.
+	    {% endblocktrans %}
+	    </li>
+            <p class="image"><img src="{% static "img/ayudamapa.gif" %}" alt=""></p>
         </section>
         <footer class="modal-card-foot">
-             <button class="button is-success close">Ok</button>
+             <button class="button is-success close">{% trans "Ok" %}</button>
         </footer>
     </div>
 </div>
@@ -64,9 +73,10 @@
           const direccion = data.data;
 
           document.getElementById('div_direccion').innerHTML = `
-          <span><b>Calles</b>:${direccion.direccion || ''}</span><br /> 
-          <span><b>Barrio</b>:${direccion.localidad || '' }</span><br /> 
-          <span><b>Ciudad</b>:${direccion.distrito || ''} <span> <span><b>Departamento</b>:${direccion.departamento || ''}</span>`;
+          <span><b>{% trans "Address" %}</b>:${direccion.direccion || ''}</span><br /> 
+          <span><b>{% trans "Area" %}</b>:${direccion.localidad || '' }</span><br /> 
+          <span><b>{% trans "City" %}</b>:${direccion.distrito || ''} <span>
+	  <span><b>{% trans "State" %}</b>:${direccion.departamento || ''}</span>`;
           document.getElementById('id_address').value = `${direccion.direccion || ''} ${direccion.localidad || '' } ${direccion.distrito || ''} ${direccion.departamento || ''}`;
           resolve(true)
         })
@@ -93,8 +103,8 @@
       
       await getDireccion(longitude, latitude);
 
-      const you = L.marker([latitude, longitude], {draggable: true, opacity: 0.9, title:'Tu ubicación'}).addTo(maps[0]);
-      you.bindPopup('<b>Mové este punto a tu ubicación !</b>').openPopup();
+      const you = L.marker([latitude, longitude], {draggable: true, opacity: 0.9, title:'{% trans "Your location" %}'}).addTo(maps[0]);
+      you.bindPopup('<b>{% trans "Move this marker to your location" %}</b>').openPopup();
       
       maps[0].setView([latitude, longitude], 10);
 
@@ -108,7 +118,7 @@
       const latitude  = position.coords.latitude;
       const longitude = position.coords.longitude;
 
-      boton.textContent = 'Te encontré, seguí completando !';
+      boton.textContent = '{% trans "Found you!" %}';
       boton.disabled = true;
       status.textContent = '';
 
@@ -121,18 +131,18 @@
       const latitude  = -25.282077;
       const longitude = -57.635131;
 
-      boton.textContent = 'No te encontré, seguí completando !';
+      boton.textContent = '{% trans "Did not find you!" %}';
       boton.disabled = true;
-      status.textContent = 'No puedo encontrarte, mové el punto mas abajo.';
+      status.textContent = '{% trans "Can not find you, move the marker further below." %}';
 
       addMarker(longitude, latitude);
       
     }
 
     if (!navigator.geolocation) {
-      status.textContent = 'Tu navegador no soporta la geolocalización';
+      status.textContent = '{% trans "Your browser does not support geolocation" %}';
     } else {
-      status.textContent = 'Buscando tu ubicación…';
+      status.textContent = '{% trans "Searching your location…" %}';
       navigator.geolocation.getCurrentPosition(success, error);
     }
 
