@@ -49,7 +49,7 @@ class CitiesViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = CitiesSerializer
 
 
-def StatsView(request):
+def StatsSummaryView(request):
     today = date.today()
     stats = dict(
         total_active=HelpRequest.objects.filter(active=True, resolved=False).count(),
