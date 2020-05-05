@@ -27,6 +27,7 @@ pip install --upgrade pip
 pip install -r requirements.txt
 cp conf/.env.example conf/.env # you should edit this file with your configuration
 ./manage.py migrate
+./manage.py compilemessages
 ./manage.py runserver
 ```
 
