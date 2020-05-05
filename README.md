@@ -47,6 +47,11 @@ docker-compose up -d --build
 docker-compose exec app ./manage.py migrate
 ```
 
+## Want to help?
+
+* Check/Ask GitHub issues https://github.com/melizeche/ayudapy/issues
+* Any doubts?: Ask in the dev channel @ayudapy_dev in Telegram
+
 ## Contributing
 
 1. Fork it!
@@ -63,7 +68,6 @@ docker-compose exec app ./manage.py migrate
 ## Contributors / Thanks
 
 - Agustin Gomez Mansilla https://github.com/gomezag
-- Agustín Gómez https://github.com/gomezag
 - Alejandro Duque 🇨🇴 https://github.com/aleducode
 - Axel Ferreira https://github.com/axelampro
 - Blas Isaias Fernández https://github.com/BlasFerna
@@ -90,13 +94,14 @@ docker-compose exec app ./manage.py migrate
 ## TODO
 
 - Documentation
-- Support geolocation
-- Captcha
-- ~~Create models~~
-- Users(?)
-- Test
+- Tests
+- See Github Issues https://github.com/melizeche/ayudapy/issues
 
-More in [TODO.md](TODO.md)
+## Apps / Related projects
+
+* iOS app https://github.com/pescode/AyudaPY-iOS
+* Android app https://gitlab.com/rubenlop88/ayudapy
+* Argentina Por Vos fork https://github.com/coderio-co/argentinaporvos
 
 ## License
 
