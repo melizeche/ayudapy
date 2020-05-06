@@ -87,7 +87,12 @@ def StatsDailyView(request):
                                                    .annotate(total=Count('date')) \
                                                    .order_by('date') \
                                                    .values('date', 'total') 
-    total_resolved = HelpRequest.objects.filter(resolved=True, added__gte=date_from, added__lte=date_to).annotate(date = TruncDate('added')).values('date').annotate(total=Count('date')).order_by('date').values('date', 'total')
+    total_resolved = HelpRequest.objects.filter(resolved=True, added__gte=date_from, added__lte=date_to) \
+                                        .annotate(date = TruncDate('added')) \
+                                        .values('date') \
+                                        .annotate(total=Count('date')) \
+                                        .order_by('date') \
+                                        .values('date', 'total')
     stats = dict(
         total_active = list(total_active),
         total_active_unique_phone = list(total_active_unique_phone),
