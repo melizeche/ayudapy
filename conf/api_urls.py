@@ -17,6 +17,7 @@ router.register(r'donationcentersgeo', org_api.DonationCenterGeoViewSet)
 
 urlpatterns = [
     path(f"{PREFIX}/", include(router.urls)),
-    path(f"{PREFIX}/stats-summary", core_api.StatsSummaryView)
+    path(f"{PREFIX}/stats-summary", core_api.StatsSummaryView),
+    path(f"{PREFIX}/stats-daily", core_api.StatsDailyView)
 ]
 
