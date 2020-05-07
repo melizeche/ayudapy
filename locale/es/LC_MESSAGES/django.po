@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-02 20:35+0000\n"
+"POT-Creation-Date: 2020-05-07 02:17-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -489,3 +489,43 @@ msgstr "¡Registrar Centro!"
 #: templates/home.html:65
 msgid "Register a Donation Center"
 msgstr "Registrá un Centro de Donación"
+
+#: templates/stats/dashboard.html:16
+#, fuzzy
+#| msgid "State"
+msgid "Stats"
+msgstr "Departamento"
+
+#: templates/stats/dashboard.html:26
+msgid "Requests summary"
+msgstr "Total de pedidos"
+
+#: templates/stats/dashboard.html:30
+msgid "Active"
+msgstr "Activos"
+
+#: templates/stats/dashboard.html:36
+msgid "Unique"
+msgstr "Únicos"
+
+#: templates/stats/dashboard.html:44
+msgid "Resolved"
+msgstr "Atendidos"
+
+#: templates/stats/dashboard.html:50
+msgid "Today"
+msgstr "Hoy"
+
+#: templates/stats/dashboard.html:56
+msgid "Yesterday"
+msgstr "Ayer"
+
+#: templates/stats/dashboard.html:64
+#, fuzzy
+#| msgid "Request category*"
+msgid "Requests per day"
+msgstr "Pedidos por día"
+
+#: templates/stats/dashboard.html:66
+msgid "Period"
+msgstr "Periodo"

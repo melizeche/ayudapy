@@ -214,6 +214,32 @@ PIPELINE = {
                     'scripts/leaflet-patch.js',
                 ),
                 'output_filename': 'scripts/leaflet-patch.min.js',
+        },
+        'requests-linechart.js': {
+                'source_filenames': (
+                    'scripts/requests-linechart.js',
+                ),
+                'output_filename': 'scripts/requests-linechart.min.js',
+        },
+        'libs/apexcharts.js': {
+                'source_filenames': (
+                    'libs/apexcharts.js',
+                ),
+                'output_filename': 'libs/apexcharts.min.js',
+        },
+        'libs/bulma-calendar/bulma-calendar.js': {
+                'source_filenames': (
+                    'libs/bulma-calendar/bulma-calendar.js',
+                ),
+                'output_filename': 'libs/bulma-calendar/bulma-calendar.min.js',
+        }
+    },
+    'STYLESHEETS': {
+        'libs/bulma-calendar/bulma-calendar.css': {
+            'source_filenames': (
+                'libs/bulma-calendar/bulma-calendar.min.css',
+            ),
+            'output_filename': 'libs/bulma-calendar/bulma-calendar.min.css',
         }
     },
     'CSS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
