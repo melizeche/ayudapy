@@ -494,7 +494,7 @@ msgstr "Registrá un Centro de Donación"
 #, fuzzy
 #| msgid "State"
 msgid "Stats"
-msgstr "Departamento"
+msgstr "Estadísticas"
 
 #: templates/stats/dashboard.html:26
 msgid "Requests summary"
