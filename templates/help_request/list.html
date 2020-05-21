@@ -3,6 +3,7 @@
 {% load humanize %}
 {% load static %}
 {% load pipeline %}
+{% load i18n %}
 
 {% block bread %}
   <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
@@ -12,18 +13,18 @@
             <span class="icon is-small">
               <i class="fas fa-home" aria-hidden="true"></i>
             </span>
-            <span>Inicio</span>
+            <span>{% trans "Home" %}</span>
           </a>
         </li>
-        <li><a href="/dar">Info</a></li>
-        <li class="is-active"><a href="#" aria-current="page">Pedidos de ayuda</a></li>
+        <li><a href="/dar">{% trans "Information" %}</a></li>
+        <li class="is-active"><a href="#" aria-current="page">{% trans "Requests" %}</a></li>
       </ul>
   </nav>
 {% endblock bread %}
 
 {% block content%}
 <div class="title center">
-  Pedidos cercanos {{help_request.id}}
+  {% trans "Nearby requests" %} {{help_request.id}}
   <div id="loading-indicator" class="loader-wrapper">
     <div class="loader is-loading"></div>
   </div>
@@ -39,9 +40,9 @@
                     <div class="field">
                       <div class="control">
                         <div class="select is-small">
-                          <input name="cities" class="input is-small" list="list_cities" placeholder="Seleccionar ciudad..." autocomplete="off">
+                          <input name="cities" class="input is-small" list="list_cities" placeholder="{% trans "Find your city" %}" autocomplete="off">
                         </div>
-                          <p class="help has-text-info"> Si no ves tu ciudad es porque no hay pedidos!</p>
+                          <p class="help has-text-info">{% trans "If you can't find your city it's because there are no requests nearby." %}</p>
                       </div>
                     </div>
                   </div>
@@ -67,7 +68,7 @@
 	<button id="find-me" class="button is-success  is-outlined is-fullwidth"><span class="icon is-small">
 	    <i class="fas fa-location-arrow"></i>
 	  </span>
-	  <span>Mi ubicación</span>
+	  <span>{% trans "My location" %}</span>
 	</button>
 	<p id="status"></p>
       </div>
@@ -84,12 +85,12 @@
 		class="input is-small"
 		type="text"
 		name="search-text-field"
-		placeholder="Búsqueda por título o descripción, Ejemplo: Pañal"
+		placeholder="{% trans "Search by title or description, e.g. Diapers" %}"
 	      >
 	    </div>
 	    <div class="control" >
 	      <button class="button is-warning is-small" id="search-button">
-		Buscar
+		{% trans "Search" %}
 	      </button>
 	    </div>
           </div>
@@ -100,7 +101,7 @@
 
         <div class="panel is-info">
           <p class="panel-heading">
-            Últimos pedidos de ayuda
+            {% trans "Latest requests" %}
           </p>
           <div style="overflow-y:auto;max-height:75vh;padding:15px;">
 	    <div id="table">
@@ -141,35 +142,42 @@
     </script>
 
     <script type="text/template" id="table-empty-template">
-      {% verbatim %}
 	<div class="media">
-	    <h1>No se encuentran pedidos de ayuda en la ubicación actual.</h1>
+	    <h1>{% trans "Can't find requests at your current location" %}</h1>
 	</div>
-      {% endverbatim %}
     </script>
-
+`
     <script type="text/template" id="table-paginator-template">
-          {% verbatim %}
         	<div class="row table-paginator">
         	    <div class="column is-5">
-        		  Mostrando &lt; Página {{currentPage}} de {{totalPages}} &gt;
+			{% trans "Displaying" %} &lt; {% trans "Page" %}
+			{% verbatim %}{{currentPage}}{% endverbatim %}
+			{% trans "of" %}
+			{% verbatim %}{{totalPages}}{% endverbatim %}
+			&gt;
               </div>
               <nav class="pagination is-right" role="navigation" aria-label="pagination">
-                  <button class="pagination-previous prev-button" {{hasPrev}}>Previo</button>
-                  <button class="pagination-next next-button" {{hasNext}}>Siguiente</button>
+                  <button class="pagination-previous prev-button"
+		  {% verbatim %}{{hasPrev}}{% endverbatim %}>{% trans "Previous" %}</button>
+                  <button class="pagination-next next-button"
+		  {% verbatim %}{{hasNext}}{% endverbatim %}>{% trans "Next" %}</button>
 
                   <ul class="pagination-list">
-                      <li><button class="pagination-link first-button {{showFirst}}" {{hasFirst}}>1</button></li>
-                      <li><span class="pagination-ellipsis {{showPrev}}">&hellip;</span></li>
-                      <li><button class="pagination-link current-minus-button {{showPrev}}">{{previousPage}} </button></li>
-                      <li><button class="pagination-link is-current">{{currentPage}} </button></li>
-                      <li><button class="pagination-link current-plus-button {{showNext}}">{{nextPage}} </button></li>
+                      <li><button class="pagination-link first-button {% verbatim %}{{showFirst}}{% endverbatim %}"
+		      {% verbatim %}{{hasFirst}}{% endverbatim %}>1</button></li>
+                      <li><span class="pagination-ellipsis {% verbatim %}{{showPrev}}{% endverbatim %}">&hellip;</span></li>
+                      <li><button class="pagination-link current-minus-button {% verbatim %}{{showPrev}}{% endverbatim %}">
+		      {% verbatim %}{{previousPage}}{% endverbatim %}</button></li>
+                      <li><button class="pagination-link is-current">
+		      {% verbatim %}{{currentPage}}{% endverbatim %}</button></li>
+                      <li><button class="pagination-link current-plus-button {% verbatim %}{{showNext}}{% endverbatim %}">
+		      {% verbatim %}{{nextPage}}{% endverbatim %}</button></li>
                       <li><span class="pagination-ellipsis {{showNext}}">&hellip;</span></li>
-                      <li><button class="pagination-link last-button {{showLast}}" {{hasLast}}>{{totalPages}}</button></li>
+                      <li><button class="pagination-link last-button {% verbatim %}{{showLast}}{% endverbatim %}"
+		      {% verbatim %}{{hasLast}}>{{totalPages}}{% endverbatim %}</button></li>
                   </ul>
             </nav>
         	</div>
-          {% endverbatim %}
       </script>
 
 
