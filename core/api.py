@@ -1,10 +1,13 @@
 from datetime import date, timedelta
 from django.http import JsonResponse
 from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import Count
+from django.db.models.functions import TruncDate
 from rest_framework import filters
 from rest_framework import viewsets, status, mixins
 from rest_framework.response import Response
 from rest_framework_gis.filters import InBBoxFilter
+
 
 from core.middleware import USER_TYPE_DEVICE
 from core.models import HelpRequest, Device, User
@@ -25,10 +28,10 @@ class HelpRequestViewSet(viewsets.ModelViewSet):
     queryset = HelpRequest.objects.filter(active=True, resolved=False).order_by('-id')
     serializer_class = HelpRequestSerializer
     filter_backends = [InBBoxFilter, DjangoFilterBackend, DynamicSearchFilter, ]
-    search_fields = ['title', 'phone',]
+    search_fields = ['title', 'phone', ]
     filterset_fields = {
-            'added': ['gte', 'lte', 'date'],
-            'city': ['exact'],
+        'added': ['gte', 'lte', 'date'],
+        'city': ['exact'],
     }
     bbox_filter_field = 'location'
     bbox_filter_include_overlapping = True
@@ -49,7 +52,7 @@ class CitiesViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = CitiesSerializer
 
 
-def StatsView(request):
+def StatsSummaryView(request):
     today = date.today()
     stats = dict(
         total_active=HelpRequest.objects.filter(active=True, resolved=False).count(),
@@ -57,6 +60,43 @@ def StatsView(request):
         total_resolved=HelpRequest.objects.filter(resolved=True).count(),
         today=HelpRequest.objects.filter(added__date=today, active=True).count(),
         yesterday=HelpRequest.objects.filter(added__date=today - timedelta(days=1), active=True).count(),
+    )
+    return JsonResponse(stats, )
+
+
+def StatsDailyView(request):
+    try:
+        date_from = request.GET["date_from"]
+        date_to = request.GET["date_to"]
+    except:
+        error_msg = "You should specify query parameters date_from and date_to"
+        return JsonResponse({"msg": error_msg}, status=status.HTTP_400_BAD_REQUEST)
+
+
+    total_active = HelpRequest.objects.filter(active=True, resolved = False, added__gte=date_from, added__lte=date_to) \
+                                      .annotate(date = TruncDate('added')) \
+                                      .values('date') \
+                                      .annotate(total=Count('date')) \
+                                      .order_by('date') \
+                                      .values('date', 'total')
+    distinct_requests = HelpRequest.objects.filter(active=True, resolved=False, added__gte=date_from, added__lte=date_to) \
+                                           .distinct('phone').values('id')
+    total_active_unique_phone = HelpRequest.objects.filter(id__in=distinct_requests) \
+                                                   .annotate(date = TruncDate('added')) \
+                                                   .values('date') \
+                                                   .annotate(total=Count('date')) \
+                                                   .order_by('date') \
+                                                   .values('date', 'total') 
+    total_resolved = HelpRequest.objects.filter(resolved=True, added__gte=date_from, added__lte=date_to) \
+                                        .annotate(date = TruncDate('added')) \
+                                        .values('date') \
+                                        .annotate(total=Count('date')) \
+                                        .order_by('date') \
+                                        .values('date', 'total')
+    stats = dict(
+        total_active = list(total_active),
+        total_active_unique_phone = list(total_active_unique_phone),
+        total_resolved = list(total_resolved)
     )
     return JsonResponse(stats, )
 
@@ -79,6 +119,7 @@ class DeviceViewSet(mixins.RetrieveModelMixin,
     """
     Create a model instance.
     """
+
     def create(self, request, *args, **kwargs):
 
         # create device
@@ -104,5 +145,4 @@ class DeviceViewSet(mixins.RetrieveModelMixin,
             return {'Location': str(data[api_settings.URL_FIELD_NAME])}
         except (TypeError, KeyError):
             return {}
-
 

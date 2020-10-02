@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-02 20:35+0000\n"
+"POT-Creation-Date: 2020-05-20 23:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,6 +86,7 @@ msgid "Telephone contact"
 msgstr "Teléfono de contacto"
 
 #: core/models.py:85 templates/help_request/create.html:76
+#: templates/help_request/details.html:118
 msgid "Address"
 msgstr "Dirección"
 
@@ -97,7 +98,7 @@ msgstr ""
 "Para ayudar a quien quiera ayudarte saber la dirección, ciudad, barrio, "
 "referencias, o cómo llegar"
 
-#: core/models.py:92
+#: core/models.py:92 templates/help_request/details.html:125
 msgid "Location"
 msgstr "Ubicación"
 
@@ -122,8 +123,9 @@ msgid "A tool to help people help"
 msgstr "Herramienta para ayudar a las personas a ayudar"
 
 #: templates/footer/contact_us.html:11 templates/footer/general_faq.html:11
-#: templates/footer/legal.html:12 templates/help_request/create.html:13
-#: templates/help_request/info.html:11
+#: templates/footer/legal.html:12 templates/giver/info.html:11
+#: templates/help_request/create.html:13 templates/help_request/details.html:21
+#: templates/help_request/info.html:11 templates/help_request/list.html:16
 msgid "Home"
 msgstr "Inicio"
 
@@ -294,9 +296,55 @@ msgstr ""
 msgid "The source code is distributed under the license"
 msgstr "El código está distribuido fuente bajo la licencia"
 
-#: templates/help_request/create.html:16
+#: templates/giver/info.html:15 templates/help_request/create.html:16
+#: templates/help_request/details.html:24 templates/help_request/list.html:19
 msgid "Information"
 msgstr "Info"
+
+#: templates/giver/info.html:26 templates/help_request/info.html:24
+msgid "Important"
+msgstr "Importante"
+
+#: templates/giver/info.html:28 templates/help_request/info.html:26
+#, python-format
+msgid ""
+"This is a citizen platform that depends totally on the good will of the "
+"people. There are no guarantees of help yes or yes. The information that one "
+"uploads will be 100%% publicly accessible."
+msgstr ""
+"Esta es una plataforma ciudadana que depende totalmente de la buena voluntad "
+"de la gente. No hay garantías de recibir ayuda sí o sí. La información que "
+"uno carga va a ser 100%% de acceso público."
+
+#: templates/giver/info.html:33 templates/help_request/info.html:31
+msgid "More Information"
+msgstr "Mas info acá"
+
+#: templates/giver/info.html:36 templates/help_request/info.html:34
+msgid "How does it work"
+msgstr "Cómo funciona"
+
+#: templates/giver/info.html:38 templates/help_request/info.html:36
+msgid ""
+"You have to upload your data: name, contact phone, city, location and what "
+"you need."
+msgstr ""
+"Tenés que cargar tu datos: nombre, teléfono de contacto, ciudad, ubicación y "
+"qué necesitás."
+
+#: templates/giver/info.html:42 templates/help_request/info.html:40
+msgid ""
+"allows you to share your request for help so that more people see it, as "
+"well as offering people who want to help an interface to find those who need "
+"it."
+msgstr ""
+"te permite compartir tu pedido de ayuda para que más gente lo vea, así como "
+"ofrecer a la gente que quiere ayudar una interfaz para buscar a los que "
+"necesitan."
+
+#: templates/giver/info.html:51 templates/help_request/info.html:49
+msgid "OK I understand, I want to continue"
+msgstr "OK entiendo, quiero continuar"
 
 #: templates/help_request/create.html:17 templates/help_request/info.html:15
 msgid "Receive help"
@@ -341,6 +389,7 @@ msgid "Area"
 msgstr "Zona"
 
 #: templates/help_request/create.html:78
+#: templates/help_request/details.html:121
 msgid "City"
 msgstr "Ciudad"
 
@@ -376,50 +425,117 @@ msgstr "Tu navegador no soporta la geolocalización"
 msgid "Searching your location…"
 msgstr "Buscando tu ubicación…"
 
-#: templates/help_request/info.html:24
-msgid "Important"
-msgstr "Importante"
+#: templates/help_request/details.html:25 templates/help_request/list.html:20
+msgid "Requests"
+msgstr "Pedidos"
 
-#: templates/help_request/info.html:26
-#, python-format
+#: templates/help_request/details.html:26
+#: templates/help_request/details.html:46
+#: templates/help_request/details.html:48
+msgid "Request"
+msgstr "Pedido"
+
+#: templates/help_request/details.html:39
+msgid "Podés compartir tu pedido haciendo click en los botones"
+msgstr "Podés compartir tu pedido haciendo click en los botones"
+
+#: templates/help_request/details.html:57
+msgid "Withdrawn request"
+msgstr "Pedido inactivo"
+
+#: templates/help_request/details.html:58
 msgid ""
-"This is a citizen platform that depends totally on the good will of the "
-"people. There are no guarantees of help yes or yes. The information that one "
-"uploads will be 100%% publicly accessible."
+"Withrawn or repeated request, only one request per phone number is allowed"
 msgstr ""
-"Esta es una plataforma ciudadana que depende totalmente de la buena voluntad "
-"de la gente. No hay garantías de recibir ayuda sí o sí. La información que "
-"uno carga va a ser 100%% de acceso público."
+"Pedido dado de baja o repetido, solo 1 pedido activo por número de teléfono"
 
-#: templates/help_request/info.html:31
-msgid "More Information"
-msgstr "Mas info acá"
+#: templates/help_request/details.html:62
+msgid "We found this request with the same phone number"
+msgstr "Pero encontramos este pedido activo con el mismo número"
 
-#: templates/help_request/info.html:34
-msgid "How does it work"
-msgstr "Cómo funciona"
+#: templates/help_request/details.html:65
+msgid "Other requests under the same phone number"
+msgstr "Otros pedidos activos del mismo numero"
 
-#: templates/help_request/info.html:36
-msgid ""
-"You have to upload your data: name, contact phone, city, location and what "
-"you need."
-msgstr ""
-"Tenés que cargar tu datos: nombre, teléfono de contacto, ciudad, ubicación y "
-"qué necesitás."
+#: templates/help_request/details.html:75
+msgid "This request has already been solved"
+msgstr "Pedido ya resuelto"
 
-#: templates/help_request/info.html:40
-msgid ""
-"allows you to share your request for help so that more people see it, as "
-"well as offering people who want to help an interface to find those who need "
-"it."
-msgstr ""
-"te permite compartir tu pedido de ayuda para que más gente lo vea, así como "
-"ofrecer a la gente que quiere ayudar una interfaz para buscar a los que "
-"necesitan."
+#: templates/help_request/details.html:76
+msgid "This request has been marked as resolved"
+msgstr "El pedido de ayuda ya fue marcado como asistido"
 
-#: templates/help_request/info.html:49
-msgid "OK I understand, I want to continue"
-msgstr "OK entiendo, quiero continuar"
+#: templates/help_request/details.html:101
+msgid "Name"
+msgstr "Nombre"
+
+#: templates/help_request/details.html:104
+msgid "Contact"
+msgstr "Contacto"
+
+#: templates/help_request/details.html:114
+msgid "Contact via WhatsApp"
+msgstr "Contactar vía WhatsApp"
+
+#: templates/help_request/details.html:133
+msgid "Open with Google Maps"
+msgstr "Abrir en Google Maps"
+
+#: templates/help_request/details.html:178
+msgid "You can share this request by clicking on these buttons"
+msgstr "Podés compartir este pedido haciendo click en los botones"
+
+#: templates/help_request/list.html:27
+msgid "Nearby requests"
+msgstr "Pedidos cercanos"
+
+#: templates/help_request/list.html:43
+msgid "Find your city"
+msgstr "Seleccionar ciudad"
+
+#: templates/help_request/list.html:45
+msgid "If you can't find your city it's because there are no requests nearby."
+msgstr "Si no ves tu ciudad es porque no hay pedidos"
+
+#: templates/help_request/list.html:71
+msgid "My location"
+msgstr "Mi ubicación"
+
+#: templates/help_request/list.html:88
+msgid "Search by title or description, e.g. Diapers"
+msgstr "Búsqueda por título o descripción, Ejemplo: Pañal"
+
+#: templates/help_request/list.html:93
+msgid "Search"
+msgstr "Buscar"
+
+#: templates/help_request/list.html:104
+msgid "Latest requests"
+msgstr "Últimos pedidos de ayuda"
+
+#: templates/help_request/list.html:146
+msgid "Can't find requests at your current location"
+msgstr "Últimos pedidos de ayuda"
+
+#: templates/help_request/list.html:153
+msgid "Displaying"
+msgstr "Mostrando"
+
+#: templates/help_request/list.html:153
+msgid "Page"
+msgstr "Página"
+
+#: templates/help_request/list.html:155
+msgid "of"
+msgstr "de"
+
+#: templates/help_request/list.html:161
+msgid "Previous"
+msgstr "Previo"
+
+#: templates/help_request/list.html:163
+msgid "Next"
+msgstr "Siguiente"
 
 #: templates/help_request/post.html:38
 msgid "Request category*"
@@ -489,3 +605,39 @@ msgstr "¡Registrar Centro!"
 #: templates/home.html:65
 msgid "Register a Donation Center"
 msgstr "Registrá un Centro de Donación"
+
+#: templates/stats/dashboard.html:16
+msgid "Stats"
+msgstr "Estadísticas"
+
+#: templates/stats/dashboard.html:26
+msgid "Requests summary"
+msgstr "Total de pedidos"
+
+#: templates/stats/dashboard.html:30
+msgid "Active"
+msgstr "Activos"
+
+#: templates/stats/dashboard.html:36
+msgid "Unique"
+msgstr "Únicos"
+
+#: templates/stats/dashboard.html:44
+msgid "Resolved"
+msgstr "Atendidos"
+
+#: templates/stats/dashboard.html:50
+msgid "Today"
+msgstr "Hoy"
+
+#: templates/stats/dashboard.html:56
+msgid "Yesterday"
+msgstr "Ayer"
+
+#: templates/stats/dashboard.html:64
+msgid "Requests per day"
+msgstr "Pedidos por día"
+
+#: templates/stats/dashboard.html:66
+msgid "Period"
+msgstr "Periodo"

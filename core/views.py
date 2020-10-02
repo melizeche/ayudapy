@@ -13,7 +13,7 @@ import json
 import datetime
 import base64
 
-from .api import StatsView
+from .api import StatsSummaryView
 from .forms import HelpRequestForm
 from .models import HelpRequest, HelpRequestOwner, FrequentAskedQuestion
 from .utils import text_to_image, image_to_base64
@@ -180,6 +180,6 @@ def list_by_city(request, city):
 
 @login_required
 def stats(request):
-    datos = StatsView(request)
+    datos = StatsSummaryView(request)
     context = {"datos": json.loads(datos.content)}
-    return render(request, "stats/stats_index.html", context)
+    return render(request, "stats/dashboard.html", context)

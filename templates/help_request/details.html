@@ -10,6 +10,7 @@
 {% load l10n %}
 {% load humanize %}
 {% block bread %}
+{% load i18n %}
   <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
     <ul>
       <li>
@@ -17,12 +18,12 @@
           <span class="icon is-small">
             <i class="fas fa-home" aria-hidden="true"></i>
           </span>
-          <span>Inicio</span>
+          <span>{% trans "Home" %}</span>
         </a>
       </li>
-      <li><a href="/dar">Info ayudar</a></li>
-      <li><a href="/pedidos">Pedidos de ayuda</a></li>
-      <li class="is-active"><a href="#" aria-current="page">Pedido #{{help_request.id}}</a></li>
+      <li><a href="/dar">{% trans "Information" %}</a></li>
+      <li><a href="/pedidos">{% trans "Requests" %}</a></li>
+      <li class="is-active"><a href="#" aria-current="page">{% trans "Request" %} {{help_request.id}}</a></li>
       </ul>
   </nav>
 {% endblock bread %}
@@ -35,16 +36,16 @@
                 <button class="delete" onclick="document.getElementById('msg{{ forloop.counter }}').style.display = 'none';"></button>
                     <span class="is-5">{{ message }}</span>
                     <p><span class="icon is-medium"><i class="fas fa-hand-point-down"></i></span>
-                    Podés compartir tu pedido haciendo click en los botones</p>
+		    {% trans "Podés compartir tu pedido haciendo click en los botones" %}</p>
             {% include 'includes/share_buttons.html'%}
             </div>
         {% endfor %}
       {% endif %}
         <div class="subtitle center is-3">
       {% if help_request.resolved %}
-        <a class="has-text-primary" href="/pedidos/{{help_request.id}}"><strike>Pedido #{{help_request.id}}</strike></a>
+        <a class="has-text-primary" href="/pedidos/{{help_request.id}}"><strike>{% trans "Request" %} #{{help_request.id}}</strike></a>
       {% else %}
-        <a class="has-text-primary" href="/pedidos/{{help_request.id}}">Pedido #{{help_request.id}}</a>
+        <a class="has-text-primary" href="/pedidos/{{help_request.id}}">{% trans "Request" %} #{{help_request.id}}</a>
       {% endif %}
         </div>
     </div>
@@ -53,15 +54,15 @@
     <div class="column is-four-fifths">
 {% if not help_request.active %}
       <div class="notification is-danger is-half" >
-        <span class="is-5"><p class="is-size-2">Pedido inactivo</p>
-          <p class="has-text-white-ter">Pedido dado de baja o repetido, solo 1 pedido activo por número de teléfono</p>
+        <span class="is-5"><p class="is-size-2">{% trans "Withdrawn request" %}</p>
+          <p class="has-text-white-ter">{% trans "Withrawn or repeated request, only one request per phone number is allowed" %}</p>
         </span>
     </div>
     {% if active_requests %}
-    <p class="is-size-4">Pero encontramos este pedido activo con el mismo número: <li><a href="/pedidos/{{ active_requests.0.id }}">#{{ active_requests.0.id }}</a></li> </p>
+    <p class="is-size-4">{% trans "We found this request with the same phone number" %}:<li><a href="/pedidos/{{ active_requests.0.id }}">#{{ active_requests.0.id }}</a></li> </p>
     
         {% if user.is_authenticated %}
-          Otros pedidos activos del mismo numero
+	  {% trans "Other requests under the same phone number" %}
           {% for act in active_requests %}
           <li><a href="/pedidos/{{ act.id }}">#{{ act.id }}</a></li>
           {% endfor %}
@@ -71,8 +72,8 @@
 {% else %}
       {% if help_request.resolved %}
       <div class="notification is-success is-half" >
-            <span class="is-5"><p class="is-size-2">¡Pedido ya resuelto!</p>
-              <p class="has-text-white-ter">El pedido de ayuda ya fue marcado como asistido</p>
+            <span class="is-5"><p class="is-size-2">{% trans "This request has already been solved" %}</p>
+              <p class="has-text-white-ter"> {% trans "This request has been marked as resolved" %}</p>
             </span>
       </div>
       {% endif %}
@@ -97,10 +98,10 @@
                       </figure>
                     {% endif %}
                     <hr>
-                    <p class="subtitle">Nombre:</p>
+                    <p class="subtitle">{% trans "Name" %}:</p>
                     <p class="title is-4">{{ help_request.name}}</p>
                 {% if not help_request.resolved %}
-                    <p class="subtitle">Contacto:</p>
+                    <p class="subtitle">{% trans "Contact" %}:</p>
                     <p class="title is-4">
                       <a href="tel:{{help_request.phone}}">
                         <img src="data:image/jpeg;base64,{{phone_number_img}}">
@@ -110,18 +111,18 @@
                             <span class="icon is-small">
                               <i class="fab fa-whatsapp"></i>
                             </span>
-                            <span>Contactar vía WhatsApp</span>
+			    <span>{% trans "Contact via WhatsApp" %}</span>
                         </a>
                     </p>
                     {% if help_request.address %}
-                      <p class="subtitle">Dirección:</p>
+                      <p class="subtitle">{% trans "Address" %}:</p>
                       <p class="title is-4">{{help_request.address}}</p>
                     {% endif %}
-                    <p class="subtitle">Ciudad: </p>
+                    <p class="subtitle">{% trans "City" %}:</p>
                     <p class="title is-4">
                         <a href="/pedidos_ciudad/{{help_request.city_code}}">{{help_request.city}}</a>
                     </p>
-                     <p class="subtitle">Ubicación:
+                     <p class="subtitle">{% trans "Location" %}:
                      {% leaflet_map "main" callback="main_map_init" %}
                      </p>
                      <a href="https://www.google.com/maps/search/?api=1&query={{help_request.location.y|unlocalize}},{{help_request.location.x|unlocalize}}" target="_blank">
@@ -129,7 +130,7 @@
                             <span class="icon is-medium">
                             <i class="fas fa-map-marker-alt"></i>
                             </span>
-                            <span>Abrir en Google Maps</span>
+                            <span>{% trans "Open with Google Maps" %}</span>
                         </button>
                      </a>
                 {% endif %}
@@ -173,7 +174,7 @@
                 <hr>
                 <label class="label has-text-success">
                     <span class="icon is-medium"><i class="fas fa-hand-point-down"></i></span>
-                        Podés compartir este pedido haciendo click en los botones
+		        {% trans "You can share this request by clicking on these buttons" %}
                     </label>
                 <div class="is-fullwidth">
                 {% include 'includes/share_buttons.html'%}

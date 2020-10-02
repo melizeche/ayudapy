@@ -27,6 +27,7 @@ pip install --upgrade pip
 pip install -r requirements.txt
 cp conf/.env.example conf/.env # you should edit this file with your configuration
 ./manage.py migrate
+./manage.py compilemessages
 ./manage.py runserver
 ```
 
@@ -47,13 +48,19 @@ docker-compose up -d --build
 docker-compose exec app ./manage.py migrate
 ```
 
+## Want to help?
+
+* Check/Ask GitHub issues https://github.com/melizeche/ayudapy/issues
+* If want you add/modify some string in the core app check the [Internationalization/i18n Guide](I18N-GUIDE.md)
+* Any doubts?: Ask in the dev channel @ayudapy_dev in Telegram
+
 ## Contributing
 
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
-5. Add your name and git account to the Contributors section in this `Readme.MD` :D
+5. Add your name and git account to the Contributors section in this `README.md` :D
 6. Submit a pull request to `dev` branch
 
 ## Author
@@ -63,7 +70,6 @@ docker-compose exec app ./manage.py migrate
 ## Contributors / Thanks
 
 - Agustin Gomez Mansilla https://github.com/gomezag
-- Agustín Gómez https://github.com/gomezag
 - Alejandro Duque 🇨🇴 https://github.com/aleducode
 - Axel Ferreira https://github.com/axelampro
 - Blas Isaias Fernández https://github.com/BlasFerna
@@ -90,13 +96,20 @@ docker-compose exec app ./manage.py migrate
 ## TODO
 
 - Documentation
-- Support geolocation
-- Captcha
-- ~~Create models~~
-- Users(?)
-- Test
+- Tests
+- See Github Issues https://github.com/melizeche/ayudapy/issues
 
-More in [TODO.md](TODO.md)
+## Apps / Related projects
+
+* iOS app
+  * App: https://apps.apple.com/py/app/ayudapy/id1508566089
+  * Code: https://github.com/pescode/AyudaPY-iOS
+* Android app 
+  * App: https://play.google.com/store/apps/details?id=org.ayudapy
+  * Code: https://gitlab.com/rubenlop88/ayudapy
+* Argentina Por Vos fork 
+  * Site : https://argentinaporvos.org/
+  * Code: https://github.com/coderio-co/argentinaporvos
 
 ## License
 

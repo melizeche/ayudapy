@@ -121,6 +121,12 @@
       });
 
       console.log('${latitude} ' + longitude);
+
+      // make sure there is only one marker for user's location
+      if (typeof you !== 'undefined'){
+        maps[0].removeLayer(you);
+      }
+      
       you = L.marker([latitude, longitude], {
         opacity: 0.8,
         icon: greenIcon,
