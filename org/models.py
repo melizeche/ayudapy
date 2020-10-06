@@ -27,7 +27,52 @@ DEP = (
     (17, "San Pedro"),
 )
 
+
+class BaseResource(models.Model):
+    location = models.PointField("Ubicación", srid=4326,)
+    address = models.CharField(
+        "Dirección",
+        help_text="Dirección, ciudad, barrio, referencias, o cómo llegar",
+        max_length=400,
+        blank=False,
+        null=True,
+    )
+    city = models.CharField(max_length=30, blank=True, default="", editable=False)
+    city_code = models.CharField(max_length=30, blank=True, default="", editable=False)
+    active = models.BooleanField(default=True, db_index=True)
+    added = models.DateTimeField(
+        "Agregado", auto_now_add=True, null=True, blank=True, db_index=True
+    )
+    history = HistoricalRecords(inherit=True)
+
+    def _get_city(self):
+        geolocator = Nominatim(user_agent="ayudapy")
+        cordstr = "%s, %s" % self.location.coords[::-1]
+        location = geolocator.reverse(cordstr, language="es")
+        city = ""
+        if location.raw.get("address"):
+            if location.raw["address"].get("city"):
+                city = location.raw["address"]["city"]
+            elif location.raw["address"].get("town"):
+                city = location.raw["address"]["town"]
+            elif location.raw["address"].get("locality"):
+                city = location.raw["address"]["locality"]
+        return city
+
+    def save(self):
+        from unidecode import unidecode
+        city = self._get_city()
+        self.city = city
+        self.city_code = unidecode(city).replace(" ", "_")
+        self.phone = self.phone.replace(" ", "")
+        return super().save()
+
+    class Meta:
+        abstract = True
+
+
 # Organization represents ...
+
 
 class Organization(models.Model):
     name = models.CharField("Nombre de la Organización", max_length=200)
@@ -39,8 +84,9 @@ class Organization(models.Model):
         verbose_name = "Organización"
         verbose_name = "Organizaciones"
 
-# Donation Center represents an establishment where the user with needs could go to 
+# Donation Center represents an establishment where the user with needs could go to
 # receive some help.
+
 
 class DonationCenter(models.Model):
     name = models.CharField("Nombre del lugar", max_length=200)
@@ -60,7 +106,6 @@ class DonationCenter(models.Model):
         "Agregado", auto_now_add=True, null=True, blank=True, db_index=True
     )
     history = HistoricalRecords()
-
 
     # TODO - getCity() se utliza en HelpRequest y otros modelos. Se podria unificar
     def _get_city(self):
@@ -146,12 +191,10 @@ class Profile(models.Model):
         verbose_name = "Voluntario"
 
 
-# @receiver(post_save, sender=User)
-# def create_user_profile(sender, instance, created, **kwargs):
-#     if created:
-#         Profile.objects.create(user=instance)
+class Pool(BaseResource):
+    name = models.CharField("Nombre y Apellido", max_length=200, help_text="Nombre de la persona encargada")
+    phone = models.CharField("Teléfono de contacto", max_length=30)
+    info = models.TextField("Información", help_text="Cantidad de litros o dimensiones, ¿es una piscina o un reservorio?, etc...", blank=True, null=True)
 
-
-# @receiver(post_save, sender=User)
-# def save_user_profile(sender, instance, **kwargs):
-#     instance.profile.save()
+    def __str__(self):
+        return f"<Piscina #{self.id} - {self.name}> - {self.city}"
