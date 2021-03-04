@@ -156,13 +156,20 @@
     this.requestGeoData();
   }
 
-
+  Date.prototype.SubtractMonth = function(numberOfMonths) {
+    var d = this;
+    d.setMonth(d.getMonth() - numberOfMonths);
+    d.setDate(1);
+    return d;
+  }
 
   function requestGeoData() {
     this.loadingIndicator.show();
     var vm = this;
     var map = this.map;
-    var searchUrl = GEO_URL+'?in_bbox=' + map.getBounds().toBBoxString();
+    var now = new Date();
+    now.SubtractMonth(8);
+    var searchUrl = GEO_URL+'?in_bbox=' + map.getBounds().toBBoxString() + '&added__gte=' + now.toISOString();
 
     if (vm.currentSearchString && vm.currentSearchString.length >= 3) {
       searchUrl += '&search_fields=message&search=' + vm.currentSearchString;
