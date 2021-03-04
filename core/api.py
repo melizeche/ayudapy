@@ -42,7 +42,11 @@ class HelpRequestGeoViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = None
     serializer_class = HelpRequestGeoJSONSerializer
     bbox_filter_field = 'location'
-    filter_backends = (InBBoxFilter, DynamicSearchFilter,)
+    filter_backends = (InBBoxFilter, DynamicSearchFilter, DjangoFilterBackend,)
+    filterset_fields = {
+        'added': ['gte', 'lte', 'date'],
+        'city': ['exact'],
+    }
     bbox_filter_include_overlapping = True
 
 
