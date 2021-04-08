@@ -1,7 +1,7 @@
 from django.contrib import admin
 from leaflet.admin import LeafletGeoAdmin
 
-from .models import DonationCenter, Organization, Profile
+from .models import DonationCenter, Organization, Profile, Pool
 
 
 def deactivate(modeladmin, request, queryset):
@@ -43,3 +43,4 @@ class ProfileAdmin(LeafletGeoAdmin):
 admin.site.register(DonationCenter, DonationCenterAdmin)
 admin.site.register(Organization)
 admin.site.register(Profile, ProfileAdmin)
+admin.site.register(Pool, LeafletGeoAdmin)

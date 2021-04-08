@@ -1,13 +1,13 @@
 django~=2.2
-Pillow==7.1.0
+Pillow==8.2.0
 psycopg2-binary==2.8.4 
 django-leaflet==0.26.0
 black
 django-widget-tweaks==1.4.8
 geopy==1.21.0
 Unidecode==1.1.1
-djangorestframework==3.11.0
-django-filter==2.2.0
+djangorestframework==3.11.2
+django-filter==2.4.0
 djangorestframework-gis==0.15
 django-silk==4.0.1
 ua-parser~=0.10
