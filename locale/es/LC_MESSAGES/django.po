@@ -641,3 +641,15 @@ msgstr "Pedidos por día"
 #: templates/stats/dashboard.html:66
 msgid "Period"
 msgstr "Periodo"
+
+#: templates/includes/solved_buttons.html:6
+msgid "Did you helped this request? Please tell us!"
+msgstr "¿Ayudaste este pedido ¡Contanos por favor!"
+
+#: templates/includes/solved_buttons.html:6
+msgid "Contact us via WhatsApp"
+msgstr "Avisanos por WhatsApp"
+
+#: templates/includes/solved_buttons.html:6
+msgid "Contact us via Twitter"
+msgstr "Avisanos por Twitter"
