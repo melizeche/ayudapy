@@ -1,0 +1,24 @@
+{% load i18n %}
+
+{% with url=request.build_absolute_uri text=""|add:"Solucioné el pedido de "|add:name  users="@Ayudapyorg @UnDiaParaDarPy" %}
+<section class="card-content">
+    <p class="title"> {% trans "Did you helped this request? Please tell us!" %} </p>
+    <div class="field is-flex">
+
+        <p class="control">
+        <a href="https://wa.me/?text={{text}} {{url}}" target="_blank" class="button is-medium is-success is-outlined">
+            <span class="icon is-small">
+              <i class="fab fa-whatsapp"></i>
+            </span>
+            <span>{% trans "Contact us via WhatsApp" %}</span>
+        </a>
+        <a href="https://twitter.com/share?text={{users}} {{text}}&url={{url}}&hashtags=AyudaPy,UndiaParaDarPy,UndiaParaDar" target="_blank" class="button is-medium is-info is-outlined">
+            <span class="icon is-small">
+              <i class="fab fa-twitter"></i>
+            </span>
+            <span>{% trans "Contact us via Twitter" %}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </a>
+        </p>
+    </div>
+</section >
+{% endwith %}
