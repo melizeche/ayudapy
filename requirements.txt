@@ -1,5 +1,5 @@
 django==2.2.24
-Pillow==8.3.2
+Pillow==9.0.1
 psycopg2-binary==2.8.4 
 django-leaflet==0.26.0
 black
