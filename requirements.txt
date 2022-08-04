@@ -1,4 +1,4 @@
-django==2.2.24
+django==3.2.15
 Pillow==9.0.1
 psycopg2-binary==2.8.4 
 django-leaflet==0.26.0
