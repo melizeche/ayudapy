@@ -6,6 +6,10 @@ Platform to help people help people
 
 https://ayudapy.org
 
+### DjangoCon US 2022 Talk
+
+https://www.youtube.com/watch?v=vtIxkRnQxvk
+
 ## Requirements
 
 - Python 3.8+
