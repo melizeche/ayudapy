@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 django==2.2.28
+=======
+django==3.2.23
+>>>>>>> dev
 Pillow==9.5.0
 psycopg2-binary==2.8.6
 django-leaflet==0.26.0
@@ -12,6 +16,6 @@ djangorestframework-gis==0.15
 django-silk==4.0.1
 ua-parser~=0.10
 django-environ==0.4.5
-django-simple-history==2.8.0
-django-pipeline==1.7.0
+django-simple-history==3.4.0
+django-pipeline==2.1.0
 django-admin-honeypot==1.1.0

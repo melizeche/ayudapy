@@ -247,3 +247,5 @@ PIPELINE = {
 }
 
 STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
