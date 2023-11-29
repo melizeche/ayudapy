@@ -58,8 +58,9 @@ def text_to_image(text, width, height) -> Image:
     img = Image.new('RGB', (width, height), color=(0, 209, 178))
     d = ImageDraw.Draw(img)
     fnt = ImageFont.truetype(FONT_PATH, 30)
-    w, h = d.textsize(text, font=fnt)
-    d.text(((width-w)/2, (height-h)/2), text, font=fnt, align="center", fill=(255, 255, 255))
+    w = d.textlength(text, font=fnt)
+    h=10
+    d.text(((width-w)/2, h), text, font=fnt, align="center", fill=(255, 255, 255))
     return img
 
 
