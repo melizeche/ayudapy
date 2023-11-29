@@ -8,8 +8,8 @@ https://ayudapy.org
 
 ## Requirements
 
-- Python 3.6+
-- Django 2.2+
+- Python 3.8+
+- Django 4.2+
 - PostGIS 3.0+
 - PostgreSQL 11+
 - Gettext 0.19+
