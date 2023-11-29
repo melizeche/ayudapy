@@ -1,6 +1,6 @@
 # ayudaPy
 
-Platform to help people help people
+Humanitarian platform to help people help people
 
 #### URL
 
@@ -9,6 +9,12 @@ https://ayudapy.org
 ### DjangoCon US 2022 Talk
 
 https://www.youtube.com/watch?v=vtIxkRnQxvk
+
+### Screenshots
+
+![image](https://github.com/melizeche/ayudapy/assets/484773/6e97d802-016c-4512-b90e-15cf1d7c688d)
+![image](https://github.com/melizeche/ayudapy/assets/484773/f2d25a99-8914-454a-897b-7d3e83a4ad5d)
+
 
 ## Requirements
 
@@ -117,4 +123,4 @@ docker-compose exec app ./manage.py migrate
 
 ## License
 
-This project is licensed under the terms of the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details
+This project is licensed under the terms of the GNU Affero General Public License v3.0 - see the [LICENSE](LICENSE) file for details
