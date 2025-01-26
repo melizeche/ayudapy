@@ -15,3 +15,4 @@ django-environ==0.4.5
 django-simple-history==3.4.0
 django-pipeline==2.1.0
 git+https://github.com/dmpayton/django-admin-honeypot.git@develop
+sqlparse>=0.5.0 # not directly required, pinned by Snyk to avoid a vulnerability
