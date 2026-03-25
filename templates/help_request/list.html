@@ -25,7 +25,7 @@
 {% block content%}
 <div class="title center">
   {% trans "Nearby requests" %} {{help_request.id}}
-  <div id="loading-indicator" class="loader-wrapper">
+  <div id="loading-indicator" class="loader-wrapper" role="status" aria-label="{% trans 'Loading' %}">
     <div class="loader is-loading"></div>
   </div>
 </div>
@@ -34,13 +34,13 @@
         <div class="row is-centered cities-dropdown-wrapper">
           <div class="columns is-vcentered is-desktop">
             <div class="column">
-              <div class="cities-dropdown" role="menu">
+              <div class="cities-dropdown" role="search">
                 <div class="field is-horizontal">
                   <div class="field-body">
                     <div class="field">
                       <div class="control">
                         <div class="select is-small">
-                          <input name="cities" class="input is-small" list="list_cities" placeholder="{% trans "Find your city" %}" autocomplete="off">
+                          <input name="cities" class="input is-small" list="list_cities" placeholder="{% trans "Find your city" %}" autocomplete="off" aria-label="{% trans 'Find your city' %}">
                         </div>
                           <p class="help has-text-info">{% trans "If you can't find your city it's because there are no requests nearby." %}</p>
                       </div>
@@ -62,7 +62,7 @@
         </div>
 
 
-	<div class="row" style="margin-bottom: 5px;border: 1px green solid; border-radius: 2px;">
+	<div class="row" style="margin-bottom: 5px;">
 	  {% leaflet_map "main" callback="mainMapInit" %}
 	</div>
 	<button id="find-me" class="button is-success  is-outlined is-fullwidth"><span class="icon is-small">

@@ -40,49 +40,49 @@
             <br>
 
             <div class="columns is-centered is-mobile is-multiline">
-                <div class="column is-3-desktop is-3-mobile ">
-                    <p onclick="onIconClick('viveres')">
+                <div class="column is-3-desktop is-3-mobile has-text-centered">
+                    <button type="button" class="button is-white" onclick="onIconClick('viveres')" aria-label="{% trans 'Provisions' %}">
                         <i id="viveresIcon"
                            class="fas fa-utensils fa-2x {% if 'viveres' in selected_categories %} has-text-info {% endif %}">
                         </i>
-                    </p>
-                    <p onclick="onIconClick('viveres')" class="is-size-7">{% trans "Provisions" %}</p>
+                    </button>
+                    <p class="is-size-7">{% trans "Provisions" %}</p>
                     <input type="checkbox" value="viveres" onclick="onSwitchClick('viveres')" id="viveres" name="categories" class="switch is-info"
                             {% if 'viveres' in selected_categories %} checked {% endif %}>
                     <label for="viveres"></label>
                 </div>
 
-                <div class="column is-3-desktop is-3-mobile">
-                    <p onclick="onIconClick('bebes')">
+                <div class="column is-3-desktop is-3-mobile has-text-centered">
+                    <button type="button" class="button is-white" onclick="onIconClick('bebes')" aria-label="{% trans 'Babies' %}">
                         <i id="bebesIcon"
                            class="fas fa-child fa-2x {% if 'bebes' in selected_categories %} has-text-info {% endif %}">
                         </i>
-                    </p>
-                    <p onclick="onIconClick('bebes')" class="is-size-7">{% trans "Babies" %}</p>
+                    </button>
+                    <p class="is-size-7">{% trans "Babies" %}</p>
                     <input id="bebes" value="bebes" onclick="onSwitchClick('bebes')" type="checkbox" name="categories" class="switch is-info"
                             {% if 'bebes' in selected_categories %} checked {% endif %}>
                     <label for="bebes"></label>
                 </div>
 
-                <div class="column is-3-desktop is-3-mobile">
-                    <p onclick="onIconClick('medicamentos')">
+                <div class="column is-3-desktop is-3-mobile has-text-centered">
+                    <button type="button" class="button is-white" onclick="onIconClick('medicamentos')" aria-label="{% trans 'Medicine' %}">
                         <i id="medicamentosIcon"
                            class="fas fa-prescription-bottle-alt fa-2x {% if 'medicamentos' in selected_categories %} has-text-info {% endif %}">
                         </i>
-                    </p>
-                    <p onclick="onIconClick('medicamentos')" class="is-size-7">{% trans "Medicine" %}</p>
+                    </button>
+                    <p class="is-size-7">{% trans "Medicine" %}</p>
                     <input id="medicamentos" value="medicamentos" onclick="onSwitchClick('medicamentos')" type="checkbox" name="categories" class="switch is-info"
                             {% if 'medicamentos' in selected_categories %} checked {% endif %}>
                     <label for="medicamentos"></label>
                 </div>
 
-                <div class="column is-3-desktop is-3-mobile">
-                    <p onclick="onIconClick('limpieza')">
+                <div class="column is-3-desktop is-3-mobile has-text-centered">
+                    <button type="button" class="button is-white" onclick="onIconClick('limpieza')" aria-label="{% trans 'Cleaning' %}">
                         <i id="limpiezaIcon"
                            class="fas fa-pump-soap fa-2x {% if 'limpieza' in selected_categories %} has-text-info {% endif %}">
                         </i>
-                    </p>
-                    <p onclick="onIconClick('limpieza')" class="is-size-7">{% trans "Cleaning" %}</p>
+                    </button>
+                    <p class="is-size-7">{% trans "Cleaning" %}</p>
                     <input value="limpieza" id="limpieza" onclick="onSwitchClick('limpieza')" type="checkbox" name="categories" class="switch is-info"
                             {% if 'limpieza' in selected_categories %} checked {% endif %}>
                     <label for="limpieza"></label>
