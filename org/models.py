@@ -1,10 +1,12 @@
+import logging
+
 from django.contrib.auth.models import User
 from django.contrib.gis.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from simple_history.models import HistoricalRecords
 
 from geopy.geocoders import Nominatim
+
+logger = logging.getLogger(__name__)
 
 DEP = (
     (0, "Asuncion"),
@@ -29,7 +31,10 @@ DEP = (
 
 
 class BaseResource(models.Model):
-    location = models.PointField("Ubicación", srid=4326,)
+    location = models.PointField(
+        "Ubicación",
+        srid=4326,
+    )
     address = models.CharField(
         "Dirección",
         help_text="Dirección, ciudad, barrio, referencias, o cómo llegar",
@@ -46,25 +51,30 @@ class BaseResource(models.Model):
     history = HistoricalRecords(inherit=True)
 
     def _get_city(self):
-        geolocator = Nominatim(user_agent="ayudapy")
+        geolocator = Nominatim(user_agent="ayudapy", timeout=5)
         cordstr = "%s, %s" % self.location.coords[::-1]
-        location = geolocator.reverse(cordstr, language="es")
         city = ""
-        if location.raw.get("address"):
-            if location.raw["address"].get("city"):
-                city = location.raw["address"]["city"]
-            elif location.raw["address"].get("town"):
-                city = location.raw["address"]["town"]
-            elif location.raw["address"].get("locality"):
-                city = location.raw["address"]["locality"]
+        try:
+            location = geolocator.reverse(cordstr, language="es")
+            if location.raw.get("address"):
+                if location.raw["address"].get("city"):
+                    city = location.raw["address"]["city"]
+                elif location.raw["address"].get("town"):
+                    city = location.raw["address"]["town"]
+                elif location.raw["address"].get("locality"):
+                    city = location.raw["address"]["locality"]
+        except Exception as e:
+            logger.error(f"Geolocator unavailable: {repr(e)}")
         return city
 
     def save(self):
         from unidecode import unidecode
+
         city = self._get_city()
         self.city = city
         self.city_code = unidecode(city).replace(" ", "_")
-        self.phone = self.phone.replace(" ", "")
+        if hasattr(self, "phone") and self.phone:
+            self.phone = self.phone.replace(" ", "")
         return super().save()
 
     class Meta:
@@ -84,14 +94,20 @@ class Organization(models.Model):
         verbose_name = "Organización"
         verbose_name = "Organizaciones"
 
+
 # Donation Center represents an establishment where the user with needs could go to
 # receive some help.
 
 
 class DonationCenter(models.Model):
     name = models.CharField("Nombre del lugar", max_length=200)
-    phone = models.CharField("Teléfono de contacto", max_length=30, blank=True, null=True)
-    location = models.PointField("Ubicación", srid=4326,)
+    phone = models.CharField(
+        "Teléfono de contacto", max_length=30, blank=True, null=True
+    )
+    location = models.PointField(
+        "Ubicación",
+        srid=4326,
+    )
     address = models.CharField(
         "Dirección",
         help_text="Dirección, ciudad, barrio, referencias, o cómo llegar",
@@ -109,17 +125,20 @@ class DonationCenter(models.Model):
 
     # TODO - getCity() se utliza en HelpRequest y otros modelos. Se podria unificar
     def _get_city(self):
-        geolocator = Nominatim(user_agent="ayudapy")
+        geolocator = Nominatim(user_agent="ayudapy", timeout=5)
         cordstr = "%s, %s" % self.location.coords[::-1]
-        location = geolocator.reverse(cordstr, language="es")
         city = ""
-        if location.raw.get("address"):
-            if location.raw["address"].get("city"):
-                city = location.raw["address"]["city"]
-            elif location.raw["address"].get("town"):
-                city = location.raw["address"]["town"]
-            elif location.raw["address"].get("locality"):
-                city = location.raw["address"]["locality"]
+        try:
+            location = geolocator.reverse(cordstr, language="es")
+            if location.raw.get("address"):
+                if location.raw["address"].get("city"):
+                    city = location.raw["address"]["city"]
+                elif location.raw["address"].get("town"):
+                    city = location.raw["address"]["town"]
+                elif location.raw["address"].get("locality"):
+                    city = location.raw["address"]["locality"]
+        except Exception as e:
+            logger.error(f"Geolocator unavailable: {repr(e)}")
         return city
 
     def save(self):
@@ -141,12 +160,16 @@ class DonationCenter(models.Model):
 
 # Profile a model to represents volunteers.
 
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField("Nombre", max_length=200)
     phone = models.CharField("Teléfono de contacto", max_length=30)
     birth_date = models.DateField(null=True, blank=True)
-    location = models.PointField("Ubicación", srid=4326,)
+    location = models.PointField(
+        "Ubicación",
+        srid=4326,
+    )
     department = models.PositiveSmallIntegerField(choices=DEP)
     address = models.CharField(
         "Dirección",
@@ -163,17 +186,20 @@ class Profile(models.Model):
     )
 
     def _get_city(self):
-        geolocator = Nominatim(user_agent="ayudapy")
+        geolocator = Nominatim(user_agent="ayudapy", timeout=5)
         cordstr = "%s, %s" % self.location.coords[::-1]
-        location = geolocator.reverse(cordstr, language="es")
         city = ""
-        if location.raw.get("address"):
-            if location.raw["address"].get("city"):
-                city = location.raw["address"]["city"]
-            elif location.raw["address"].get("town"):
-                city = location.raw["address"]["town"]
-            elif location.raw["address"].get("locality"):
-                city = location.raw["address"]["locality"]
+        try:
+            location = geolocator.reverse(cordstr, language="es")
+            if location.raw.get("address"):
+                if location.raw["address"].get("city"):
+                    city = location.raw["address"]["city"]
+                elif location.raw["address"].get("town"):
+                    city = location.raw["address"]["town"]
+                elif location.raw["address"].get("locality"):
+                    city = location.raw["address"]["locality"]
+        except Exception as e:
+            logger.error(f"Geolocator unavailable: {repr(e)}")
         return city
 
     def save(self, **kwargs):
@@ -192,9 +218,16 @@ class Profile(models.Model):
 
 
 class Pool(BaseResource):
-    name = models.CharField("Nombre y Apellido", max_length=200, help_text="Nombre de la persona encargada")
+    name = models.CharField(
+        "Nombre y Apellido", max_length=200, help_text="Nombre de la persona encargada"
+    )
     phone = models.CharField("Teléfono de contacto", max_length=30)
-    info = models.TextField("Información", help_text="Cantidad de litros o dimensiones, ¿es una piscina o un reservorio?, etc...", blank=True, null=True)
+    info = models.TextField(
+        "Información",
+        help_text="Cantidad de litros o dimensiones, ¿es una piscina o un reservorio?, etc...",
+        blank=True,
+        null=True,
+    )
 
     def __str__(self):
         return f"<Piscina #{self.id} - {self.name}> - {self.city}"
