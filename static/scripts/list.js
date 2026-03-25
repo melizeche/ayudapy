@@ -5,7 +5,7 @@
   var LIST_BY_CITY_URL = "/pedidos_ciudad/";
   var TITLE = "Pedido";
   var ICON_URL = "/static/icons/marker-icon-2x-green.png";
-  
+
   /**
    * ListRequestView is the main component of the list.html page.
    *
@@ -31,10 +31,10 @@
     map.addControl(
       new L.Control.Fullscreen({
         title: {
-          false: 'Ver en Pantalla Completa',
-          true: 'Salir de Pantalla Completa',
+          false: "Ver en Pantalla Completa",
+          true: "Salir de Pantalla Completa",
         },
-      })
+      }),
     );
     this.setupViewListeners();
     this.setupCitiesDropdown();
@@ -61,25 +61,25 @@
   function setupViewListeners() {
     var vm = this;
 
-    this.map.on('moveend', function () {
+    this.map.on("moveend", function () {
       vm.requestGeoData(vm.map);
     });
 
     document
-      .querySelector('#find-me')
-      .addEventListener('click', this.geoFindMe.bind(this));
+      .querySelector("#find-me")
+      .addEventListener("click", this.geoFindMe.bind(this));
 
     document
-      .getElementById('search-text-field')
-      .addEventListener('keypress', function (e) {
+      .getElementById("search-text-field")
+      .addEventListener("keypress", function (e) {
         if (e.charCode == 13) {
           vm.getQuery();
         }
       });
 
     document
-      .getElementById('search-button')
-      .addEventListener('click', this.getQuery.bind(this));
+      .getElementById("search-button")
+      .addEventListener("click", this.getQuery.bind(this));
 
     // document
     //   .getElementById('switchNormal')
@@ -89,14 +89,14 @@
   function switchClusteringInit() {
     //We check if the browser support local Storage caching
     //in case does not, we disable the switch
-    var switchElement = document.getElementById('switchNormal');
+    var switchElement = document.getElementById("switchNormal");
 
-    if (typeof Storage === 'undefined') {
+    if (typeof Storage === "undefined") {
       switchElement.disabled = true;
     } else {
       switchElement.checked = false;
       var isGroupMarksActive = JSON.parse(
-        localStorage.getItem('group_markers_setting')
+        localStorage.getItem("group_markers_setting"),
       );
       if (isGroupMarksActive != null) {
         if (isGroupMarksActive) {
@@ -107,7 +107,7 @@
   }
 
   function geoFindMe() {
-    var status = document.querySelector('#status');
+    var status = document.querySelector("#status");
 
     function success(position) {
       var latitude = position.coords.latitude;
@@ -120,48 +120,46 @@
         popupAnchor: [1, -34],
       });
 
-      console.log('${latitude} ' + longitude);
-
       // make sure there is only one marker for user's location
-      if (typeof you !== 'undefined'){
+      if (typeof you !== "undefined") {
         maps[0].removeLayer(you);
       }
-      
+
       you = L.marker([latitude, longitude], {
         opacity: 0.8,
         icon: greenIcon,
-        title: 'Tu ubicación',
+        title: "Tu ubicación",
       }).addTo(maps[0]);
-      you.bindPopup('<b>Tu ubicación</b>').openPopup();
+      you.bindPopup("<b>Tu ubicación</b>").openPopup();
       maps[0].panTo(new L.LatLng(latitude, longitude), 14);
-      status.textContent = 'Mostrando tu localización actual';
+      status.textContent = "Mostrando tu localización actual";
     }
 
     function error() {
-      status.textContent = 'No puedo encontrarte, usá los botones del mapa';
+      status.textContent = "No puedo encontrarte, usá los botones del mapa";
     }
 
     if (!navigator.geolocation) {
-      status.textContent = 'Tu navegador no soporta la geolocalización';
+      status.textContent = "Tu navegador no soporta la geolocalización";
     } else {
-      status.textContent = 'Buscando tu ubicación…';
+      status.textContent = "Buscando tu ubicación…";
       navigator.geolocation.getCurrentPosition(success, error);
     }
   }
 
   function getQuery() {
     this.currentSearchString = document
-      .getElementById('search-text-field')
+      .getElementById("search-text-field")
       .value.trim();
     this.requestGeoData();
   }
 
-  Date.prototype.SubtractMonth = function(numberOfMonths) {
+  Date.prototype.SubtractMonth = function (numberOfMonths) {
     var d = this;
     d.setMonth(d.getMonth() - numberOfMonths);
     d.setDate(1);
     return d;
-  }
+  };
 
   function requestGeoData() {
     this.loadingIndicator.show();
@@ -169,10 +167,15 @@
     var map = this.map;
     var now = new Date();
     now.SubtractMonth(8);
-    var searchUrl = GEO_URL+'?in_bbox=' + map.getBounds().toBBoxString() + '&added__gte=' + now.toISOString();
+    var searchUrl =
+      GEO_URL +
+      "?in_bbox=" +
+      map.getBounds().toBBoxString() +
+      "&added__gte=" +
+      now.toISOString();
 
     if (vm.currentSearchString && vm.currentSearchString.length >= 3) {
-      searchUrl += '&search_fields=message&search=' + vm.currentSearchString;
+      searchUrl += "&search_fields=message&search=" + vm.currentSearchString;
     }
 
     fetch(searchUrl)
@@ -194,6 +197,9 @@
 
         vm.requestTableView.setData(data.features);
         vm.requestTableView.render();
+      })
+      .catch(function () {
+        vm.loadingIndicator.hide();
       });
   }
 
@@ -201,19 +207,26 @@
     var markerClusters = L.markerClusterGroup();
     var layerGroup = L.geoJSON(data, {
       onEachFeature: function (feature, layer) {
+        var pk = parseInt(feature.properties.pk, 10);
         var popup =
-          '<a class="subtitle" href="' + LIST_URL +
-          feature.properties.pk +
-          '"><h1>'+ TITLE +' #' +
-          feature.properties.pk +
+          '<a class="subtitle" href="' +
+          LIST_URL +
+          pk +
+          '"><h1>' +
+          TITLE +
+          " #" +
+          pk +
           '</h1></a><p class="has-text-weight-bold">Nombre: ' +
-          feature.properties.name +
-          '</p><p>' +
-          feature.properties.title +
-          '</p>' +
-          '<a class="is-size-6" href="' + LIST_URL +
-          feature.properties.pk +
-          '">Ver '+ TITLE +'</a>';
+          sanitizeHTML(feature.properties.name) +
+          "</p><p>" +
+          sanitizeHTML(feature.properties.title) +
+          "</p>" +
+          '<a class="is-size-6" href="' +
+          LIST_URL +
+          pk +
+          '">Ver ' +
+          TITLE +
+          "</a>";
         layer.bindPopup(popup);
 
         markerClusters.addLayer(layer);
@@ -227,19 +240,26 @@
   function loadMarkers(map, data) {
     var layerGroup = L.geoJSON(data, {
       onEachFeature: function (feature, layer) {
+        var pk = parseInt(feature.properties.pk, 10);
         var popup =
-          '<a class="subtitle" href="' + LIST_URL +
-          feature.properties.pk +
-          '"><h1>'+ TITLE +' #' +
-          feature.properties.pk +
+          '<a class="subtitle" href="' +
+          LIST_URL +
+          pk +
+          '"><h1>' +
+          TITLE +
+          " #" +
+          pk +
           '</h1></a><p class="has-text-weight-bold">Nombre: ' +
-          feature.properties.name +
-          '</p><p>' +
-          feature.properties.title +
-          '</p>' +
-          '<a class="is-size-6" href="' + LIST_URL +
-          feature.properties.pk +
-          '">Ver '+ TITLE +'</a>';
+          sanitizeHTML(feature.properties.name) +
+          "</p><p>" +
+          sanitizeHTML(feature.properties.title) +
+          "</p>" +
+          '<a class="is-size-6" href="' +
+          LIST_URL +
+          pk +
+          '">Ver ' +
+          TITLE +
+          "</a>";
         layer.bindPopup(popup);
       },
     }).addTo(map);
@@ -249,11 +269,11 @@
 
   function groupMarkerRequest() {
     //Update cached status
-    var checkbox = document.getElementById('switchNormal');
+    var checkbox = document.getElementById("switchNormal");
     if (checkbox.checked != true) {
-      localStorage.setItem('group_markers_setting', JSON.stringify(false));
+      localStorage.setItem("group_markers_setting", JSON.stringify(false));
     } else {
-      localStorage.setItem('group_markers_setting', JSON.stringify(true));
+      localStorage.setItem("group_markers_setting", JSON.stringify(true));
     }
 
     // location.reload(); //refresh the page with the new map display setting
@@ -262,14 +282,14 @@
 
   function setupCitiesDropdown() {
     // based on https://codepen.io/airen/pen/arGXvz
-    var datalist = document.querySelector('.cities-dropdown > datalist');
-    var select = document.querySelector('.cities-dropdown > datalist > select');
+    var datalist = document.querySelector(".cities-dropdown > datalist");
+    var select = document.querySelector(".cities-dropdown > datalist > select");
     var options = select.options;
 
     /* input.onchange is triggered when the user selects something from the datalist */
     input = document.querySelector('input[name="cities"]');
 
-    input.addEventListener('change', function () {
+    input.addEventListener("change", function () {
       var selectedValue = input.value;
       var selectedIndex;
 
@@ -284,33 +304,31 @@
       }
       var selectedOption = options[selectedIndex];
       location.assign(
-        LIST_BY_CITY_URL + selectedOption.getAttribute('data-value')
+        LIST_BY_CITY_URL + selectedOption.getAttribute("data-value"),
       );
     });
 
     /* when user selects an option from the datalist, write it to text field */
-    select.addEventListener('change', function () {
+    select.addEventListener("change", function () {
       input.value = options[this.selectedIndex].value;
     });
   }
-
-
 
   /**
    * This component controls the spinner.
    */
   function LoadingIndicatorView() {
-    this.el = document.getElementById('loading-indicator');
+    this.el = document.getElementById("loading-indicator");
   }
 
   LoadingIndicatorView.prototype.show = show;
   LoadingIndicatorView.prototype.hide = hide;
 
   function show() {
-    this.el.classList.add('is-active');
+    this.el.classList.add("is-active");
   }
 
   function hide() {
-    this.el.classList.remove('is-active');
+    this.el.classList.remove("is-active");
   }
 })();

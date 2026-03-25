@@ -4,9 +4,9 @@
    */
   function TableView() {
     this.data = [];
-    this.tpl = document.getElementById('table-template').innerHTML;
-    this.emptyTpl = document.getElementById('table-empty-template').innerHTML;
-    this.requestTableEl = document.getElementById('table');
+    this.tpl = document.getElementById("table-template").innerHTML;
+    this.emptyTpl = document.getElementById("table-empty-template").innerHTML;
+    this.requestTableEl = document.getElementById("table");
     this.paginator = new TablePaginatorView(10);
     this.paginator.onPageChanged = this.render.bind(this);
   }
@@ -16,6 +16,7 @@
 
   //export this
   window.TableView = TableView;
+  window.sanitizeHTML = sanitizeHTML;
 
   /**
    * Table.setData
@@ -27,12 +28,12 @@
     this.paginator.setData(data);
   }
 
-    /*!
-  * Sanitize and encode all HTML in a user-submitted string
-  * (c) 2018 Chris Ferdinandi, MIT License, https://gomakethings.com
-  * @param  {String} str  The user-submitted string
-  * @return {String} str  The sanitized string
-  */
+  /*!
+   * Sanitize and encode all HTML in a user-submitted string
+   * (c) 2018 Chris Ferdinandi, MIT License, https://gomakethings.com
+   * @param  {String} str  The user-submitted string
+   * @return {String} str  The sanitized string
+   */
   function sanitizeHTML(str) {
     var temp = document.createElement("div");
     temp.textContent = str;
@@ -44,7 +45,7 @@
    */
   function renderTable() {
     var vm = this;
-    var tableHtml = '';
+    var tableHtml = "";
     var req;
     var i;
     var now = moment();
@@ -75,8 +76,8 @@
    */
   function TablePaginatorView(pageSize) {
     this.pageSize = pageSize;
-    this.tpl = document.getElementById('table-paginator-template').innerHTML;
-    this.el = document.getElementById('table-paginator');
+    this.tpl = document.getElementById("table-paginator-template").innerHTML;
+    this.el = document.getElementById("table-paginator");
   }
 
   TablePaginatorView.prototype.render = renderPaginator;
@@ -87,7 +88,8 @@
   TablePaginatorView.prototype.lastPage = lastPage;
   TablePaginatorView.prototype.setFlags = setFlags;
   TablePaginatorView.prototype.getPage = getPage;
-  TablePaginatorView.prototype.setupPaginationListeners = setupPaginationListeners;
+  TablePaginatorView.prototype.setupPaginationListeners =
+    setupPaginationListeners;
 
   /**
    * TablePaginatorView.render
@@ -96,7 +98,7 @@
     this.setFlags();
 
     if (this.pages == 0) {
-      this.el.innerHTML = '';
+      this.el.innerHTML = "";
       return;
     }
     var html = this.tpl
@@ -106,37 +108,37 @@
       .replace(/{{totalPages}}/g, this.totalPages)
       .replace(
         /{{hasMultiplePages}}/g,
-        'has-multiple-pages-' + this.hasMultiplePages
+        "has-multiple-pages-" + this.hasMultiplePages,
       );
 
     if (!this.hasNext) {
-      html = html.replace(/{{hasNext}}/g, 'disabled');
+      html = html.replace(/{{hasNext}}/g, "disabled");
     }
 
     if (!this.showNext) {
-      html = html.replace(/{{showNext}}/g, 'is-hidden');
+      html = html.replace(/{{showNext}}/g, "is-hidden");
     }
 
     if (!this.hasPrev) {
-      html = html.replace(/{{hasPrev}}/g, 'disabled');
+      html = html.replace(/{{hasPrev}}/g, "disabled");
     }
 
     if (!this.showPrev) {
-      html = html.replace(/{{showPrev}}/g, 'is-hidden');
+      html = html.replace(/{{showPrev}}/g, "is-hidden");
     }
 
     if (this.currentPage === 0) {
-      html = html.replace(/{{hasFirst}}/g, 'disabled');
-      html = html.replace(/{{showFirst}}/g, 'is-hidden');
+      html = html.replace(/{{hasFirst}}/g, "disabled");
+      html = html.replace(/{{showFirst}}/g, "is-hidden");
     } else if (this.currentPage === this.totalPages - 1) {
-      html = html.replace(/{{hasLast}}/g, 'disabled');
-      html = html.replace(/{{showLast}}/g, 'is-hidden');
+      html = html.replace(/{{hasLast}}/g, "disabled");
+      html = html.replace(/{{showLast}}/g, "is-hidden");
     }
 
     if (this.totalPages == 1) {
       //show only current
-      html = html.replace(/{{showFirst}}/g, 'is-hidden');
-      html = html.replace(/{{showLast}}/g, 'is-hidden');
+      html = html.replace(/{{showFirst}}/g, "is-hidden");
+      html = html.replace(/{{showLast}}/g, "is-hidden");
     }
 
     this.el.innerHTML = html;
@@ -218,23 +220,23 @@
   function setupPaginationListeners() {
     var vm = this;
     this.el
-      .querySelector('.next-button')
-      .addEventListener('click', vm.next.bind(this));
+      .querySelector(".next-button")
+      .addEventListener("click", vm.next.bind(this));
     this.el
-      .querySelector('.prev-button')
-      .addEventListener('click', vm.prev.bind(this));
+      .querySelector(".prev-button")
+      .addEventListener("click", vm.prev.bind(this));
     this.el
-      .querySelector('.first-button')
-      .addEventListener('click', vm.firstPage.bind(this));
+      .querySelector(".first-button")
+      .addEventListener("click", vm.firstPage.bind(this));
     this.el
-      .querySelector('.current-plus-button')
-      .addEventListener('click', vm.next.bind(this));
+      .querySelector(".current-plus-button")
+      .addEventListener("click", vm.next.bind(this));
     this.el
-      .querySelector('.current-minus-button')
-      .addEventListener('click', vm.prev.bind(this));
+      .querySelector(".current-minus-button")
+      .addEventListener("click", vm.prev.bind(this));
     this.el
-      .querySelector('.last-button')
-      .addEventListener('click', vm.lastPage.bind(this));
+      .querySelector(".last-button")
+      .addEventListener("click", vm.lastPage.bind(this));
   }
 
   /**

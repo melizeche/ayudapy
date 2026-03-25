@@ -33,7 +33,7 @@
       {% if messages %}
         {% for message in messages %}
             <div class="notification is-success is-half" id='msg{{ forloop.counter }}'>
-                <button class="delete" onclick="document.getElementById('msg{{ forloop.counter }}').style.display = 'none';"></button>
+                <button class="delete" aria-label="Cerrar" onclick="document.getElementById('msg{{ forloop.counter }}').style.display = 'none';"></button>
                     <span class="is-5">{{ message }}</span>
                     <p><span class="icon is-medium"><i class="fas fa-hand-point-down"></i></span>
 		    {% trans "Podés compartir tu pedido haciendo click en los botones" %}</p>
@@ -93,7 +93,7 @@
                     <hr>
                       <figure class="image is-small"> 
                         <a href="/media/{{help_request.picture}}">
-                          <img class="has-ratio" src="{{thumbnail}}"/>
+                          <img class="has-ratio" src="{{thumbnail}}" alt="Foto adjunta al pedido"/>
                         </a>
                       </figure>
                     {% endif %}
@@ -104,7 +104,7 @@
                     <p class="subtitle">{% trans "Contact" %}:</p>
                     <p class="title is-4">
                       <a href="tel:{{help_request.phone}}">
-                        <img src="data:image/jpeg;base64,{{phone_number_img}}">
+                        <img src="data:image/jpeg;base64,{{phone_number_img}}" alt="Número de contacto">
                       </a>
                         &nbsp;
                         <a href="https://wa.me/{{ whatsapp }}" target="_blank" class="button is-medium is-success is-outlined">
@@ -156,7 +156,7 @@
                     {% if help_request.picture %}
                       <figure class="image is-small"> 
                         <a href="/media/{{help_request.picture}}">
-                          <img class="has-ratio" src="{{thumbnail}}"/>
+                          <img class="has-ratio" src="{{thumbnail}}" alt="Foto adjunta al pedido"/>
                         </a>
                       </figure>
                     {% endif %}
