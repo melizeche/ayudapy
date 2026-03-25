@@ -28,7 +28,7 @@
         <span>{% trans "Click here and I will try to find you" %}</span>
       </button>
       <p id="status"></p>
-      <form enctype="multipart/form-data" method="post" action="/solicitar">
+      <form enctype="multipart/form-data" method="post" action="/solicitar" onsubmit="return checkRequestForm()">
         {% csrf_token %}
         {% include 'help_request/post.html' with form=form %}
         <div class="control">
@@ -65,18 +65,24 @@
 
 <script>
 
+  function escapeHTML(str) {
+    var div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+
   function getDireccion(longitude, latitude) {
     return new Promise(function(resolve, reject){
-      fetch(`https://geo.cabu.dev/v1/geoinversa/${latitude}/${longitude}`)
+      fetch(`https://geo.cabu.dev/v1/geoinversa/${encodeURIComponent(latitude)}/${encodeURIComponent(longitude)}`)
         .then((response) => response.json())
         .then((data) => {
           const direccion = data.data;
 
           document.getElementById('div_direccion').innerHTML = `
-          <span><b>{% trans "Address" %}</b>:${direccion.direccion || ''}</span><br /> 
-          <span><b>{% trans "Area" %}</b>:${direccion.localidad || '' }</span><br /> 
-          <span><b>{% trans "City" %}</b>:${direccion.distrito || ''} <span>
-	  <span><b>{% trans "State" %}</b>:${direccion.departamento || ''}</span>`;
+          <span><b>{% trans "Address" %}</b>:${escapeHTML(direccion.direccion)}</span><br />
+          <span><b>{% trans "Area" %}</b>:${escapeHTML(direccion.localidad)}</span><br />
+          <span><b>{% trans "City" %}</b>:${escapeHTML(direccion.distrito)} <span>
+	  <span><b>{% trans "State" %}</b>:${escapeHTML(direccion.departamento)}</span>`;
           document.getElementById('id_address').value = `${direccion.direccion || ''} ${direccion.localidad || '' } ${direccion.distrito || ''} ${direccion.departamento || ''}`;
           resolve(true)
         })
