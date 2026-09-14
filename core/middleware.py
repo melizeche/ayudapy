@@ -2,7 +2,7 @@
 # to get/create a device when processing a request in AyudaPY
 import datetime
 import uuid
-from ua_parser import user_agent_parser
+import ua_parser
 
 from core.models import User, Device
 
@@ -55,41 +55,38 @@ class AyudaPYMiddleware(object):
 
     def get_version(self, x):
         v = ""
-        if 'major' in x and x['major'] is not None:
-            v += x['major']
-        if 'minor' in x and x['minor'] is not None:
-            v += "." + x['minor']
+        if x.major is not None:
+            v += x.major
+        if x.minor is not None:
+            v += "." + x.minor
         return v
 
     def do_create_device(self, request):
 
         ua_str = request.META.get('HTTP_USER_AGENT')
-        ua = user_agent_parser.Parse(ua_str)
+        # Raises TypeError when the request carries no User-Agent header, which
+        # __call__ swallows: a device is only created for identifiable clients.
+        # with_defaults() fills the parts ua_parser could not match with "Other".
+        ua = ua_parser.parse(ua_str).with_defaults()
 
         device = Device()
 
         device.device_id = str(uuid.uuid4())
 
-        if 'device' in ua:
-            ua_device = ua['device']
-            device.dev_family = ua_device['family'] if 'family' in ua_device else None
-            device.dev_brand = ua_device['brand'] if 'brand' in ua_device else None
-            device.dev_model = ua_device['model'] if 'model' in ua_device else None
+        device.dev_family = ua.device.family
+        device.dev_brand = ua.device.brand
+        device.dev_model = ua.device.model
 
-        if 'user_agent' in ua:
-            ua_ua = ua['user_agent']
-            device.browser_family = ua_ua['family'] if 'family' in ua_ua else None
-            device.browser_version = self.get_version(ua_ua)
+        device.browser_family = ua.user_agent.family
+        device.browser_version = self.get_version(ua.user_agent)
 
-        if 'os' in ua:
-            ua_os = ua['os']
-            device.os_family = ua_os['family'] if 'family' in ua_os else None
-            device.os_version = self.get_version(ua_os)
+        device.os_family = ua.os.family
+        device.os_version = self.get_version(ua.os)
 
         device.created_ip_address = request.META.get('REMOTE_ADDR')
         device.ua_string = ua_str
 
-        device.save(device)
+        device.save()
 
         return device
 

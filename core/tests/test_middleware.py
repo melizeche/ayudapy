@@ -8,6 +8,7 @@ from unittest import mock
 
 from django.http import HttpResponse
 from django.test import RequestFactory, TestCase
+from ua_parser import OS, UserAgent
 
 from core.middleware import DEVICE_ID_COOKIE_NAME, USER_TYPE_DEVICE, AyudaPYMiddleware
 from core.models import Device, User
@@ -138,11 +139,11 @@ class SilentFailureTests(MiddlewareTestCase):
 
 class GetVersionTests(MiddlewareTestCase):
     def test_joins_major_and_minor(self):
-        self.assertEqual("80.0", self.middleware.get_version({"major": "80", "minor": "0"}))
+        self.assertEqual("80.0", self.middleware.get_version(UserAgent(major="80", minor="0")))
 
     def test_major_only(self):
-        self.assertEqual("80", self.middleware.get_version({"major": "80", "minor": None}))
+        self.assertEqual("80", self.middleware.get_version(UserAgent(major="80", minor=None)))
 
     def test_unknown_version_is_empty(self):
-        self.assertEqual("", self.middleware.get_version({"major": None, "minor": None}))
-        self.assertEqual("", self.middleware.get_version({}))
+        self.assertEqual("", self.middleware.get_version(UserAgent(major=None, minor=None)))
+        self.assertEqual("", self.middleware.get_version(OS()))

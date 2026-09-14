@@ -18,10 +18,10 @@ https://www.youtube.com/watch?v=vtIxkRnQxvk
 
 ## Requirements
 
-- Python 3.8+
-- Django 4.2+
+- Python 3.10+ (CI and the Docker image run 3.14)
+- Django 5.2+
 - PostGIS 3.0+
-- PostgreSQL 11+
+- PostgreSQL 14+
 - Gettext 0.19+
 
 ## Install
