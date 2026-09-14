@@ -58,6 +58,26 @@ docker-compose up -d --build
 docker-compose exec app ./manage.py migrate
 ```
 
+## Running the tests
+
+The suite needs a PostGIS database, so point `DATABASE_URL` at one (the
+`docker-compose` service above works) and run:
+
+```
+./manage.py test
+```
+
+Useful variations:
+
+```
+./manage.py test core.tests.test_api      # a single module
+./manage.py test --shuffle                # catch order-dependent tests
+./manage.py test --parallel               # faster on multi-core machines
+```
+
+The tests never reach the network: `core.tests.helpers.mock_geocoder` replaces
+Nominatim, which the models otherwise call on every `save()`.
+
 ## Want to help?
 
 * Check/Ask GitHub issues https://github.com/melizeche/ayudapy/issues

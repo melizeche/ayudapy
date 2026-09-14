@@ -1,0 +1,56 @@
+name: Tests
+
+on:
+  push:
+    branches: [dev, master, main]
+  pull_request:
+
+# The suite only needs to read the repository.
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgis:
+        image: postgis/postgis:15-3.3
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: ayudapy
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      SECRET_KEY: secret-key-for-tests-only
+      DEBUG: "False"
+      DATABASE_URL: postgis://postgres:postgres@localhost:5432/ayudapy
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install GeoDjango system libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y binutils gdal-bin libproj-dev
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # --shuffle surfaces tests that only pass in a particular order.
+      - name: Run the test suite
+        run: python manage.py test --shuffle
