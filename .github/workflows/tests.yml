@@ -5,6 +5,10 @@ on:
     branches: [dev, master, main]
   pull_request:
 
+# The suite only needs to read the repository.
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
