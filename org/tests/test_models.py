@@ -6,18 +6,6 @@ from core.tests.helpers import ASUNCION, mock_geocoder
 from org.models import DEP, DonationCenter, Organization, Pool, Profile
 
 
-def build_and_save(model, **kwargs):
-    """Instantiate and save ``model``.
-
-    ``DonationCenter.save()`` and ``BaseResource.save()`` take no arguments, so
-    ``Model.objects.create()`` (which passes ``force_insert=True``) raises a
-    ``TypeError``. Saving the instance directly is the path the forms take.
-    """
-    instance = model(**kwargs)
-    instance.save()
-    return instance
-
-
 class OrganizationTests(TestCase):
     def test_str_is_the_name(self):
         self.assertEqual("Cruz Roja", str(Organization.objects.create(name="Cruz Roja")))
@@ -29,7 +17,7 @@ class DonationCenterTests(TestCase):
         kwargs.setdefault("phone", "0981 123 456")
         kwargs.setdefault("address", "Calle Palma 123")
         kwargs.setdefault("location", ASUNCION)
-        return build_and_save(DonationCenter, **kwargs)
+        return DonationCenter.objects.create(**kwargs)
 
     def test_city_is_resolved_on_save(self):
         with mock_geocoder({"city": "Asunción"}):
@@ -76,6 +64,39 @@ class DonationCenterTests(TestCase):
             center.save()
         self.assertEqual(2, center.history.count())
 
+    def test_can_be_created_through_the_default_manager(self):
+        """``objects.create()`` passes ``force_insert``; ``save()`` must accept it."""
+        with mock_geocoder({"city": "Asunción"}):
+            center = DonationCenter.objects.create(
+                name="Centro de acopio",
+                phone="0981123456",
+                address="Calle Palma 123",
+                location=ASUNCION,
+            )
+        self.assertIsNotNone(center.pk)
+
+    def test_save_forwards_its_arguments_to_django(self):
+        with mock_geocoder({"city": "Asunción"}):
+            center = self.make(name="Original")
+            center.name = "Editado"
+            center.save(update_fields=["name", "city", "city_code"])
+
+        center.refresh_from_db()
+        self.assertEqual("Editado", center.name)
+
+    def test_can_be_saved_without_a_phone_number(self):
+        """``phone`` is optional on the model and on the form."""
+        with mock_geocoder({"city": "Asunción"}):
+            center = self.make(phone=None)
+
+        self.assertIsNone(center.phone)
+        self.assertEqual("Asunción", center.city)
+
+    def test_an_empty_phone_number_is_left_alone(self):
+        with mock_geocoder({"city": "Asunción"}):
+            center = self.make(phone="")
+        self.assertEqual("", center.phone)
+
     def test_verbose_names_are_spanish(self):
         self.assertEqual("Centro de Donación", DonationCenter._meta.verbose_name)
         self.assertEqual("Centros de Donación", DonationCenter._meta.verbose_name_plural)
@@ -89,7 +110,7 @@ class ProfileTests(TestCase):
         kwargs.setdefault("location", ASUNCION)
         kwargs.setdefault("department", 0)
         kwargs.setdefault("address", "Calle Palma 123")
-        return build_and_save(Profile, **kwargs)
+        return Profile.objects.create(**kwargs)
 
     def test_city_is_resolved_on_save(self):
         with mock_geocoder({"city": "Asunción"}):
@@ -118,7 +139,7 @@ class PoolTests(TestCase):
         kwargs.setdefault("phone", "0981 123 456")
         kwargs.setdefault("location", ASUNCION)
         kwargs.setdefault("address", "Calle Palma 123")
-        return build_and_save(Pool, **kwargs)
+        return Pool.objects.create(**kwargs)
 
     def test_inherits_the_geocoding_behaviour_of_base_resource(self):
         with mock_geocoder({"city": "Asunción"}):
@@ -131,6 +152,25 @@ class PoolTests(TestCase):
         with mock_geocoder({"city": "Asunción"}):
             pool = self.make(name="Carlos Benítez")
         self.assertEqual(f"<Piscina #{pool.id} - Carlos Benítez> - Asunción", str(pool))
+
+    def test_can_be_created_through_the_default_manager(self):
+        with mock_geocoder({"city": "Asunción"}):
+            pool = Pool.objects.create(
+                name="Carlos Benítez",
+                phone="0981123456",
+                address="Calle Palma 123",
+                location=ASUNCION,
+            )
+        self.assertIsNotNone(pool.pk)
+
+    def test_save_forwards_its_arguments_to_django(self):
+        with mock_geocoder({"city": "Asunción"}):
+            pool = self.make(name="Original")
+            pool.name = "Editado"
+            pool.save(update_fields=["name", "city", "city_code"])
+
+        pool.refresh_from_db()
+        self.assertEqual("Editado", pool.name)
 
     def test_info_is_optional(self):
         with mock_geocoder({"city": "Asunción"}):

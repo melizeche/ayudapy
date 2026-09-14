@@ -11,7 +11,6 @@ from django.urls import reverse
 
 from core.tests.helpers import ASUNCION, ENCARNACION, mock_geocoder
 from org.models import DonationCenter
-from org.tests.test_models import build_and_save
 
 WKT_ASUNCION = "SRID=4326;POINT (-57.5759 -25.2637)"
 
@@ -22,7 +21,7 @@ def make_donation_center(city="Asunción", **kwargs):
     kwargs.setdefault("address", "Calle Palma 123")
     kwargs.setdefault("location", ASUNCION)
     with mock_geocoder({"city": city}):
-        return build_and_save(DonationCenter, **kwargs)
+        return DonationCenter.objects.create(**kwargs)
 
 
 class DonationPermissionTestCase(TestCase):
@@ -82,6 +81,20 @@ class DonationFormViewTests(DonationPermissionTestCase):
         self.assertEqual("Asunción", center.city)
         self.assertEqual("0981123456", center.phone)
 
+    def test_a_post_without_a_phone_number_is_accepted(self):
+        """``phone`` is optional on the form, so it must be optional on save."""
+        self.login_with_permission()
+        data = {"name": "Centro de acopio", "address": "Calle Palma 123", "location": WKT_ASUNCION}
+
+        with mock_geocoder({"city": "Asunción"}):
+            response = self.client.post(self.url, data)
+
+        center = DonationCenter.objects.get()
+        self.assertEqual(302, response.status_code)
+        # The model field is null=True, so Django maps the empty input to None.
+        self.assertIsNone(center.phone)
+        self.assertEqual("Asunción", center.city)
+
     def test_an_invalid_post_redisplays_the_form(self):
         self.login_with_permission()
         with mock_geocoder({"city": "Asunción"}):
@@ -129,9 +142,7 @@ class ViewDonationCenterTests(TestCase):
         self.assertTrue(response.context["whatsapp"].startswith("595981123456?text="))
 
     def test_a_center_without_a_phone_number_hides_the_contact_details(self):
-        center = make_donation_center()
-        # Set afterwards: DonationCenter.save() cannot cope with a null phone.
-        DonationCenter.objects.filter(pk=center.pk).update(phone=None)
+        center = make_donation_center(phone=None)
 
         response = self.client.get(reverse("donaciones-detail", args=[center.pk]))
 
