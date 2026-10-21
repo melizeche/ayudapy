@@ -145,7 +145,16 @@ MEDIA_ROOT = 'media/'
 MEDIA_URL = '/media/'
 
 
+# OSM tile servers block requests without a Referer; Django's default
+# 'same-origin' strips it on cross-origin requests.
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+
 LEAFLET_CONFIG = {
+    'TILES': [(
+        'OpenStreetMap',
+        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {'attribution': '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'},
+    )],
     'DEFAULT_CENTER': (-25.292, -57.551),
     'DEFAULT_ZOOM': 11,
     'MIN_ZOOM': 3,
