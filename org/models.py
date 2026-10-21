@@ -59,13 +59,16 @@ class BaseResource(models.Model):
                 city = location.raw["address"]["locality"]
         return city
 
-    def save(self):
+    def save(self, *args, **kwargs):
         from unidecode import unidecode
         city = self._get_city()
         self.city = city
         self.city_code = unidecode(city).replace(" ", "_")
-        self.phone = self.phone.replace(" ", "")
-        return super().save()
+        # `phone` is declared by the concrete subclasses, and may be optional.
+        phone = getattr(self, "phone", None)
+        if phone:
+            self.phone = phone.replace(" ", "")
+        return super().save(*args, **kwargs)
 
     class Meta:
         abstract = True
@@ -122,14 +125,15 @@ class DonationCenter(models.Model):
                 city = location.raw["address"]["locality"]
         return city
 
-    def save(self):
+    def save(self, *args, **kwargs):
         from unidecode import unidecode
 
         city = self._get_city()
         self.city = city
         self.city_code = unidecode(city).replace(" ", "_")
-        self.phone = self.phone.replace(" ", "")
-        return super(DonationCenter, self).save()
+        if self.phone:
+            self.phone = self.phone.replace(" ", "")
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return f"<Centro #{self.id} - {self.name}> - {self.city}"
@@ -176,13 +180,13 @@ class Profile(models.Model):
                 city = location.raw["address"]["locality"]
         return city
 
-    def save(self, **kwargs):
+    def save(self, *args, **kwargs):
         from unidecode import unidecode
 
         city = self._get_city()
         self.city = city
         self.city_code = unidecode(city).replace(" ", "_")
-        return super(Profile, self).save()
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name

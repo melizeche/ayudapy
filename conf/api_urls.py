@@ -8,12 +8,12 @@ PREFIX = "api/v1"
 router = routers.DefaultRouter()
 # CORE
 router.register(r'helprequests', core_api.HelpRequestViewSet, 'helprequests')
-router.register(r'helprequestsgeo', core_api.HelpRequestGeoViewSet)
-router.register(r'devices', core_api.DeviceViewSet)
-router.register(r'cities', core_api.CitiesViewSet)
+router.register(r'helprequestsgeo', core_api.HelpRequestGeoViewSet, 'helprequestsgeo')
+router.register(r'devices', core_api.DeviceViewSet, 'devices')
+router.register(r'cities', core_api.CitiesViewSet, 'cities')
 # ORG
-router.register(r'donationcenters', org_api.DonationCenterViewSet)
-router.register(r'donationcentersgeo', org_api.DonationCenterGeoViewSet)
+router.register(r'donationcenters', org_api.DonationCenterViewSet, 'donationcenters')
+router.register(r'donationcentersgeo', org_api.DonationCenterGeoViewSet, 'donationcentersgeo')
 
 urlpatterns = [
     path(f"{PREFIX}/", include(router.urls)),
