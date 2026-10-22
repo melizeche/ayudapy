@@ -28,13 +28,13 @@ urlpatterns = [
     path('recibir', TemplateView.as_view(template_name="help_request/info.html")),
     path('solicitar', core_views.request_form, name="request-form"),
     path('pedidos/<int:id>', core_views.view_request, name='pedidos-detail'),
-    path('pedidos_ciudad/<slug:city>', core_views.list_by_city, name='pedidos-by-city'),
+    path('pedidos_ciudad/<str:city>', core_views.list_by_city, name='pedidos-by-city'),
     path('pedidos', core_views.list_requests),
     # donations
     path('ceder', org_views.donation_form, name="donation-form"),
     path('donar', RestrictedView.as_view()),
     path('donaciones', org_views.list_donation),
-    path('donaciones_ciudad/<slug:city>', org_views.list_donation_by_city, name='donation-by-city'),
+    path('donaciones_ciudad/<str:city>', org_views.list_donation_by_city, name='donation-by-city'),
     path('donaciones/<int:id>', org_views.view_donation_center, name='donaciones-detail'),
     # volunteer
     path('voluntario', TemplateView.as_view(template_name="volunteer/form.html"), name='voluntario'),
