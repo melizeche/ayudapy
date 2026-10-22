@@ -62,7 +62,9 @@ def list_donation(request):
 
 def list_donation_by_city(request, city):
     list_donations = DonationCenter.objects.filter(city_code=city).order_by("-added")  # TODO limit this
-    city = list_donations[0].city
+    first_donation = list_donations.first()
+    if first_donation:
+        city = first_donation.city
     query = list_donations
     geo = serialize("geojson", query, geometry_field="location", fields=("name", "pk", "title", "added"))
 

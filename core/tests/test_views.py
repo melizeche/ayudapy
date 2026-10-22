@@ -111,6 +111,29 @@ class ListByCityViewTests(GeocodedTestCase):
         response = self.client.get(reverse("pedidos-by-city", args=["Asuncion"]), {"page": 99})
         self.assertEqual(1, response.context["list_paginated"].number)
 
+    def test_a_city_without_open_requests_renders_an_empty_list(self):
+        resolved = make_help_request()
+        HelpRequest.objects.filter(pk=resolved.pk).update(resolved=True)
+
+        for city_code in ["Asuncion", "Ciudad-Inexistente"]:
+            response = self.client.get(reverse("pedidos-by-city", args=[city_code]))
+
+            self.assertEqual(200, response.status_code)
+            self.assertTemplateUsed(response, "help_request/list_by_city.html")
+            self.assertEqual([], list(response.context["list_help"]))
+            self.assertEqual(city_code, response.context["city"])
+
+    def test_city_codes_with_punctuation_resolve(self):
+        for city in ["Juan Emilio O'Leary", "Gra. Jose Maria Delgado", "Ciudad Guayana (Puerto Ordaz)"]:
+            self.use_geocoder({"city": city})
+            wanted = make_help_request(title=f"Pedido en {city}")
+
+            response = self.client.get(f"/pedidos_ciudad/{wanted.city_code}")
+
+            self.assertEqual(200, response.status_code)
+            self.assertEqual([wanted.pk], [r.pk for r in response.context["list_help"]])
+            self.assertEqual(city, response.context["city"])
+
 
 class ViewRequestTests(GeocodedTestCase):
     def test_renders_an_existing_request(self):
