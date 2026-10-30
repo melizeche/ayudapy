@@ -79,6 +79,26 @@ class DonationCenterApiTests(TestCase):
 
         self.assertEqual([wanted.pk], [c["id"] for c in body["results"]])
 
+    def test_searches_by_id(self):
+        wanted = make_donation_center(name="Centro A")
+        make_donation_center(name="Centro B")
+
+        body = self.client.get(
+            CENTERS_URL, {"search": str(wanted.pk), "search_fields": "id"}
+        ).json()
+
+        self.assertEqual([wanted.pk], [c["id"] for c in body["results"]])
+
+    def test_searches_by_name(self):
+        wanted = make_donation_center(name="Acopio San Roque")
+        make_donation_center(name="Otro centro")
+
+        body = self.client.get(
+            CENTERS_URL, {"search": "San Roque", "search_fields": "name"}
+        ).json()
+
+        self.assertEqual([wanted.pk], [c["id"] for c in body["results"]])
+
 
 class DonationCenterGeoApiTests(TestCase):
     def test_returns_a_geojson_feature_collection(self):

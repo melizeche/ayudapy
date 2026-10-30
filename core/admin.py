@@ -37,7 +37,7 @@ class HelpRequestAdmin(LeafletGeoAdmin):
         "upvotes",
         "downvotes",
     )
-    search_fields = ["title", "message", "name", "phone"]
+    search_fields = ["=id", "title", "message", "name", "phone"]
     actions = [resolve, unresolve, deactivate, activate]
 
 

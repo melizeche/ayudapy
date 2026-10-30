@@ -144,6 +144,26 @@ class HelpRequestApiFilterTests(GeocodedTestCase):
 
         self.assertEqual([wanted.pk], [r["id"] for r in body["results"]])
 
+    def test_searches_by_id(self):
+        wanted = make_help_request()
+        make_help_request()
+
+        body = self.client.get(
+            HELP_REQUESTS_URL, {"search": str(wanted.pk), "search_fields": "id"}
+        ).json()
+
+        self.assertEqual([wanted.pk], [r["id"] for r in body["results"]])
+
+    def test_searches_by_name(self):
+        wanted = make_help_request(name="María Fernández")
+        make_help_request(name="Pedro López")
+
+        body = self.client.get(
+            HELP_REQUESTS_URL, {"search": "María", "search_fields": "name"}
+        ).json()
+
+        self.assertEqual([wanted.pk], [r["id"] for r in body["results"]])
+
 
 class HelpRequestGeoApiTests(GeocodedTestCase):
     def test_returns_a_geojson_feature_collection(self):

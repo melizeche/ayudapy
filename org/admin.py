@@ -24,7 +24,7 @@ class DonationCenterAdmin(LeafletGeoAdmin):
         "active",
         "city",
     )
-    search_fields = ["name", "city", "phone"]
+    search_fields = ["=id", "name", "city", "phone"]
     actions = [deactivate, activate]
 
 
@@ -36,11 +36,19 @@ class ProfileAdmin(LeafletGeoAdmin):
         "active",
         "city",
     )
-    search_fields = ["name", "city", "phone"]
+    search_fields = ["=id", "name", "city", "phone"]
     actions = [deactivate, activate]
 
 
+class OrganizationAdmin(admin.ModelAdmin):
+    search_fields = ["=id", "name"]
+
+
+class PoolAdmin(LeafletGeoAdmin):
+    search_fields = ["=id", "name"]
+
+
 admin.site.register(DonationCenter, DonationCenterAdmin)
-admin.site.register(Organization)
+admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(Profile, ProfileAdmin)
-admin.site.register(Pool, LeafletGeoAdmin)
+admin.site.register(Pool, PoolAdmin)
