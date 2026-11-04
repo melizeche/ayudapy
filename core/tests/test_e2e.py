@@ -22,12 +22,14 @@ import re
 from unittest import skipUnless
 
 from django.conf import settings
+from django.contrib.gis.geos import Point
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.db import connections
 from django.test import override_settings, tag
 
 from core.models import HelpRequest
 from core.tests.helpers import mock_geocoder
+from org.tests.test_views import make_donation_center
 
 try:
     from playwright.sync_api import expect, sync_playwright
@@ -173,4 +175,39 @@ class HelpRequestJourneyTests(StaticLiveServerTestCase):
             self.page.get_by_text("Te olvidaste de marcar tu ubicación en el mapa")
         ).first).to_be_visible()
         self.assertFalse(HelpRequest.objects.filter(title="Sin ubicación").exists())
+
+    # Anyone can create a help request, so names and titles are untrusted.
+    # The map popups must show them as text, never run them as HTML.
+    XSS_PAYLOAD = '<img src="x" onerror="window.__xss = (window.__xss || 0) + 1">'
+
+    def assertPopupShowsTextOnly(self, path, text):
+        self.page.goto(self.url(path))
+        self.page.wait_for_load_state("networkidle")
+        self.page.locator("#main .leaflet-marker-pane .leaflet-marker-icon").first.click()
+
+        popup = self.page.locator(".leaflet-popup-content")
+        expect(popup).to_be_visible()
+        self.page.wait_for_load_state("networkidle")  # let a broken <img> fire onerror
+        self.assertIsNone(self.page.evaluate("window.__xss"), f"the popup on {path} ran injected JavaScript")
+        self.assertEqual(0, popup.locator("img").count(), f"the popup on {path} rendered HTML from the data")
+        expect(popup).to_contain_text(text)  # shown literally, as text
+        self.assertNoJavaScriptErrors()
+
+    def test_help_request_popups_escape_html(self):
+        # Submitted through the public form, as an attacker would.
+        self.fill_request_form(self.XSS_PAYLOAD)
+        self.page.click("#submit")
+        expect(self.page.get_by_text("¡Se creó tu pedido exitosamente!")).to_be_visible()
+
+        for path in ("/pedidos", "/pedidos_ciudad/Asuncion"):
+            with self.subTest(path=path):
+                self.assertPopupShowsTextOnly(path, self.XSS_PAYLOAD)
+
+    def test_donation_center_popups_escape_html(self):
+        lon, lat = settings.LEAFLET_CONFIG["DEFAULT_CENTER"][::-1]
+        make_donation_center(name=self.XSS_PAYLOAD, location=Point(lon, lat, srid=4326))
+
+        for path in ("/donaciones", "/donaciones_ciudad/Asuncion"):
+            with self.subTest(path=path):
+                self.assertPopupShowsTextOnly(path, self.XSS_PAYLOAD)
         self.assertNoJavaScriptErrors()
