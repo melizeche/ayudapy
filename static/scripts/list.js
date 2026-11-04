@@ -197,22 +197,35 @@
       });
   }
 
+  /**
+   * Escape text from the API (names and titles typed by anyone) before
+   * putting it in popup HTML, so it is shown as text and never run.
+   */
+  function escapeHTML(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   function loadMarkersAndGroup(map, data) {
     var markerClusters = L.markerClusterGroup();
     var layerGroup = L.geoJSON(data, {
       onEachFeature: function (feature, layer) {
         var popup =
           '<a class="subtitle" href="' + LIST_URL +
-          feature.properties.pk +
+          escapeHTML(feature.properties.pk) +
           '"><h1>'+ TITLE +' #' +
-          feature.properties.pk +
+          escapeHTML(feature.properties.pk) +
           '</h1></a><p class="has-text-weight-bold">Nombre: ' +
-          feature.properties.name +
+          escapeHTML(feature.properties.name) +
           '</p><p>' +
-          feature.properties.title +
+          escapeHTML(feature.properties.title) +
           '</p>' +
           '<a class="is-size-6" href="' + LIST_URL +
-          feature.properties.pk +
+          escapeHTML(feature.properties.pk) +
           '">Ver '+ TITLE +'</a>';
         layer.bindPopup(popup);
 
@@ -229,16 +242,16 @@
       onEachFeature: function (feature, layer) {
         var popup =
           '<a class="subtitle" href="' + LIST_URL +
-          feature.properties.pk +
+          escapeHTML(feature.properties.pk) +
           '"><h1>'+ TITLE +' #' +
-          feature.properties.pk +
+          escapeHTML(feature.properties.pk) +
           '</h1></a><p class="has-text-weight-bold">Nombre: ' +
-          feature.properties.name +
+          escapeHTML(feature.properties.name) +
           '</p><p>' +
-          feature.properties.title +
+          escapeHTML(feature.properties.title) +
           '</p>' +
           '<a class="is-size-6" href="' + LIST_URL +
-          feature.properties.pk +
+          escapeHTML(feature.properties.pk) +
           '">Ver '+ TITLE +'</a>';
         layer.bindPopup(popup);
       },

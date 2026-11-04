@@ -133,14 +133,27 @@
           });
       }
 
+      /**
+       * Escape text from the API (names and titles typed by anyone) before
+       * putting it in popup HTML, so it is shown as text and never run.
+       */
+      function escapeHTML(value) {
+        return String(value == null ? '' : value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
       function loadMarkersAndGroup(map, data) {
         console.log("loadMarkersAndGroup");
         var markerClusters = L.markerClusterGroup();
         var layerGroup = L.geoJSON(data, {
           onEachFeature: function (feature, layer) {
-            var popup = '<a class="subtitle" href="/donaciones/' + feature.properties.pk + '"><h1>Centro #' + feature.properties.pk +
-              '</h1></a><p class="has-text-weight-bold">Nombre: ' + feature.properties.name + '</p>' +
-              '<a class="is-size-6" href="/donaciones/' + feature.properties.pk + '">Ver Centro</a>';
+            var popup = '<a class="subtitle" href="/donaciones/' + escapeHTML(feature.properties.pk) + '"><h1>Centro #' + escapeHTML(feature.properties.pk) +
+              '</h1></a><p class="has-text-weight-bold">Nombre: ' + escapeHTML(feature.properties.name) + '</p>' +
+              '<a class="is-size-6" href="/donaciones/' + escapeHTML(feature.properties.pk) + '">Ver Centro</a>';
             layer.bindPopup(popup);
 
             markerClusters.addLayer(layer);
@@ -154,9 +167,9 @@
         console.log("loadMarkers");
         var layerGroup = L.geoJSON(data, {
           onEachFeature: function (feature, layer) {
-            var popup = '<a class="subtitle" href="/donaciones/' + feature.properties.pk + '"><h1>Centro #' + feature.properties.pk +
-              '</h1></a><p class="has-text-weight-bold">Nombre: ' + feature.properties.name + '</p><p>' +
-              '<a class="is-size-6" href="/donaciones/' + feature.properties.pk + '">Ver Centro</a>';
+            var popup = '<a class="subtitle" href="/donaciones/' + escapeHTML(feature.properties.pk) + '"><h1>Centro #' + escapeHTML(feature.properties.pk) +
+              '</h1></a><p class="has-text-weight-bold">Nombre: ' + escapeHTML(feature.properties.name) + '</p><p>' +
+              '<a class="is-size-6" href="/donaciones/' + escapeHTML(feature.properties.pk) + '">Ver Centro</a>';
             layer.bindPopup(popup);
           }
         }).addTo(map);
