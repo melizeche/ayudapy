@@ -1,0 +1,5 @@
+-r requirements.txt
+
+# Browser end-to-end tests (core/tests/test_e2e.py). After installing, run:
+#   playwright install --with-deps chromium
+playwright==1.64.0
