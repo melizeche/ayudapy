@@ -29,7 +29,7 @@ class HelpRequestViewSet(viewsets.ModelViewSet):
     queryset = HelpRequest.objects.filter(active=True, resolved=False).order_by('-id')
     serializer_class = HelpRequestSerializer
     filter_backends = [InBBoxFilter, DjangoFilterBackend, DynamicSearchFilter, ]
-    search_fields = ['title', 'phone', ]
+    search_fields = ['=id', 'name', 'title', 'phone', ]
     filterset_fields = {
         'added': ['gte', 'lte', 'date'],
         'city': ['exact'],
