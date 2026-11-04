@@ -25,7 +25,9 @@ class DynamicSearchFilter(filters.SearchFilter):
         return request.GET.getlist('search_fields', [])
 
 
-class HelpRequestViewSet(viewsets.ModelViewSet):
+class HelpRequestViewSet(viewsets.ReadOnlyModelViewSet):
+    # Read-only: requests are created through the /solicitar form, and no
+    # client (website, iOS, Android) writes through the API.
     queryset = HelpRequest.objects.filter(active=True, resolved=False).order_by('-id')
     serializer_class = HelpRequestSerializer
     filter_backends = [InBBoxFilter, DjangoFilterBackend, DynamicSearchFilter, ]

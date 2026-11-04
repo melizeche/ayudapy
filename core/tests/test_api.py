@@ -79,6 +79,16 @@ class HelpRequestApiTests(GeocodedTestCase):
         self.assertEqual("Necesito comida", response.json()["title"])
 
 
+class HelpRequestApiReadOnlyTests(GeocodedTestCase):
+    def test_refuses_writes(self):
+        detail = f"{HELP_REQUESTS_URL}{make_help_request().pk}/"
+        for method, url in [("post", HELP_REQUESTS_URL), ("put", detail), ("patch", detail), ("delete", detail)]:
+            with self.subTest(method=method):
+                response = getattr(self.client, method)(url, {"active": False}, content_type="application/json")
+                self.assertEqual(405, response.status_code)
+        self.assertTrue(HelpRequest.objects.get().active)
+
+
 class HelpRequestApiFilterTests(GeocodedTestCase):
     def test_filters_by_city(self):
         wanted = make_help_request()

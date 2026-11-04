@@ -80,6 +80,16 @@ class DonationCenterApiTests(TestCase):
         self.assertEqual([wanted.pk], [c["id"] for c in body["results"]])
 
 
+class DonationCenterApiReadOnlyTests(TestCase):
+    def test_refuses_writes(self):
+        detail = f"{CENTERS_URL}{make_donation_center().pk}/"
+        for method, url in [("post", CENTERS_URL), ("put", detail), ("patch", detail), ("delete", detail)]:
+            with self.subTest(method=method):
+                response = getattr(self.client, method)(url, {"active": False}, content_type="application/json")
+                self.assertEqual(405, response.status_code)
+        self.assertTrue(DonationCenter.objects.get().active)
+
+
 class DonationCenterGeoApiTests(TestCase):
     def test_returns_a_geojson_feature_collection(self):
         center = make_donation_center(name="Centro de acopio")
