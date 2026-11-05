@@ -16,3 +16,4 @@ django-simple-history==3.12.0
 django-pipeline==4.1.0
 git+https://github.com/dmpayton/django-admin-honeypot.git@a840496d183df89965eeb33c9a5dd9ea3919dfff  # last commit on develop (2022)
 requests>=2.32.0 # not directly required, pinned by Snyk to avoid a vulnerability
+sqlparse>=0.6.1 # not directly required, pinned by Snyk to avoid a vulnerability
