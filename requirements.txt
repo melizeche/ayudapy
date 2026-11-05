@@ -1,4 +1,4 @@
-django==4.2.30  # last 4.2 release; 5.x needs GDAL >= 3.1 and PostgreSQL >= 13 (see chore/django-5.2)
+django==5.2.17  # last 4.2 release; 5.x needs GDAL >= 3.1 and PostgreSQL >= 13 (see chore/django-5.2)
 Pillow==13.0.0
 psycopg2-binary==2.9.13
 django-leaflet==0.34.0
