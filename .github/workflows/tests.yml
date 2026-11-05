@@ -11,7 +11,21 @@ permissions:
 
 jobs:
   test:
+    name: test (${{ matrix.suite }})
     runs-on: ubuntu-latest
+
+    # Two jobs in parallel: the regular tests, and the browser tests, which
+    # also depend on CDNs and Chromium. A failure in one does not cancel the other.
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - suite: unit
+            requirements: requirements.txt
+            test_args: --exclude-tag=e2e
+          - suite: e2e
+            requirements: requirements-dev.txt
+            test_args: --tag=e2e
 
     services:
       postgis:
@@ -49,19 +63,25 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements-dev.txt
+          pip install -r ${{ matrix.requirements }}
 
       # Headless Chromium for the browser tests in core/tests/test_e2e.py.
       - name: Install Playwright browser
+        if: matrix.suite == 'e2e'
         run: playwright install --with-deps chromium
 
       # --shuffle surfaces tests that only pass in a particular order.
-      # Without Playwright the e2e tests are skipped, so make sure none were.
-      - name: Run the test suite
+      - name: Run the ${{ matrix.suite }} tests
         run: |
           set -o pipefail
-          python manage.py test --shuffle -v 2 2>&1 | tee test-output.txt
-          if grep -qE "test_e2e.*skipped" test-output.txt; then
-            echo "::error::The browser (e2e) tests were skipped"
+          python manage.py test --shuffle -v 2 ${{ matrix.test_args }} 2>&1 | tee test-output.txt
+
+      # Without Playwright the browser tests are skipped instead of failing,
+      # so make sure they all ran.
+      - name: Check that the browser tests ran
+        if: matrix.suite == 'e2e'
+        run: |
+          if grep -qE "^Ran 0 tests" test-output.txt || grep -qE "test_e2e.*skipped" test-output.txt; then
+            echo "::error::The browser (e2e) tests did not run"
             exit 1
           fi

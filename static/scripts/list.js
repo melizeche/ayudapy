@@ -4,6 +4,7 @@
   var LIST_URL = "/pedidos/";
   var LIST_BY_CITY_URL = "/pedidos_ciudad/";
   var TITLE = "Pedido";
+  var INITIAL_ZOOM = 11;
   var ICON_URL = "/static/icons/marker-icon-2x-green.png";
   
   /**
@@ -24,8 +25,6 @@
     // show the spinner while we bootstrap
     this.loadingIndicator.show();
 
-    // Use Leaflet API here
-    map.setZoom(13);
     map.options.minZoom = 8;
 
     map.addControl(
@@ -38,6 +37,14 @@
     );
     this.setupViewListeners();
     this.setupCitiesDropdown();
+
+    // Requests load on 'moveend', which setZoom only fires when the zoom
+    // actually changes. If the map already opens at INITIAL_ZOOM, load directly.
+    if (map.getZoom() === INITIAL_ZOOM) {
+      this.requestGeoData();
+    } else {
+      map.setZoom(INITIAL_ZOOM);
+    }
   }
 
   ListRequestView.prototype.setupViewListeners = setupViewListeners;

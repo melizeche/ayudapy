@@ -538,8 +538,8 @@ msgid "Next"
 msgstr "Siguiente"
 
 #: templates/help_request/post.html:38
-msgid "Request category*"
-msgstr "Categoría del pedido*"
+msgid "Request category"
+msgstr "Categoría del pedido"
 
 #: templates/help_request/post.html:39
 msgid ""
