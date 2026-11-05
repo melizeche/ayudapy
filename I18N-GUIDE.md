@@ -1,5 +1,7 @@
 # I18N Guide
 
+[Versión en español](I18N-GUIDE.es.md)
+
 ## To add a new language
 
 ```
