@@ -127,8 +127,6 @@ TIME_ZONE = 'America/Asuncion'
 
 USE_I18N = True
 
-USE_L10N = True
-
 USE_TZ = True
 
 
@@ -258,6 +256,9 @@ PIPELINE = {
     'JS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor'
 }
 
-STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+STORAGES = {
+    'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+    'staticfiles': {'BACKEND': 'pipeline.storage.PipelineStorage'},
+}
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

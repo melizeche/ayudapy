@@ -24,7 +24,12 @@
             <div class="columns  is-mobile is-centered">
                 {% if user.is_authenticated %}
                 <p>Usuario: <b>{{ user.get_username }}</b><br>
-                    <a href="{% url 'logout'%}?next={{request.path}}">Cerrar sesión</a>
+                    {# Django 5 only logs out on POST. #}
+                    <form method="post" action="{% url 'logout' %}" style="display:inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <button type="submit" class="button is-text is-small" style="padding:0;height:auto">Cerrar sesión</button>
+                    </form>
                 </p>
                 {% endif %}
             </div>
