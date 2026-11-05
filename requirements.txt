@@ -6,7 +6,7 @@ black
 django-widget-tweaks==1.5.1
 geopy==2.5.0
 Unidecode==1.4.0
-djangorestframework==3.17.2
+djangorestframework==3.18.2
 django-filter==25.1
 djangorestframework-gis==1.3.0
 django-silk==5.5.2
