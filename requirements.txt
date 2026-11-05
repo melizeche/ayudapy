@@ -1,18 +1,18 @@
-django==4.2.26
-Pillow==10.4.0
-psycopg2-binary==2.9.9
-django-leaflet==0.29.0
+django==4.2.30  # last 4.2 release; 5.x needs GDAL >= 3.1 and PostgreSQL >= 13 (see chore/django-5.2)
+Pillow==13.0.0
+psycopg2-binary==2.9.13
+django-leaflet==0.34.0
 black
-django-widget-tweaks==1.4.8
-geopy==1.21.0
-Unidecode==1.1.1
-djangorestframework==3.15.2
-django-filter==2.4.0
-djangorestframework-gis==1.0
-django-silk==4.0.1
-ua-parser~=0.10
-django-environ==0.4.5
-django-simple-history==3.4.0
-django-pipeline==2.1.0
-git+https://github.com/dmpayton/django-admin-honeypot.git@develop
+django-widget-tweaks==1.5.1
+geopy==2.5.0
+Unidecode==1.4.0
+djangorestframework==3.17.2
+django-filter==25.1
+djangorestframework-gis==1.3.0
+django-silk==5.5.2
+ua-parser==0.18.0  # 1.x changes the parsing API used in core/middleware.py
+django-environ==0.14.0
+django-simple-history==3.12.0
+django-pipeline==4.1.0
+git+https://github.com/dmpayton/django-admin-honeypot.git@a840496d183df89965eeb33c9a5dd9ea3919dfff  # last commit on develop (2022)
 requests>=2.32.0 # not directly required, pinned by Snyk to avoid a vulnerability
