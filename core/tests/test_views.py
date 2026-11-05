@@ -21,6 +21,18 @@ class HomeViewTests(TestCase):
         self.assertTemplateUsed(response, "home.html")
 
 
+class LogoutTests(TestCase):
+    def test_footer_logs_out_with_a_post_form(self):
+        # Django 5 only logs out on POST; a plain link would get a 405.
+        self.client.force_login(AuthUser.objects.create_user("voluntario", password="secret"))
+        self.assertContains(self.client.get(reverse("home")), f'action="{reverse("logout")}"')
+
+        response = self.client.post(reverse("logout"), {"next": "/pedidos"})
+
+        self.assertRedirects(response, "/pedidos", fetch_redirect_response=False)
+        self.assertNotIn("_auth_user_id", self.client.session)
+
+
 class FaqViewTests(TestCase):
     def test_lists_only_active_questions(self):
         FrequentAskedQuestion.objects.create(order="1", question="Visible", answer="sí", active=True)

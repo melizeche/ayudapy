@@ -89,7 +89,7 @@ class AyudaPYMiddleware(object):
         device.created_ip_address = request.META.get('REMOTE_ADDR')
         device.ua_string = ua_str
 
-        device.save(device)
+        device.save()
 
         return device
 
