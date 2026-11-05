@@ -18,7 +18,8 @@ class DynamicSearchFilter(filters.SearchFilter):
         return request.GET.getlist('search_fields', [])
 
 
-class DonationCenterViewSet(viewsets.ModelViewSet):
+class DonationCenterViewSet(viewsets.ReadOnlyModelViewSet):
+    # Read-only: only staff with org.add_donationcenter may create centers (/ceder).
     queryset = DonationCenter.objects.filter(active=True).order_by('-id')
     serializer_class = DonationCenterSerializer
     filter_backends = [InBBoxFilter, DjangoFilterBackend, DynamicSearchFilter,]
