@@ -25,7 +25,7 @@
     this.loadingIndicator.show();
 
     // Use Leaflet API here
-    map.setZoom(13);
+    map.setZoom(11);
     map.options.minZoom = 8;
 
     map.addControl(
