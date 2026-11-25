@@ -23,7 +23,7 @@ class DonationCenterViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = DonationCenter.objects.filter(active=True).order_by('-id')
     serializer_class = DonationCenterSerializer
     filter_backends = [InBBoxFilter, DjangoFilterBackend, DynamicSearchFilter,]
-    search_fields = ['title', 'phone',]
+    search_fields = ['=id', 'name', 'phone',]
     filterset_fields = ['city']
     bbox_filter_field = 'location'
     bbox_filter_include_overlapping = True
