@@ -81,7 +81,7 @@ Nominatim, which the models otherwise call on every `save()`.
 ## Want to help?
 
 * Check/Ask GitHub issues https://github.com/melizeche/ayudapy/issues
-* If want you add/modify some string in the core app check the [Internationalization/i18n Guide](I18N-GUIDE.md)
+* If want you add/modify some string in the core app check the [Internationalization/i18n Guide](I18N-GUIDE.md) ([en español](I18N-GUIDE.es.md))
 * Any doubts?: Ask in the dev channel @ayudapy_dev in Telegram
 
 ## Contributing
