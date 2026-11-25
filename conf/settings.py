@@ -253,7 +253,7 @@ PIPELINE = {
         }
     },
     'CSS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
-    'JS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor'
+    'JS_COMPRESSOR': 'core.compressors.TerserCompressor'
 }
 
 STORAGES = {
