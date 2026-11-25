@@ -163,7 +163,9 @@ def list_requests(request):
 
 def list_by_city(request, city):
     list_help_requests = HelpRequest.objects.filter(city_code=city, active=True, resolved=False).order_by("-added")  # TODO limit this
-    city = list_help_requests[0].city
+    first_help_request = list_help_requests.first()
+    if first_help_request:
+        city = first_help_request.city
 
     page = request.GET.get('page', 1)
     paginate_by = 25

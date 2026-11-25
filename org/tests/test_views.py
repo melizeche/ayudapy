@@ -228,3 +228,24 @@ class ListDonationByCityViewTests(TestCase):
         make_donation_center()
         response = self.client.get(self.url, {"page": 99})
         self.assertEqual(1, response.context["list_paginated"].number)
+
+    def test_a_city_without_centers_renders_an_empty_list(self):
+        make_donation_center(city="Luque")
+
+        for city_code in ["Asuncion", "Ciudad-Inexistente"]:
+            response = self.client.get(reverse("donation-by-city", args=[city_code]))
+
+            self.assertEqual(200, response.status_code)
+            self.assertTemplateUsed(response, "donation_center/list_by_city.html")
+            self.assertEqual([], list(response.context["list_donations"]))
+            self.assertEqual(city_code, response.context["city"])
+
+    def test_city_codes_with_punctuation_resolve(self):
+        for city in ["Juan Emilio O'Leary", "Gra. Jose Maria Delgado", "Ciudad Guayana (Puerto Ordaz)"]:
+            wanted = make_donation_center(city=city)
+
+            response = self.client.get(f"/donaciones_ciudad/{wanted.city_code}")
+
+            self.assertEqual(200, response.status_code)
+            self.assertEqual([wanted.pk], [c.pk for c in response.context["list_donations"]])
+            self.assertEqual(city, response.context["city"])
